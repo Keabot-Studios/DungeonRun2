@@ -16,7 +16,7 @@ import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
 
 public class Input implements KeyListener, MouseMotionListener, MouseListener, FocusListener {
-
+	
 	private static final int NUM_KEYS = KeyEvent.KEY_LAST;
 	private static final int NUM_MBTNS = MouseEvent.MOUSE_LAST;
 
@@ -31,14 +31,22 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 	private HashMap<Component.Identifier, Float> lastControllerAxes = new HashMap<Component.Identifier, Float>();
 
 	private boolean hasFocus = false;
+	private boolean useXInputController = false;
 
 	private Controllable controllable;
 
 	private InputAxis[] inputAxes;
 
-	public Input(Controllable contollable) {
+	public Input(Controllable contollable, boolean useXInputController) {
+		this.useXInputController = useXInputController;
 		setControllable(contollable);
 
+		scanControllers();
+	}
+
+	private void scanControllers() {
+		if (usingController() || !useXInputController)
+			return;
 		Controller[] ca = ControllerEnvironment.getDefaultEnvironment().getControllers();
 		for (int i = 0; i < ca.length; i++) {
 			if (ca[i].getType() == Controller.Type.GAMEPAD) {
@@ -47,7 +55,7 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 			}
 		}
 
-		if (!hasController()) {
+		if (!usingController()) {
 			controllable.getLogger().info("No gamepad detected.");
 		} else {
 			controllable.getLogger().info("Gamepad detected: " + activeController.getName());
@@ -60,6 +68,12 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 	}
 
 	public void setControllable(Controllable controllable) {
+		if (this.controllable != null) {
+			this.controllable.getComponent().removeKeyListener(this);
+			this.controllable.getComponent().removeMouseMotionListener(this);
+			this.controllable.getComponent().removeMouseListener(this);
+			this.controllable.getComponent().removeFocusListener(this);
+		}
 		this.controllable = controllable;
 		this.controllable.getComponent().addKeyListener(this);
 		this.controllable.getComponent().addMouseMotionListener(this);
@@ -83,8 +97,12 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 				lastMouseButtons[i] = mouseButtons[i];
 			}
 		}
-
-		if (hasController()) {
+		if (usingController() && !activeController.poll()) {
+			activeController = null;
+			controllable.getLogger().info("Controller disconnected.");
+		}
+		if (usingController()) {
+			scanControllers();
 			activeController.poll();
 			EventQueue queue = activeController.getEventQueue();
 			Event event = new Event();
@@ -114,7 +132,7 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 			if (mouseButtons[axis.getMouseCode()])
 				return true;
 		}
-		if (hasController()) {
+		if (usingController()) {
 			float value = 0.0f;
 			if (axis.getIdentifier() != null) {
 				value = controllerAxes.get(axis.getIdentifier()).floatValue();
@@ -143,7 +161,7 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 			if (mouseButtons[axis.getMouseCode()])
 				return 1.0f;
 		}
-		if (hasController()) {
+		if (usingController()) {
 			if (axis.getIdentifier() != null) {
 				return controllerAxes.get(axis.getIdentifier()).floatValue();
 			}
@@ -162,7 +180,7 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 			if (mouseButtons[axis.getMouseCode()] != lastMouseButtons[axis.getMouseCode()])
 				return true;
 		}
-		if (hasController()) {
+		if (usingController()) {
 			float value = 0.0f;
 			float lastValue = 0.0f;
 			if (axis.getIdentifier() != null) {
@@ -245,8 +263,8 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 		hasFocus = false;
 	}
 
-	public boolean hasController() {
-		return activeController != null;
+	public boolean usingController() {
+		return activeController != null || !useXInputController;
 	}
 
 	public boolean hasFocus() {

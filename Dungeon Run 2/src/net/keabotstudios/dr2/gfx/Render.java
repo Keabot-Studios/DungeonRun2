@@ -1,17 +1,10 @@
 package net.keabotstudios.dr2.gfx;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
 public class Render {
 	public final int width, height;
 	public final int[] pixels;
-	
-	public Render(Dimension size) {
-		width = (int) size.getWidth();
-		height = (int) size.getHeight();
-		pixels = new int[width * height];
-	}
 	
 	public Render(int w, int h) {
 		width = w;
@@ -33,9 +26,8 @@ public class Render {
 				int xPix = x + xOffs;
 				if(xPix < 0 || xPix >= width) continue;
 				int color = render.pixels[x + y * render.width];
-				if(color > 0) {
+				if(color > 0xff000000)
 					pixels[xPix + yPix * width] = color;
-				}
 			}
 		}
 	}

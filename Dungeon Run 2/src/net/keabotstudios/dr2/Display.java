@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import net.keabotstudios.dr2.gfx.Screen;
+import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Controllable;
 import net.keabotstudios.superin.Input;
 import net.keabotstudios.superlog.Logger;
@@ -26,7 +27,7 @@ import net.keabotstudios.superlog.Logger.LogLevel;
 public class Display extends Canvas implements Runnable, Controllable {
 	private static final long serialVersionUID = 1L;
 
-	public static final int WIDTH = 320, HEIGHT = WIDTH * 3 / 4, SCALE = 4;
+	public static final int WIDTH = 640, HEIGHT = WIDTH * 3 / 4, SCALE = 2;
 	public static final String TITLE = "Dungeon Run 2";
 	public static final String VERSION = "v0.00a";
 
@@ -47,11 +48,12 @@ public class Display extends Canvas implements Runnable, Controllable {
 		Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
 		this.logger = logger;
 		GameInfo.init(this);
+		Texture.load(this);
 		Dimension size = new Dimension(WIDTH, HEIGHT);
 		screen = new Screen(WIDTH, HEIGHT);
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = Util.convertToPixels(img);
-		input = new Input(this);
+		input = new Input(this, true);
 		input.setInputs(GameInfo.CONTROLS);
 		controller = new Controller();
 		setMinimumSize(size);
@@ -141,12 +143,11 @@ public class Display extends Canvas implements Runnable, Controllable {
 			int fpsX = 5;
 			int fpsY = 29;
 			g.setFont(new Font("Crypt Of Tomorrow", Font.PLAIN, 36));
-			g.setColor(Color.GRAY);
+			g.setColor(Color.BLACK);
 			g.drawString(fps + " FPS", fpsX, fpsY + 5);
 			g.setColor(Color.WHITE);
 			g.drawString(fps + " FPS", fpsX, fpsY);
 		}
-
 		g.dispose();
 		bs.show();
 	}
