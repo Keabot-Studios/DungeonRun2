@@ -1,2 +1,2 @@
-# SuperIn
-A Input Wrapper That contains JInput, and uses the Java Key, Focus, and Mouse Input.
+# Dungeon Run 2
+A "3D" FPS Java Game.
