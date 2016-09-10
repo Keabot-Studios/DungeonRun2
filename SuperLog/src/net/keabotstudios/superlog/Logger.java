@@ -15,7 +15,6 @@ public class Logger {
 			return level;
 		}
 	}
-
 	private LogLevel logLevel = LogLevel.NONE;
 
 	public void setLogLevel(LogLevel logLevel) {

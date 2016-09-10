@@ -12,7 +12,6 @@ public class Render3D extends Render {
 
 	/**
 	 * Draw a floor and ceiling.
-	 * 
 	 * @param floorPos
 	 *            The floor depth, in relation to 0, the middle of the screen.
 	 *            (If <= 0, doesn't render.)
@@ -27,7 +26,6 @@ public class Render3D extends Render {
 	 *            The offset to render floor/ceiling at, on the x axis.
 	 * @param rotation
 	 *            The rotation to render the floor/ceiling at, in radians.
-	 * 
 	 */
 	public void renderFloorCiel(double floorPos, double ceilPos, double yOff, double zOff, double xOff, double rot) {
 		double cos = Math.cos(rot);

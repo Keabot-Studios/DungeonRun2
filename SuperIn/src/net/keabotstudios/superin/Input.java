@@ -16,7 +16,7 @@ import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
 
 public class Input implements KeyListener, MouseMotionListener, MouseListener, FocusListener {
-
+		
 	private static final int NUM_KEYS = KeyEvent.KEY_LAST;
 	private static final int NUM_MBTNS = MouseEvent.MOUSE_LAST;
 

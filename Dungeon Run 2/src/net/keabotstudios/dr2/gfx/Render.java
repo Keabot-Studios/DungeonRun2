@@ -11,7 +11,7 @@ public class Render {
 		height = h;
 		pixels = new int[w * h];
 	}
-
+	
 	public void clear(Color col) {
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = col.getRGB();
@@ -28,7 +28,7 @@ public class Render {
 				if (xPix < 0 || xPix >= width)
 					continue;
 				int color = render.pixels[x + y * render.width];
-				if (color > 0xff000000)
+				if(color > 0xff000000)
 					pixels[xPix + yPix * width] = color;
 			}
 		}
