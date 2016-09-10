@@ -6,6 +6,7 @@ import net.keabotstudios.dr2.Controller;
 
 public class Screen extends Render {
 
+	
 	private Render3D level;
 
 	public Screen(int w, int h) {
