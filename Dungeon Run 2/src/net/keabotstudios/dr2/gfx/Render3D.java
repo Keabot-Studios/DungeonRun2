@@ -36,17 +36,14 @@ public class Render3D extends Render {
 
 		for (int y = 0; y < height; y++) {
 			double ceiling = (y - height / 2.0) / height;
-			double z = (floorPos) / ceiling;
+			double z = (floorPos + yOff) / ceiling;
 
 			if (ceiling < 0)
-				z = (ceilPos) / -ceiling;
+				z = (ceilPos - yOff) / -ceiling;
 
 			for (int x = 0; x < width; x++) {
 				double depth = (x - width / 2.0) / height;
-
-				if (ceiling < 0)
-					z = (ceilPos) / -ceiling;
-
+				
 				depth *= z;
 				double xx = depth * cos + z * sin;
 				double yy = z * cos - depth * sin;

@@ -1,4 +1,4 @@
-package net.keabotstudios.dr2;
+package net.keabotstudios.dr2.game;
 
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -6,6 +6,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import net.java.games.input.Component;
+import net.keabotstudios.dr2.Display;
+import net.keabotstudios.dr2.Util;
 import net.keabotstudios.superin.InputAxis;
 
 public class GameInfo {
@@ -33,6 +35,7 @@ public class GameInfo {
 				new InputAxis("STRAFE_RIGHT", KeyEvent.VK_D, Component.Identifier.Axis.X, DEADZONE, InputAxis.EMPTY),
 				new InputAxis("TURN_LEFT", InputAxis.EMPTY, Component.Identifier.Axis.RX, -DEADZONE, InputAxis.EMPTY),
 				new InputAxis("TURN_RIGHT", InputAxis.EMPTY, Component.Identifier.Axis.RX, DEADZONE, InputAxis.EMPTY),
+				new InputAxis("CROUCH", KeyEvent.VK_CONTROL, Component.Identifier.Button._1, 1.0f, InputAxis.EMPTY),
 				new InputAxis("SHOOT", KeyEvent.VK_SPACE, Component.Identifier.Button._5, DEADZONE, MouseEvent.BUTTON1),
 				new InputAxis("ACTION", InputAxis.EMPTY, Component.Identifier.Button._0, 1.0f, MouseEvent.BUTTON3),
 				new InputAxis("RELOAD", KeyEvent.VK_R, Component.Identifier.Button._6, 1.0f, InputAxis.EMPTY),

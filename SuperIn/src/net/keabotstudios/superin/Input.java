@@ -124,11 +124,11 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 		InputAxis axis = getInputAxisFromName(name);
 		if (!hasFocus)
 			return false;
-		if (axis.getKeyCode() != -1) {
+		if (axis.getKeyCode() != InputAxis.EMPTY) {
 			if (keys[axis.getKeyCode()])
 				return true;
 		}
-		if (axis.getMouseCode() != -1) {
+		if (axis.getMouseCode() != InputAxis.EMPTY) {
 			if (mouseButtons[axis.getMouseCode()])
 				return true;
 		}
@@ -153,11 +153,11 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 		InputAxis axis = getInputAxisFromName(name);
 		if (!hasFocus)
 			return 0.0f;
-		if (axis.getKeyCode() != -1) {
+		if (axis.getKeyCode() != InputAxis.EMPTY) {
 			if (keys[axis.getKeyCode()])
 				return 1.0f;
 		}
-		if (axis.getMouseCode() != -1) {
+		if (axis.getMouseCode() != InputAxis.EMPTY) {
 			if (mouseButtons[axis.getMouseCode()])
 				return 1.0f;
 		}
@@ -169,15 +169,16 @@ public class Input implements KeyListener, MouseMotionListener, MouseListener, F
 		return 0.0f;
 	}
 
-	public boolean getInputTapped(InputAxis axis) {
+	public boolean getInputTapped(String name) {
+		InputAxis axis = getInputAxisFromName(name);
 		if (!hasFocus)
 			return false;
-		if (axis.getKeyCode() != -1) {
-			if (keys[axis.getKeyCode()] != lastKeys[axis.getKeyCode()])
+		if (axis.getKeyCode() != InputAxis.EMPTY) {
+			if (keys[axis.getKeyCode()] != lastKeys[axis.getKeyCode()] && keys[axis.getKeyCode()])
 				return true;
 		}
-		if (axis.getMouseCode() != -1) {
-			if (mouseButtons[axis.getMouseCode()] != lastMouseButtons[axis.getMouseCode()])
+		if (axis.getMouseCode() != InputAxis.EMPTY) {
+			if (mouseButtons[axis.getMouseCode()] != lastMouseButtons[axis.getMouseCode()] && mouseButtons[axis.getMouseCode()])
 				return true;
 		}
 		if (usingController()) {

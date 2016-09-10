@@ -13,10 +13,12 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
-	
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import net.keabotstudios.dr2.game.GameInfo;
+import net.keabotstudios.dr2.game.entity.Player;
 import net.keabotstudios.dr2.gfx.Screen;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Controllable;
@@ -36,7 +38,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 	private int fps;
 
 	private Input input;
-	private Controller controller;
+	private Player player;
 	private Logger logger;
 	private JFrame frame;
 	private Screen screen;
@@ -55,7 +57,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 		pixels = Util.convertToPixels(img);
 		input = new Input(this, true);
 		input.setInputs(GameInfo.CONTROLS);
-		controller = new Controller();
+		player = new Player(0, 0, 0, "Player");
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
@@ -117,11 +119,11 @@ public class Display extends Canvas implements Runnable, Controllable {
 
 	private void update() {
 		GameInfo.update();
-		input.update();
-		controller.update(input);
+		player.update(input);
 		if (input.getInput("ESCAPE")) {
 			System.exit(0);
 		}
+		input.update();
 	}
 
 	private void render() {
@@ -131,7 +133,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 			return;
 		}
 
-		screen.render(controller);
+		screen.render(player);
 
 		for (int i = 0; i < WIDTH * HEIGHT; i++) {
 			pixels[i] = screen.pixels[i];
