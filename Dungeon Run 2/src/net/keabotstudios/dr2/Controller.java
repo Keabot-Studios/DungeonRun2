@@ -28,11 +28,11 @@ public class Controller {
 		if (input.getInput("STRAFE_RIGHT")) {
 			dx += 1.0 * Math.abs(input.getInputValue("STRAFE_RIGHT"));
 		}
-		
+
 		newMX = input.getMouseX();
-		if(newMX > oldMX) {
+		if (newMX > oldMX) {
 			drot += MOUSEROTSPEED * (newMX - oldMX);
-		} else if(newMX < oldMX) {
+		} else if (newMX < oldMX) {
 			drot += MOUSEROTSPEED * (newMX - oldMX);
 		} else if (input.getInput("TURN_LEFT")) {
 			drot -= ROTSPEED * Math.abs(input.getInputValue("TURN_LEFT"));

@@ -20,14 +20,14 @@ public class GameInfo {
 	}
 
 	private static float DEADZONE = 0.125f;
-	
+
 	public static void init(Display display) {
 		WINDOW_ICONS.add(Util.loadImage("/icon/dr2x64.png", display.getLogger()));
 		WINDOW_ICONS.add(Util.loadImage("/icon/dr2x32.png", display.getLogger()));
 		WINDOW_ICONS.add(Util.loadImage("/icon/dr2x16.png", display.getLogger()));
 		TIME = 0;
 		CONTROLS = new InputAxis[] {
-				new InputAxis("FORWARD", KeyEvent.VK_W, Component.Identifier.Axis.Y, -DEADZONE,	InputAxis.EMPTY),
+				new InputAxis("FORWARD", KeyEvent.VK_W, Component.Identifier.Axis.Y, -DEADZONE, InputAxis.EMPTY),
 				new InputAxis("BACKWARD", KeyEvent.VK_S, Component.Identifier.Axis.Y, DEADZONE, InputAxis.EMPTY),
 				new InputAxis("STRAFE_LEFT", KeyEvent.VK_A, Component.Identifier.Axis.X, -DEADZONE, InputAxis.EMPTY),
 				new InputAxis("STRAFE_RIGHT", KeyEvent.VK_D, Component.Identifier.Axis.X, DEADZONE, InputAxis.EMPTY),

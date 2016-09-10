@@ -1,7 +1,7 @@
 package net.keabotstudios.superlog;
 
 public class Logger {
-	
+
 	public enum LogLevel {
 		INFO(0), DEBUG(1), ERROR(2), FATAL(3), NONE(Integer.MAX_VALUE);
 
@@ -15,8 +15,9 @@ public class Logger {
 			return level;
 		}
 	}
+
 	private LogLevel logLevel = LogLevel.NONE;
-	
+
 	public void setLogLevel(LogLevel logLevel) {
 		this.logLevel = logLevel;
 	}

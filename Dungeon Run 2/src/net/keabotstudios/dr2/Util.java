@@ -23,7 +23,7 @@ public class Util {
 			return null;
 		}
 	}
-	
+
 	public static int[] convertToPixels(BufferedImage image) {
 		return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	}
