@@ -46,27 +46,30 @@ public class Display extends Canvas implements Runnable, Controllable {
 	private int[] pixels;
 
 	public Display(Logger logger) {
-		BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
 		this.logger = logger;
 		GameInfo.init(this);
 		Texture.load(this);
-		Dimension size = new Dimension(WIDTH, HEIGHT);
 		screen = new Screen(WIDTH, HEIGHT);
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = Util.convertToPixels(img);
 		input = new Input(this, true);
 		input.setInputs(GameInfo.CONTROLS);
-		player = new Player(0, 0, 0, "Player");
+		Dimension size = new Dimension(WIDTH, HEIGHT);
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
-
 		createJFrame();
+		
+		BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
 		frame.getContentPane().setCursor(blank);
 
 		frame.requestFocus();
 		requestFocusInWindow();
+	}
+	
+	public void init() {
+		player = new Player(0, 0, 0, "Player");
 	}
 
 	private synchronized void start() {
@@ -96,6 +99,8 @@ public class Display extends Canvas implements Runnable, Controllable {
 		long prevTime = System.nanoTime();
 		double secsPerTick = 1 / 60.0;
 		int tickCount = 0;
+		
+		init();
 
 		while (running) {
 			long currTime = System.nanoTime();
@@ -118,9 +123,10 @@ public class Display extends Canvas implements Runnable, Controllable {
 	}
 
 	private void update() {
+		input.updateControllerInput();
 		GameInfo.update();
 		player.update(input);
-		if (input.getInput("ESCAPE")) {
+		if (input.getInputTapped("ESCAPE")) {
 			System.exit(0);
 		}
 		input.update();
@@ -160,6 +166,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		Logger gameLogger = new Logger();
 		if (args.length > 0) {
 			List<String> arguments = Arrays.asList(args);
@@ -170,6 +177,8 @@ public class Display extends Canvas implements Runnable, Controllable {
 			}
 		}
 		new Display(gameLogger).start();
+		
+		
 	}
 
 	public void createJFrame() {
