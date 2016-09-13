@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/jars/jinput.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SuperIn"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SuperLog"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SuperSerial"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

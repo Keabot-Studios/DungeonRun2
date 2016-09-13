@@ -37,7 +37,7 @@ public class GameInfo {
 				new InputAxis("TURN_RIGHT", InputAxis.EMPTY, Component.Identifier.Axis.RX, DEADZONE, InputAxis.EMPTY),
 				new InputAxis("RUN", KeyEvent.VK_CONTROL, Component.Identifier.Button._9, 1.0f, InputAxis.EMPTY),
 				new InputAxis("CROUCH", KeyEvent.VK_SHIFT, Component.Identifier.Button._2, 1.0f, InputAxis.EMPTY),
-				new InputAxis("SHOOT", KeyEvent.VK_SPACE, Component.Identifier.Button._6, 0.2f, MouseEvent.BUTTON1),
+				new InputAxis("SHOOT", KeyEvent.VK_SPACE, Component.Identifier.Button._6, 1.0f, MouseEvent.BUTTON1),
 				new InputAxis("ACTION", InputAxis.EMPTY, Component.Identifier.Button._0, 1.0f, MouseEvent.BUTTON3),
 				new InputAxis("RELOAD", KeyEvent.VK_R, Component.Identifier.Button._4, 1.0f, InputAxis.EMPTY),
 				new InputAxis("F1", KeyEvent.VK_F1),

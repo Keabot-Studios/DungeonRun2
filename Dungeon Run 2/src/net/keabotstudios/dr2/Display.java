@@ -25,6 +25,7 @@ import net.keabotstudios.superin.Controllable;
 import net.keabotstudios.superin.Input;
 import net.keabotstudios.superlog.Logger;
 import net.keabotstudios.superlog.Logger.LogLevel;
+import net.keabotstudios.superserial.Serialization;
 
 public class Display extends Canvas implements Runnable, Controllable {
 	private static final long serialVersionUID = 1L;
@@ -177,8 +178,13 @@ public class Display extends Canvas implements Runnable, Controllable {
 			}
 		}
 		new Display(gameLogger).start();
-		
-		
+	}
+	
+	private static void printBytes(byte[] data) {
+		for(int i = 0; i < data.length; i++) {
+			System.out.printf("0x%x ", data[i]);
+		}
+		System.out.println();
 	}
 
 	public void createJFrame() {
@@ -186,7 +192,6 @@ public class Display extends Canvas implements Runnable, Controllable {
 
 		frame.add(this);
 		frame.setSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		;
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
