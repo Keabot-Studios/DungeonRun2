@@ -14,11 +14,11 @@ public class Util {
 		try {
 			logger.info("Loading image '" + string + "'... ");
 			BufferedImage out = ImageIO.read(Util.class.getResourceAsStream(string));
-			logger.info("success!");
+			logger.infoLn("success!");
 			return out;
 		} catch (IOException e) {
 			e.printStackTrace();
-			logger.error("failure. Could not load image.");
+			logger.errorLn("failure. Could not load image.");
 			System.exit(-1);
 			return null;
 		}
@@ -26,6 +26,13 @@ public class Util {
 
 	public static int[] convertToPixels(BufferedImage image) {
 		return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	}
+	
+	public static void printBytes(byte[] data, Logger logger) {
+		for(int i = 0; i < data.length; i++) {
+			logger.info(String.format("0x%x ", data[i]));
+		}
+		logger.infoLn();
 	}
 
 }

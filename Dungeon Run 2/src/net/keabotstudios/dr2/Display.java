@@ -25,7 +25,6 @@ import net.keabotstudios.superin.Controllable;
 import net.keabotstudios.superin.Input;
 import net.keabotstudios.superlog.Logger;
 import net.keabotstudios.superlog.Logger.LogLevel;
-import net.keabotstudios.superserial.Serialization;
 
 public class Display extends Canvas implements Runnable, Controllable {
 	private static final long serialVersionUID = 1L;
@@ -174,17 +173,10 @@ public class Display extends Canvas implements Runnable, Controllable {
 			if (arguments.contains("debug")) {
 				GameInfo.DEBUG_MODE = true;
 				gameLogger.setLogLevel(LogLevel.INFO);
-				gameLogger.debug("DEBUG MODE ENABLED");
+				gameLogger.debugLn("DEBUG MODE ENABLED");
 			}
 		}
 		new Display(gameLogger).start();
-	}
-	
-	private static void printBytes(byte[] data) {
-		for(int i = 0; i < data.length; i++) {
-			System.out.printf("0x%x ", data[i]);
-		}
-		System.out.println();
 	}
 
 	public void createJFrame() {
