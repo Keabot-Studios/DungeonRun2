@@ -190,6 +190,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 		frame.setTitle(TITLE + (GameInfo.DEBUG_MODE ? " - Debug Mode" : ""));
 		frame.setIconImages(GameInfo.WINDOW_ICONS);
 		frame.setVisible(true);
+		
 	}
 
 	public Logger getLogger() {
