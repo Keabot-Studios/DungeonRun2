@@ -2,25 +2,24 @@ package net.keabotstudios.dr2.gfx;
 
 import java.awt.Color;
 
-import net.keabotstudios.dr2.game.entity.Player;
+import net.keabotstudios.dr2.game.level.Level;
 
 public class Screen extends Render {
 
-	
-	private Render3D level;
+	private Render3D render3d;
+	private RenderMinimap minimap;
 
 	public Screen(int w, int h) {
 		super(w, h);
-		level = new Render3D(w, h);
+		render3d = new Render3D(w, h);
 	}
 
-	public void render(Player p) {
+	public void render(Level level) {
 		clear(Color.BLACK);
-
-		level.renderFloorCiel(10, 10, p.getY(), p.getZ(), p.getX(), p.getRotation());
-		level.renderDistanceLimiter();
-		render(level, 0, 0);
-
+		render3d.setOffsets(level.getPlayer());
+		render3d.renderLevel(level);
+		render3d.renderDistanceLimiter(level.getRenderDistance());
+		render(render3d, 0, 0);
 	}
 
 }

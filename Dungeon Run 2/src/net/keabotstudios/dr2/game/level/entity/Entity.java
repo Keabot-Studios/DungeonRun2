@@ -1,8 +1,9 @@
-package net.keabotstudios.dr2.game.entity;
+package net.keabotstudios.dr2.game.level.entity;
 
 import net.keabotstudios.dr2.gfx.Render;
+import net.keabotstudios.superin.Input;
 
-public class Entity {
+public abstract class Entity {
 	
 	protected double x, y, z, rot, dx, dy, dz, dRot;
 	protected String name;
@@ -37,8 +38,24 @@ public class Entity {
 		return rot;
 	}
 	
-	public Render getTexture() {
-		return texture;
+	public void setPosition(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	
+	public void setRotation(double rot) {
+		this.rot = rot;
+	}
+	
+	public abstract void render(Render render);
+	
+	public void update(Input input) {
+		if (rot > (Math.PI * 2.0)) {
+			rot = 0;
+		} else if(rot < 0) {
+			rot = (Math.PI * 2.0);
+		}
 	}
 
 }

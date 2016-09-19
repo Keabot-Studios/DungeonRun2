@@ -12,7 +12,7 @@ import net.keabotstudios.superin.InputAxis;
 
 public class GameInfo {
 
-	public static boolean DEBUG_MODE = false;
+	public static boolean DEBUG_MODE = false, MOUSE_TURNING = false;
 	public static long TIME;
 	public static final ArrayList<Image> WINDOW_ICONS = new ArrayList<Image>();
 	public static InputAxis[] CONTROLS;

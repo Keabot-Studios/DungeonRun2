@@ -11,14 +11,18 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
-import net.keabotstudios.dr2.game.entity.Player;
+import net.keabotstudios.dr2.game.level.Level;
+import net.keabotstudios.dr2.game.level.block.Block;
 import net.keabotstudios.dr2.gfx.Screen;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Controllable;
@@ -29,7 +33,7 @@ import net.keabotstudios.superlog.Logger.LogLevel;
 public class Display extends Canvas implements Runnable, Controllable {
 	private static final long serialVersionUID = 1L;
 
-	public static final int WIDTH = 640, HEIGHT = WIDTH * 3 / 4, SCALE = 2;
+	public static final int WIDTH = 800, HEIGHT = WIDTH * 3 / 4, SCALE = 1;
 	public static final String TITLE = "Dungeon Run 2";
 	public static final String VERSION = "v0.00a";
 
@@ -38,7 +42,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 	private int fps;
 
 	private Input input;
-	private Player player;
+	private Level level;
 	private Logger logger;
 	private JFrame frame;
 	private Screen screen;
@@ -49,6 +53,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 		this.logger = logger;
 		GameInfo.init(this);
 		Texture.load(this);
+		Block.init();
 		screen = new Screen(WIDTH, HEIGHT);
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = Util.convertToPixels(img);
@@ -58,21 +63,18 @@ public class Display extends Canvas implements Runnable, Controllable {
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
-		createJFrame();
-		
-		BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
-		frame.getContentPane().setCursor(blank);
+	}
 
+	public void requestFocus() {
 		frame.requestFocus();
 		requestFocusInWindow();
 	}
-	
+
 	public void init() {
-		player = new Player(0, 0, 0, "Player");
+		level = new Level(20, 20);
 	}
 
-	private synchronized void start() {
+	public synchronized void start() {
 		if (running)
 			return;
 		running = true;
@@ -80,8 +82,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 		thread.start();
 	}
 
-	@SuppressWarnings("unused")
-	private synchronized void stop() {
+	public synchronized void stop() {
 		if (!running)
 			return;
 		running = false;
@@ -99,7 +100,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 		long prevTime = System.nanoTime();
 		double secsPerTick = 1 / 60.0;
 		int tickCount = 0;
-		
+
 		init();
 
 		while (running) {
@@ -125,7 +126,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 	private void update() {
 		input.updateControllerInput();
 		GameInfo.update();
-		player.update(input);
+		level.update(input);
 		if (input.getInputTapped("ESCAPE")) {
 			System.exit(0);
 		}
@@ -139,7 +140,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 			return;
 		}
 
-		screen.render(player);
+		screen.render(level);
 
 		for (int i = 0; i < WIDTH * HEIGHT; i++) {
 			pixels[i] = screen.pixels[i];
@@ -148,13 +149,26 @@ public class Display extends Canvas implements Runnable, Controllable {
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
 		if (GameInfo.DEBUG_MODE) {
-			int fpsX = 5;
-			int fpsY = 29;
-			g.setFont(new Font("Crypt Of Tomorrow", Font.PLAIN, 36));
-			g.setColor(Color.BLACK);
-			g.drawString(fps + " FPS", fpsX, fpsY + 5);
-			g.setColor(Color.WHITE);
-			g.drawString(fps + " FPS", fpsX, fpsY);
+			int debugX = 2;
+			int debugY = 12;
+			g.setFont(new Font("Verdana", Font.PLAIN, 12));
+			g.setColor(Color.YELLOW);
+			g.drawString(fps + " FPS", debugX, debugY);
+			double playerX = level.getPlayer().getX() / 8.0;
+			BigDecimal px = new BigDecimal(playerX).setScale(1, RoundingMode.HALF_EVEN);
+			double playerY = level.getPlayer().getY() / 8.0;
+			BigDecimal py = new BigDecimal(playerY).setScale(1, RoundingMode.HALF_EVEN);
+			double playerZ = level.getPlayer().getZ() / 8.0;
+			BigDecimal pz = new BigDecimal(playerZ).setScale(1, RoundingMode.HALF_EVEN);
+			double playerRot = level.getPlayer().getRotation();
+			BigDecimal pr = new BigDecimal(playerRot).setScale(3, RoundingMode.HALF_EVEN);
+			g.drawString("XYZ: " + px.doubleValue() + ", " + py.doubleValue() + ", " + pz.doubleValue(), debugX, debugY + 12);
+			g.drawString("Rotation: " + pr.doubleValue(), debugX, debugY + 12 * 2);
+			Direction pdir = Direction.getFromRad(level.getPlayer().getRotation());
+			g.drawString("Direction: " + pdir.getId() + " (" + pdir.name() + ")", debugX, debugY + 12 * 3);
+			g.drawString("Move Speed: " + level.getPlayer().getMoveSpeed(), debugX, debugY + 12 * 4);
+			g.drawString("Crouching: " + level.getPlayer().isCrouching(), debugX, debugY + 12 * 5);
+			g.drawString("Running: " + level.getPlayer().isRunning(), debugX, debugY + 12 * 6);
 		}
 		g.dispose();
 		bs.show();
@@ -166,7 +180,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		Logger gameLogger = new Logger();
 		if (args.length > 0) {
 			List<String> arguments = Arrays.asList(args);
@@ -176,21 +190,27 @@ public class Display extends Canvas implements Runnable, Controllable {
 				gameLogger.debugLn("DEBUG MODE ENABLED");
 			}
 		}
-		new Display(gameLogger).start();
+		Display display = new Display(gameLogger);
+		createJFrame(display);
+		display.requestFocus();
+		display.start();
 	}
 
-	public void createJFrame() {
-		frame = new JFrame();
+	public static void createJFrame(Display display) {
+		display.frame = new JFrame();
 
-		frame.add(this);
-		frame.setSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle(TITLE + (GameInfo.DEBUG_MODE ? " - Debug Mode" : ""));
-		frame.setIconImages(GameInfo.WINDOW_ICONS);
-		frame.setVisible(true);
-		
+		display.frame.add(display);
+		display.frame.setSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+		display.frame.setResizable(false);
+		display.frame.setLocationRelativeTo(null);
+		display.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		display.frame.setTitle(TITLE + (GameInfo.DEBUG_MODE ? " - Debug Mode" : ""));
+		display.frame.setIconImages(GameInfo.WINDOW_ICONS);
+		display.frame.setVisible(true);
+
+		BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
+		display.frame.getContentPane().setCursor(blank);
 	}
 
 	public Logger getLogger() {

@@ -10,10 +10,12 @@ public class Texture {
 	
 	public static Render brick1;
 	public static Render brick1Floor;
+	public static Render test;
 	
 	public static void load(Display display) {
 		brick1 = loadBitmap("/texture/brick1.png", display.getLogger());
 		brick1Floor = loadBitmap("/texture/brick1Floor.png", display.getLogger());
+		test = loadBitmap("/texture/test.png", display.getLogger());
 	}
 	
 	public static Render loadBitmap(String name, Logger logger) {
