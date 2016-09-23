@@ -1,23 +1,26 @@
 package net.keabotstudios.dr2.game.level.entity;
 
-import net.keabotstudios.dr2.Display;
 import net.keabotstudios.dr2.game.GameInfo;
+import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.superin.Input;
 
 public class Player extends Entity {
 
 	public static final double ROT_SPEED = 0.005;
-	public static final double MOUSE_ROT_SPEED = 0.0005 / (Display.SCALE / 2.0);
-	public static final double WALK_SPEED = 0.5;
+	public static final double MOUSE_ROT_SPEED = 0.0005;
+	public static final double WALK_SPEED = 4.0;
 	public static final double BOB_MAGNITUTDE = 0.1;
 	public static final double STRAFE_WALK_SPEED = 1 / Math.sqrt(2);
-	public static final double RUN_SPEED = 1.5;
+	public static final double RUN_SPEED = 12.0;
 	public static final double CROUCH_HEIGHT = 0.5;
 	public static final double CROUCH_SPEED = 0.5;
+	
+	private GameSettings settings;
 
-	public Player(double x, double z, double rot, String name) {
+	public Player(double x, double z, double rot, String name, GameSettings settings) {
 		super(x, 0, z, rot, name);
+		this.settings = settings;
 	}
 
 	private double newMX, oldMX, xa, za, moveSpeed;
@@ -52,9 +55,9 @@ public class Player extends Entity {
 		}
 
 			newMX = input.getMouseX();
-			if (newMX > oldMX && GameInfo.MOUSE_TURNING) {
+			if (newMX > oldMX && settings.mouseTurning) {
 				dRot += MOUSE_ROT_SPEED * (newMX - oldMX);
-			} else if (newMX < oldMX && GameInfo.MOUSE_TURNING) {
+			} else if (newMX < oldMX && settings.mouseTurning) {
 				dRot += MOUSE_ROT_SPEED * (newMX - oldMX);
 			} else if (input.getInput("TURN_LEFT")) {
 				dRot -= ROT_SPEED * Math.abs(input.getInputValue("TURN_LEFT"));
@@ -62,15 +65,15 @@ public class Player extends Entity {
 				dRot += ROT_SPEED * Math.abs(input.getInputValue("TURN_RIGHT"));
 			}
 			oldMX = newMX;
-		if (walking) {
+		if (walking && settings.enableBobbing) {
 			y += Math.sin(GameInfo.TIME / 6.0) * BOB_MAGNITUTDE * (crouching ? 0.3 : 1);
 		}
 
-		if (GameInfo.DEBUG_MODE && input.getInput("F1")) {
+		if (settings.debugMode && input.getInput("F1")) {
 			y += 0.5;
 		}
 
-		if (GameInfo.DEBUG_MODE && input.getInputTapped("F5")) {
+		if (settings.debugMode && input.getInputTapped("F5")) {
 			x = 0;
 			y = 0;
 			z = 0;

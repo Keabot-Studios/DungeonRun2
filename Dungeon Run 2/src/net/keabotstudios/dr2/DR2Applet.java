@@ -3,25 +3,26 @@ package net.keabotstudios.dr2;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 
+import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.superlog.Logger;
 
 public class DR2Applet extends Applet {
 	private static final long serialVersionUID = 1L;
 	
-	private Display display;
+	private Game game;
 	
 	public void init() {
-		display = new Display(new Logger());
+		game = new Game(new Logger(), new GameSettings());
 		setLayout(new BorderLayout());
-		add(display);
+		add(game);
 	}
 	
 	public void start() {
-		display.start();
+		game.start();
 	}
 	
 	public void stop() {
-		display.stop();
+		game.stop();
 	}
 
 }

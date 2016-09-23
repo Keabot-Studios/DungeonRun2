@@ -2,8 +2,8 @@ package net.keabotstudios.dr2.game.level;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
+import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.level.block.Block;
 import net.keabotstudios.dr2.game.level.entity.Entity;
 import net.keabotstudios.dr2.game.level.entity.Player;
@@ -24,13 +24,13 @@ public class Level {
 
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 
-	public Level(int width, int height) {
+	public Level(int width, int height, GameSettings settings) {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[width * height];
 		Arrays.fill(blocks, Block.empty);
 		blocks[10 + 10 * width] = Block.brickWall;
-		player = new Player(0, 0, 0, "Player");
+		player = new Player(0, 0, 0, "Player", settings);
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
 		ceilPos = 8;

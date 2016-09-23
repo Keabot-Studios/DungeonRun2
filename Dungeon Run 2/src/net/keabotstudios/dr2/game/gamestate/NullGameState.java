@@ -1,0 +1,20 @@
+package net.keabotstudios.dr2.game.gamestate;
+
+import java.awt.Color;
+
+import net.keabotstudios.dr2.gfx.Render;
+import net.keabotstudios.superin.Input;
+
+public class NullGameState extends GameState {
+
+	public NullGameState(GameStateManager gsm) {
+		super(gsm);
+	}
+
+	public void render(Render render) {
+		render.clear(Color.BLACK);
+	}
+
+	public void update(Input input) {}
+
+}

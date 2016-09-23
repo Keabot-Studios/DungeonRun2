@@ -17,9 +17,9 @@ public class Render3D extends Render {
 	}
 	
 	public void setOffsets(Entity cam) {
-		this.xOff = cam.getX();
+		this.xOff = cam.getX() / 8.0;
 		this.yOff = cam.getY();
-		this.zOff = cam.getZ();
+		this.zOff = cam.getZ() / 8.0;
 		this.rotOff = cam.getRotation();
 	}
 
@@ -27,6 +27,7 @@ public class Render3D extends Render {
 		for (int x = 0; x < width; x++) {
 			zBufferWall[x] = 0;
 		}
+		
 		double cos = Math.cos(rotOff);
 		double sin = Math.sin(rotOff);
 

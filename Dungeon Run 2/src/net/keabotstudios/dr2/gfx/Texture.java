@@ -2,7 +2,7 @@ package net.keabotstudios.dr2.gfx;
 
 import java.awt.image.BufferedImage;
 
-import net.keabotstudios.dr2.Display;
+import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.Util;
 import net.keabotstudios.superlog.Logger;
 
@@ -12,10 +12,10 @@ public class Texture {
 	public static Render brick1Floor;
 	public static Render test;
 	
-	public static void load(Display display) {
-		brick1 = loadBitmap("/texture/brick1.png", display.getLogger());
-		brick1Floor = loadBitmap("/texture/brick1Floor.png", display.getLogger());
-		test = loadBitmap("/texture/test.png", display.getLogger());
+	public static void load(Game game) {
+		brick1 = loadBitmap("/texture/brick1.png", game.getLogger());
+		brick1Floor = loadBitmap("/texture/brick1Floor.png", game.getLogger());
+		test = loadBitmap("/texture/test.png", game.getLogger());
 	}
 	
 	public static Render loadBitmap(String name, Logger logger) {

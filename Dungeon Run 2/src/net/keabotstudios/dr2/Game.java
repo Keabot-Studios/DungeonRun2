@@ -13,27 +13,25 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
+import net.keabotstudios.dr2.game.GameSettings;
+import net.keabotstudios.dr2.game.gamestate.GameStateManager;
+import net.keabotstudios.dr2.game.gamestate.LevelState;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.block.Block;
-import net.keabotstudios.dr2.gfx.Screen;
+import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Controllable;
 import net.keabotstudios.superin.Input;
 import net.keabotstudios.superlog.Logger;
-import net.keabotstudios.superlog.Logger.LogLevel;
 
-public class Display extends Canvas implements Runnable, Controllable {
+public class Game extends Canvas implements Runnable, Controllable {
 	private static final long serialVersionUID = 1L;
 
-	public static final int WIDTH = 800, HEIGHT = WIDTH * 3 / 4, SCALE = 1;
 	public static final String TITLE = "Dungeon Run 2";
 	public static final String VERSION = "v0.00a";
 
@@ -41,25 +39,37 @@ public class Display extends Canvas implements Runnable, Controllable {
 	private boolean running = false;
 	private int fps;
 
+	private GameSettings settings;
 	private Input input;
 	private Level level;
 	private Logger logger;
 	private JFrame frame;
-	private Screen screen;
+	private Render screen;
 	private BufferedImage img;
 	private int[] pixels;
+	
+	private GameStateManager gsm;
 
-	public Display(Logger logger) {
+	public Game(Logger logger, GameSettings settings) {
+		GameInfo.init(logger);
 		this.logger = logger;
-		GameInfo.init(this);
+		this.settings = settings;
 		Texture.load(this);
 		Block.init();
-		screen = new Screen(WIDTH, HEIGHT);
-		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		
+		screen = new Render(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
+		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = Util.convertToPixels(img);
-		input = new Input(this, true);
-		input.setInputs(GameInfo.CONTROLS);
-		Dimension size = new Dimension(WIDTH, HEIGHT);
+		
+		input = new Input(this, settings.useXInput);
+		input.setInputs(settings.controls);
+		
+		gsm = new GameStateManager(this);
+		level = new Level(20, 20, settings);
+		gsm.setState(new LevelState(gsm, level));
+		
+		Dimension size = new Dimension(settings.windowWidth, settings.windowHeight);
+		System.out.println(size.toString());
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
@@ -68,10 +78,6 @@ public class Display extends Canvas implements Runnable, Controllable {
 	public void requestFocus() {
 		frame.requestFocus();
 		requestFocusInWindow();
-	}
-
-	public void init() {
-		level = new Level(20, 20);
 	}
 
 	public synchronized void start() {
@@ -101,8 +107,6 @@ public class Display extends Canvas implements Runnable, Controllable {
 		double secsPerTick = 1 / 60.0;
 		int tickCount = 0;
 
-		init();
-
 		while (running) {
 			long currTime = System.nanoTime();
 			long elapsedTime = currTime - prevTime;
@@ -112,7 +116,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 				update();
 				skippedSecs -= secsPerTick;
 				tickCount++;
-				if (tickCount % 60 == 0 && GameInfo.DEBUG_MODE) {
+				if (tickCount % 60 == 0 && settings.debugMode) {
 					fps = frames;
 					tickCount = 0;
 					frames = 0;
@@ -126,7 +130,7 @@ public class Display extends Canvas implements Runnable, Controllable {
 	private void update() {
 		input.updateControllerInput();
 		GameInfo.update();
-		level.update(input);
+		gsm.update(input);
 		if (input.getInputTapped("ESCAPE")) {
 			System.exit(0);
 		}
@@ -139,26 +143,26 @@ public class Display extends Canvas implements Runnable, Controllable {
 			createBufferStrategy(3);
 			return;
 		}
+		
+		gsm.render(screen);
 
-		screen.render(level);
-
-		for (int i = 0; i < WIDTH * HEIGHT; i++) {
+		for (int i = 0; i < GameInfo.GAME_WIDTH * GameInfo.GAME_HEIGHT; i++) {
 			pixels[i] = screen.pixels[i];
 		}
 
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
-		if (GameInfo.DEBUG_MODE) {
+		if (settings.debugMode) {
 			int debugX = 2;
 			int debugY = 12;
 			g.setFont(new Font("Verdana", Font.PLAIN, 12));
 			g.setColor(Color.YELLOW);
 			g.drawString(fps + " FPS", debugX, debugY);
-			double playerX = level.getPlayer().getX() / 8.0;
+			double playerX = level.getPlayer().getX() / 32.0;
 			BigDecimal px = new BigDecimal(playerX).setScale(1, RoundingMode.HALF_EVEN);
-			double playerY = level.getPlayer().getY() / 8.0;
+			double playerY = level.getPlayer().getY() / 32.0;
 			BigDecimal py = new BigDecimal(playerY).setScale(1, RoundingMode.HALF_EVEN);
-			double playerZ = level.getPlayer().getZ() / 8.0;
+			double playerZ = level.getPlayer().getZ() / 32.0;
 			BigDecimal pz = new BigDecimal(playerZ).setScale(1, RoundingMode.HALF_EVEN);
 			double playerRot = level.getPlayer().getRotation();
 			BigDecimal pr = new BigDecimal(playerRot).setScale(3, RoundingMode.HALF_EVEN);
@@ -174,43 +178,27 @@ public class Display extends Canvas implements Runnable, Controllable {
 		bs.show();
 	}
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		Logger gameLogger = new Logger();
-		if (args.length > 0) {
-			List<String> arguments = Arrays.asList(args);
-			if (arguments.contains("debug")) {
-				GameInfo.DEBUG_MODE = true;
-				gameLogger.setLogLevel(LogLevel.INFO);
-				gameLogger.debugLn("DEBUG MODE ENABLED");
-			}
-		}
-		Display display = new Display(gameLogger);
-		createJFrame(display);
-		display.requestFocus();
-		display.start();
+	public static void runGame(Logger l, GameSettings settings) {
+		Game game = new Game(l, settings);
+		game.createJFrame();
+		game.requestFocus();
+		game.start();
 	}
 
-	public static void createJFrame(Display display) {
-		display.frame = new JFrame();
-
-		display.frame.add(display);
-		display.frame.setSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		display.frame.setResizable(false);
-		display.frame.setLocationRelativeTo(null);
-		display.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		display.frame.setTitle(TITLE + (GameInfo.DEBUG_MODE ? " - Debug Mode" : ""));
-		display.frame.setIconImages(GameInfo.WINDOW_ICONS);
-		display.frame.setVisible(true);
+	public void createJFrame() {
+		frame = new JFrame();
+		frame.add(this);
+		frame.setSize(new Dimension(settings.windowWidth, settings.windowHeight));
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle(TITLE + (settings.debugMode ? " - Debug Mode" : ""));
+		frame.setIconImages(GameInfo.WINDOW_ICONS);
+		frame.setVisible(true);
 
 		BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
-		display.frame.getContentPane().setCursor(blank);
+		frame.getContentPane().setCursor(blank);
 	}
 
 	public Logger getLogger() {
