@@ -15,7 +15,7 @@ public class Render3D extends Render {
 		zBuffer = new double[w * h];
 		zBufferWall = new double[w];
 	}
-	
+
 	public void setOffsets(Entity cam) {
 		this.xOff = cam.getX() / 8.0;
 		this.yOff = cam.getY();
@@ -27,7 +27,7 @@ public class Render3D extends Render {
 		for (int x = 0; x < width; x++) {
 			zBufferWall[x] = 0;
 		}
-		
+
 		double cos = Math.cos(rotOff);
 		double sin = Math.sin(rotOff);
 
@@ -52,13 +52,15 @@ public class Render3D extends Render {
 					double texScaleY = l.getFloorTexture().height / 8.0;
 					int xPix = (int) ((xx + xOff) * texScaleX);
 					int yPix = (int) ((yy + zOff) * texScaleY);
-					pixels[x + y * width] = l.getFloorTexture().pixels[(xPix & (l.getFloorTexture().width - 1)) + (yPix & (l.getFloorTexture().height - 1)) * l.getFloorTexture().width];
+					pixels[x + y * width] = l.getFloorTexture().pixels[(xPix & (l.getFloorTexture().width - 1))
+							+ (yPix & (l.getFloorTexture().height - 1)) * l.getFloorTexture().width];
 				} else {
 					double texScaleX = l.getCeilTexture().width / 8.0;
 					double texScaleY = l.getCeilTexture().height / 8.0;
 					int xPix = (int) ((xx + xOff) * texScaleX);
 					int yPix = (int) ((yy + zOff) * texScaleY);
-					pixels[x + y * width] = l.getCeilTexture().pixels[(xPix & (l.getCeilTexture().width - 1)) + (yPix & (l.getCeilTexture().height - 1)) * l.getCeilTexture().width];
+					pixels[x + y * width] = l.getCeilTexture().pixels[(xPix & (l.getCeilTexture().width - 1))
+							+ (yPix & (l.getCeilTexture().height - 1)) * l.getCeilTexture().width];
 				}
 
 				if (z > 500) {
@@ -68,6 +70,7 @@ public class Render3D extends Render {
 		}
 
 		int size = 20;
+		int height = (int) Math.ceil((l.getCeilPos() + l.getFloorPos())/8);
 		for (int xBlock = -size; xBlock <= size; xBlock++) {
 			for (int zBlock = -size; zBlock <= size; zBlock++) {
 				Block block = l.getBlock(xBlock, zBlock);
@@ -77,27 +80,32 @@ public class Render3D extends Render {
 				Block south = l.getBlock(xBlock, zBlock + 1);
 				if (block.opaque) {
 					if (!north.opaque) {
-						renderWall(xBlock, zBlock, xBlock + 1, zBlock, 0, block.texture, 8);
-						renderWall(xBlock, zBlock, xBlock + 1, zBlock, 0.5, block.texture, 8);
+						for (int i = 0; i < height; i++) {
+							renderWall(xBlock, zBlock, xBlock + 1, zBlock, i * .5, block.texture, 8);
+						}
 					}
 					if (!east.opaque) {
-						renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, 0, block.texture, 8);
-						renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, 0.5, block.texture, 8);
+						for (int i = 0; i < height; i++) {
+							renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, i * .5, block.texture, 8);
+						}
 					}
-					if (!west.opaque) { 
-						renderWall(xBlock, zBlock + 1, xBlock, zBlock, 0, block.texture, 8);
-						renderWall(xBlock, zBlock + 1, xBlock, zBlock, 0.5, block.texture, 8);
+					if (!west.opaque) {
+						for (int i = 0; i < height; i++) {
+							renderWall(xBlock, zBlock + 1, xBlock, zBlock, i * .5, block.texture, 8);
+						}
 					}
 					if (!south.opaque) {
-						renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, 0, block.texture, 8);
-						renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, 0.5, block.texture, 8);
+						for (int i = 0; i < height; i++) {
+							renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, i * .5, block.texture, 8);
+						}
 					}
 				}
 			}
 		}
 	}
 
-	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Render texture, double floorPos) {
+	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Render texture,
+			double floorPos) {
 		if (texture == null)
 			return;
 
@@ -190,7 +198,8 @@ public class Render3D extends Render {
 			for (int y = yPixelTopInt; y < yPixelBottomInt; y++) {
 				double pixelRotationY = (y - yPixelTop) / (yPixelBottom - yPixelTop);
 				int yTex = (int) (texture.height * pixelRotationY);
-				pixels[x + y * width] = texture.pixels[(xTex & texture.width - 1) + (yTex & texture.height - 1) * texture.width];
+				pixels[x + y * width] = texture.pixels[(xTex & texture.width - 1)
+						+ (yTex & texture.height - 1) * texture.width];
 				zBuffer[x + y * width] = 1 / (tex0 + (tex1 - tex0) * pixelRotationX) * 8;
 			}
 		}

@@ -55,9 +55,7 @@ public class Player extends Entity {
 		}
 
 			newMX = input.getMouseX();
-			if (newMX > oldMX && settings.mouseTurning) {
-				dRot += MOUSE_ROT_SPEED * (newMX - oldMX);
-			} else if (newMX < oldMX && settings.mouseTurning) {
+			if ((newMX > oldMX || newMX < oldMX) && settings.mouseTurning) {
 				dRot += MOUSE_ROT_SPEED * (newMX - oldMX);
 			} else if (input.getInput("TURN_LEFT")) {
 				dRot -= ROT_SPEED * Math.abs(input.getInputValue("TURN_LEFT"));
