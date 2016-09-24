@@ -3,25 +3,27 @@ package net.keabotstudios.dr2.game.level.block;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.dr2.gfx.Texture;
 
-public class Block {
+public abstract class Block {
 	
 	public final int id;
 	public final boolean solid, opaque;
-	public final Render texture;
 	
 	public static Block empty;
 	public static Block brickWall;
+	public static Block animTest;
 	
-	public Block(int id, boolean solid, boolean opaque, Render texture) {
+	public Block(int id, boolean solid, boolean opaque) {
 		this.id = id;
 		this.solid = solid;
 		this.opaque = opaque;
-		this.texture = texture;
 	}
 	
 	public static void init() {
-		empty = new Block(0, false, false, null);
+		empty = new EmptyBlock(0);
 		brickWall = new SolidBlock(1, Texture.brick1);
+		animTest = new AnimatedBlock(2);
 	}
+	
+	public abstract Render getTexture(int side, boolean top);
 
 }
