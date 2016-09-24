@@ -14,7 +14,7 @@ public class Player extends Entity {
 	public static final double WALK_SPEED = 4.0;
 	public static final double BOB_MAGNITUTDE = 0.1;
 	public static final double STRAFE_WALK_SPEED = 1 / Math.sqrt(2);
-	public static final double RUN_SPEED = 1.5;
+	public static final double RUN_SPEED = 1.8;
 	public static final double CROUCH_HEIGHT = 0.5;
 	public static final double CROUCH_SPEED = 0.5;
 	
@@ -81,6 +81,8 @@ public class Player extends Entity {
 				dRot -= ROT_SPEED * Math.abs(input.getInputValue("TURN_LEFT"));
 			} else if (input.getInput("TURN_RIGHT")) {
 				dRot += ROT_SPEED * Math.abs(input.getInputValue("TURN_RIGHT"));
+			} else if ((newMX > oldMX || newMX < oldMX) && settings.mouseTurning) {
+				dRot += MOUSE_ROT_SPEED * (newMX - oldMX);
 			}
 			oldMX = newMX;
 		if (walking && settings.enableBobbing) {

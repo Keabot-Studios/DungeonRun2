@@ -53,35 +53,69 @@ public class OptionsMenu extends JDialog {
 		JTabbedPane optionsPane = new JTabbedPane(JTabbedPane.TOP);
 		getContentPane().add(optionsPane, BorderLayout.CENTER);
 
+		addGraphicsTab(optionsPane);
+		addControlsTab(optionsPane);
+
+		JPanel buttonPanel = new JPanel();
+		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+		GridBagLayout gbl_buttonPanel = new GridBagLayout();
+		gbl_buttonPanel.columnWidths = new int[] { 10, 70, 50, 70, 70, 4 };
+		gbl_buttonPanel.rowHeights = new int[] { 5, 23, 5 };
+		gbl_buttonPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_buttonPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		buttonPanel.setLayout(gbl_buttonPanel);
+
+		btnCancel = new JButton("Cancel");
+		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
+		gbc_btnCancel.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnCancel.insets = new Insets(0, 0, 0, 5);
+		gbc_btnCancel.gridx = 1;
+		gbc_btnCancel.gridy = 1;
+		buttonPanel.add(btnCancel, gbc_btnCancel);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				editedSettings = originalSettings.clone();
+				dispose();
+			}
+		});
+
+		btnDefaults = new JButton("Defaults");
+		GridBagConstraints gbc_btnDefaults = new GridBagConstraints();
+		gbc_btnDefaults.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnDefaults.insets = new Insets(0, 0, 0, 5);
+		gbc_btnDefaults.gridx = 3;
+		gbc_btnDefaults.gridy = 1;
+		buttonPanel.add(btnDefaults, gbc_btnDefaults);
+		btnDefaults.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				editedSettings = new GameSettings();
+				updateSettingValues();
+			}
+		});
+
+		btnApply = new JButton("Apply");
+		GridBagConstraints gbc_btnApply = new GridBagConstraints();
+		gbc_btnApply.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnApply.gridx = 4;
+		gbc_btnApply.gridy = 1;
+		buttonPanel.add(btnApply, gbc_btnApply);
+		btnApply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				editedSettings.writeSettings();
+				dispose();
+			}
+		});
+	}
+
+	private void addGraphicsTab(JTabbedPane optionsPane) {
 		JPanel graphicsPanel = new JPanel();
 		optionsPane.addTab("Graphics", null, graphicsPanel, null);
 		optionsPane.setEnabledAt(0, true);
 		GridBagLayout gbl_graphicsPanel = new GridBagLayout();
-		gbl_graphicsPanel.columnWidths = new int[] {
-				10,
-				50,
-				20,
-				50,
-				10
-		};
-		gbl_graphicsPanel.rowHeights = new int[] {
-				5,
-				15,
-				5,
-				10,
-				5
-		};
-		gbl_graphicsPanel.columnWeights = new double[] {
-				0.0,
-				0.0,
-				0.0,
-				1.0
-		};
-		gbl_graphicsPanel.rowWeights = new double[] {
-				0.0,
-				0.0,
-				Double.MIN_VALUE
-		};
+		gbl_graphicsPanel.columnWidths = new int[] { 10, 50, 20, 50, 10 };
+		gbl_graphicsPanel.rowHeights = new int[] { 5, 15, 5, 10, 5 };
+		gbl_graphicsPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0 };
+		gbl_graphicsPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		graphicsPanel.setLayout(gbl_graphicsPanel);
 
 		JLabel lblResolution = new JLabel("Resolution:");
@@ -134,91 +168,23 @@ public class OptionsMenu extends JDialog {
 				editedSettings.fullscreen = chckbxFullscreen.isSelected();
 			}
 		});
-
+	}
+	
+	private void addControlsTab(JTabbedPane optionsPane)
+	{
 		JPanel controlsPanel = new JPanel();
 		optionsPane.addTab("Controls", null, controlsPanel, null);
 		controlsPanel.setLayout(new BorderLayout(0, 0));
 
 		JPanel inputAxisPane = new JPanel();
-		controlsPanel.add(inputAxisPane, BorderLayout.EAST);
-
-		JPanel buttonPanel = new JPanel();
-		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-		GridBagLayout gbl_buttonPanel = new GridBagLayout();
-		gbl_buttonPanel.columnWidths = new int[] {
-				10,
-				70,
-				50,
-				70,
-				70,
-				4
-		};
-		gbl_buttonPanel.rowHeights = new int[] {
-				5,
-				23,
-				5
-		};
-		gbl_buttonPanel.columnWeights = new double[] {
-				0.0,
-				0.0,
-				0.0,
-				0.0,
-				0.0,
-				Double.MIN_VALUE
-		};
-		gbl_buttonPanel.rowWeights = new double[] {
-				0.0,
-				0.0,
-				Double.MIN_VALUE
-		};
-		buttonPanel.setLayout(gbl_buttonPanel);
-
-		btnCancel = new JButton("Cancel");
-		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
-		gbc_btnCancel.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnCancel.insets = new Insets(0, 0, 0, 5);
-		gbc_btnCancel.gridx = 1;
-		gbc_btnCancel.gridy = 1;
-		buttonPanel.add(btnCancel, gbc_btnCancel);
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				editedSettings = originalSettings.clone();
-				dispose();
-			}
-		});
-		
-		btnDefaults = new JButton("Defaults");
-		GridBagConstraints gbc_btnDefaults = new GridBagConstraints();
-		gbc_btnDefaults.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnDefaults.insets = new Insets(0, 0, 0, 5);
-		gbc_btnDefaults.gridx = 3;
-		gbc_btnDefaults.gridy = 1;
-		buttonPanel.add(btnDefaults, gbc_btnDefaults);
-		btnDefaults.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				editedSettings = new GameSettings();
-				updateSettingValues();
-			}
-		});
-
-		btnApply = new JButton("Apply");
-		GridBagConstraints gbc_btnApply = new GridBagConstraints();
-		gbc_btnApply.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnApply.gridx = 4;
-		gbc_btnApply.gridy = 1;
-		buttonPanel.add(btnApply, gbc_btnApply);
-		btnApply.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				editedSettings.writeSettings();
-				dispose();
-			}
-		});
+		controlsPanel.add(inputAxisPane, BorderLayout.EAST);		
 	}
 
 	public static GameSettings showOptions(JFrame parent, GameSettings settings) {
 		OptionsMenu menu = new OptionsMenu(parent, settings);
 		menu.setVisible(true);
-		while (menu.isVisible());
+		while (menu.isVisible())
+			;
 		return menu.editedSettings.clone();
 	}
 
