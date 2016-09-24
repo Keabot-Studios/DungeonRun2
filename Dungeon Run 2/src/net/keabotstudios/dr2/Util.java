@@ -1,5 +1,6 @@
 package net.keabotstudios.dr2;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -60,6 +61,13 @@ public class Util {
 	        scaleFactor = (float) areaWidth / (float) rectWidth;
 
 	    return scaleFactor;
+	}
+	
+	public static int overlayAlpha(int topColor, int bottomColor, float topAlpha) {
+		int oRed = (int) ((((topColor >> 16) & 0xFF) * topAlpha) + (((bottomColor >> 16) & 0xFF) * (1.0f - topAlpha)));
+		int oGreen = (int) ((((topColor >> 8) & 0xFF) * topAlpha) + (((bottomColor >> 8) & 0xFF) * (1.0f - topAlpha)));
+		int oBlue = (int) ((((topColor >> 0) & 0xFF) * topAlpha) + (((bottomColor >> 0) & 0xFF) * (1.0f - topAlpha)));
+		return ((oRed & 0x0ff) << 16) | ((oGreen & 0x0ff) << 8) | (oBlue & 0x0ff);
 	}
 
 }

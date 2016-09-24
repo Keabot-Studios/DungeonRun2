@@ -1,6 +1,8 @@
 package net.keabotstudios.dr2.launcher;
 
 import java.awt.BorderLayout;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -21,6 +23,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import net.keabotstudios.dr2.game.GameDefaults;
+import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.GameSettings;
 
 public class OptionsMenu extends JDialog {
@@ -128,8 +131,14 @@ public class OptionsMenu extends JDialog {
 
 		cBoxResolution = new JComboBox<String>();
 		cBoxResolution.setToolTipText("Has no effect in fullscreen mode.");
-		for (int i = 0; i < GameDefaults.WINDOW_WIDTHS.length; i++) {
-			String s = GameDefaults.WINDOW_WIDTHS[i] + "x" + (GameDefaults.WINDOW_WIDTHS[i] * 3 / 4);
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		int screenWidth = gd.getDisplayMode().getWidth();
+		int screenHeight = gd.getDisplayMode().getHeight();
+		for (int i = 0; i < GameInfo.WINDOW_WIDTHS.length; i++) {
+			int w = GameInfo.WINDOW_WIDTHS[i];
+			int h = (int) (GameInfo.WINDOW_WIDTHS[i] * GameInfo.ASPECT_RATIO);
+			if(w > screenWidth || h > screenHeight) continue;
+			String s = w + "x" + h;
 			cBoxResolution.addItem(s);
 		}
 		cBoxResolution.addItemListener(new ItemListener() {

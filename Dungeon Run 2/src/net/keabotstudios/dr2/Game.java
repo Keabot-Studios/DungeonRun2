@@ -189,7 +189,6 @@ public class Game extends Canvas implements Runnable, Controllable {
 			g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
 		}
 		
-		
 		if (settings.debugMode) {
 			int debugX = fullScreenXOff + 2;
 			int debugY = 12;
@@ -217,7 +216,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 	}
 
 	public static void runGame(Logger l, GameSettings settings) {
-		Game game = new Game(l, settings);
+		new Game(l, settings);
 	}
 
 	public void createJFrame() {

@@ -7,7 +7,7 @@ public class SolidBlock extends Block {
 	private final Render texture;
 	
 	public SolidBlock(int id, Render texture) {
-		super(id, true, true);
+		super(id, true, true, texture.getAverageColor());
 		this.texture = texture;
 	}
 

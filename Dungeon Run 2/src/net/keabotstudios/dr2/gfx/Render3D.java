@@ -1,6 +1,7 @@
 package net.keabotstudios.dr2.gfx;
 
 import net.keabotstudios.dr2.game.Direction;
+import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.block.Block;
 import net.keabotstudios.dr2.game.level.entity.Entity;
@@ -79,25 +80,78 @@ public class Render3D extends Render {
 				Block south = l.getBlock(xBlock, zBlock + 1);
 				Block west = l.getBlock(xBlock - 1, zBlock);
 
-				if (block.opaque) {
+				if (block.isOpaque()) {
 					for (int y = 0; y < height; y++) {
-						if (!north.opaque) {
+						if (!north.isOpaque()) {
 							Render texture = block.getTexture((int) Direction.NORTH.getId(), height);
 							renderWall(xBlock, zBlock, xBlock + 1, zBlock, y / 2.0, texture, l.getFloorPos());
 						}
-						if (!east.opaque) {
+						if (!east.isOpaque()) {
 							Render texture = block.getTexture((int) Direction.EAST.getId(), height);
 							renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, y / 2.0, texture, l.getFloorPos());
 						}
-						if (!south.opaque) {
+						if (!south.isOpaque()) {
 							Render texture = block.getTexture((int) Direction.SOUTH.getId(), height);
 							renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, y / 2.0, texture, 8);
 						}
-						if (!west.opaque) {
+						if (!west.isOpaque()) {
 							Render texture = block.getTexture((int) Direction.WEST.getId(), height);
 							renderWall(xBlock, zBlock + 1, xBlock, zBlock, y / 2.0, texture, 8);
 						}
 					}
+				}
+			}
+		}
+		
+		for(Entity e : l.getEntites()) {
+			renderSprite(e.getX(), e.getY(), e.getZ(), e.getTexture(), 8);
+		}
+	}
+	
+	public void renderSprite(double x, double y, double z, Render texture, double floorPos) {
+		if (texture == null)
+			return;
+		double cos = Math.cos(rotOff);
+		double sin = Math.sin(rotOff);
+		double xOffScaled = (xOff / (floorPos * 2.0));
+		double yOffScaled = (-yOff / (floorPos * 2.0));
+		double zOffScaled = (zOff / (floorPos * 2.0));
+		
+		double xc = (((x / 2.0) / 8.0) - xOffScaled) * 2.0;
+		double yc = ((y / 2.0) - yOffScaled) * 2.0;
+		double zc = (((z / 2.0) / 8.0) - zOffScaled) * 2.0;
+		
+		double rotX = xc * cos - zc * sin;
+		double rotY = yc;
+		double rotZ = zc * cos - xc * sin;
+		
+		double xCenter = width / 2.0;
+		double yCenter = height / 2.0;
+		
+		double xPixel = rotX / rotZ * height + xCenter;
+		double yPixel = rotY / rotZ * height + yCenter;
+		
+		double xPixelL = xPixel - texture.width / rotZ;
+		double xPixelR = xPixel + texture.width / rotZ;
+		
+		double yPixelL = yPixel - texture.height / rotZ;
+		double yPixelR = yPixel + texture.height / rotZ;
+		
+		int xpl = (int) xPixelL;
+		int xpr = (int) xPixelR;
+		int ypl = (int) yPixelL;
+		int ypr = (int) yPixelR;
+		
+		if(xpl < 0) xpl = 0;
+		if(xpr > width) xpr = width;
+		if(ypl < 0) ypl = 0;
+		if(ypr > height) ypr = height;
+		
+		for(int yp = ypl; yp < ypr; yp++) {
+			for(int xp = xpl; xp < xpr; xp++) {
+				if(zBuffer[xp + yp * width] > rotZ) {
+					pixels[xp + yp * width] = 0x236DCF;
+					zBuffer[xp + yp * width] = rotZ;
 				}
 			}
 		}
@@ -106,7 +160,6 @@ public class Render3D extends Render {
 	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Render texture, double floorPos) {
 		if (texture == null)
 			return;
-
 		double cos = Math.cos(rotOff);
 		double sin = Math.sin(rotOff);
 		double xOffScaled = (xOff / (floorPos * 2.0));

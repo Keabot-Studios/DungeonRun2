@@ -7,6 +7,7 @@ import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.level.block.Block;
 import net.keabotstudios.dr2.game.level.entity.Entity;
 import net.keabotstudios.dr2.game.level.entity.Player;
+import net.keabotstudios.dr2.game.level.entity.TestEntity;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Input;
@@ -29,8 +30,8 @@ public class Level {
 		this.height = height;
 		this.blocks = new Block[width * height];
 		Arrays.fill(blocks, Block.empty);
-		blocks[10 + 10 * width] = Block.animTest;
 		player = new Player(0, 0, 0, "Player", settings);
+		entities.add(new TestEntity(10, 0.5, 10, "Test"));
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
 		ceilPos = 4*8;
@@ -78,6 +79,10 @@ public class Level {
 
 	public int getRenderDistance() {
 		return renderDistance;
+	}
+
+	public ArrayList<Entity> getEntites() {
+		return entities;
 	}
 
 }

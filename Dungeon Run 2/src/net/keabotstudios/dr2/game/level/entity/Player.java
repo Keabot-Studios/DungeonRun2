@@ -1,5 +1,6 @@
 package net.keabotstudios.dr2.game.level.entity;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import net.keabotstudios.dr2.game.GameInfo;
@@ -21,7 +22,7 @@ public class Player extends Entity {
 	private GameSettings settings;
 
 	public Player(double x, double z, double rot, String name, GameSettings settings) {
-		super(x, 0, z, rot, name);
+		super(x, 0, z, rot, name, Color.GREEN.getRGB());
 		this.settings = settings;
 	}
 
@@ -124,7 +125,9 @@ public class Player extends Entity {
 	public double getMoveSpeed() {
 		return moveSpeed;
 	}
-
-	public void render(Render render) {}
+	
+	public Render getTexture() {
+		return null;
+	}
 
 }

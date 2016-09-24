@@ -30,7 +30,6 @@ public class GameDefaults {
 			new InputAxis("F6", KeyEvent.VK_F6),
 			new InputAxis("ESCAPE", KeyEvent.VK_ESCAPE)
 	};
-	public static final int WINDOW_INDEX = 1;
-	public static final int[] WINDOW_WIDTHS = { 640, 960, 1024, 1280 };
+	public static final int WINDOW_INDEX = 0;
 
 }

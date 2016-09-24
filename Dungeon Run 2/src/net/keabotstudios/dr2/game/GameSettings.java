@@ -31,8 +31,8 @@ public class GameSettings {
 	}
 	
 	public void updateWindowSize() {
-		windowWidth = GameDefaults.WINDOW_WIDTHS[windowSizeIndex];
-		windowHeight = windowWidth * 3 / 4;
+		windowWidth = GameInfo.WINDOW_WIDTHS[windowSizeIndex];
+		windowHeight = (int) (windowWidth * GameInfo.ASPECT_RATIO);
 	}
 
 	public void updateSettingsFromFile() {
