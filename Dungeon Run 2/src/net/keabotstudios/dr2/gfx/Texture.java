@@ -17,7 +17,7 @@ public class Texture {
 		brick1 = loadBitmap("/texture/brick1.png", game.getLogger());
 		brick1Floor = loadBitmap("/texture/brick1Floor.png", game.getLogger());
 		test = loadBitmap("/texture/test.png", game.getLogger());
-		animTest = new AnimatedRender(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 30);
+		animTest = new AnimatedRender(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 10);
 	}
 	
 	public static void update() {

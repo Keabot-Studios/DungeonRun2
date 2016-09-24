@@ -12,8 +12,9 @@ public class GameInfo {
 	public static long TIME;
 	public static final ArrayList<Image> WINDOW_ICONS = new ArrayList<Image>();
 	public static final String APPDATA_FOLDER_NAME = "dungeonrun2";
-	public static final int GAME_WIDTH = 800;
+	public static final int GAME_WIDTH = 300;
 	public static final int GAME_HEIGHT = GAME_WIDTH * 3 / 4;
+	public static final int MAX_UPS = 60;
 
 	public static void update() {
 		TIME++;

@@ -7,6 +7,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
@@ -47,6 +49,10 @@ public class Game extends Canvas implements Runnable, Controllable {
 	private Render screen;
 	private BufferedImage img;
 	private int[] pixels;
+	private int fullScreenImageWidth = 0;
+	private int fullScreenImageHeight = 0;
+	private int fullScreenXOff = 0;
+	private int fullScreenYOff = 0;
 	
 	private GameStateManager gsm;
 
@@ -72,6 +78,30 @@ public class Game extends Canvas implements Runnable, Controllable {
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
+		
+		createJFrame();
+		
+		if(settings.fullscreen) {
+			GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+			int screenWidth = gd.getDisplayMode().getWidth();
+			int screenHeight = gd.getDisplayMode().getHeight();
+			size = new Dimension(screenWidth, screenHeight);
+			setMinimumSize(size);
+			setPreferredSize(size);
+			setMaximumSize(size);
+			float fullScreenImageScale = Util.getScaleOfRectangeInArea(screenWidth, screenHeight, GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
+			fullScreenImageWidth = (int) (GameInfo.GAME_WIDTH * fullScreenImageScale);
+			fullScreenImageHeight = (int) (GameInfo.GAME_HEIGHT * fullScreenImageScale);
+			fullScreenXOff = (int) ((screenWidth - fullScreenImageWidth) / 2.0f);
+			fullScreenYOff = (int) ((screenHeight - fullScreenImageHeight) / 2.0f);
+			System.out.println(screenWidth + ", " + screenHeight);
+			System.out.println(fullScreenImageWidth + ", " + fullScreenImageHeight);
+			System.out.println(fullScreenXOff + ", " + fullScreenYOff);
+		}
+		
+		frame.setVisible(true);
+		requestFocus();
+		start();
 	}
 
 	public void requestFocus() {
@@ -103,7 +133,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		int frames = 0;
 		double skippedSecs = 0;
 		long prevTime = System.nanoTime();
-		double secsPerTick = 1 / 60.0;
+		double secsPerTick = 1.0 / (double) GameInfo.MAX_UPS;
 		int tickCount = 0;
 
 		while (running) {
@@ -151,9 +181,17 @@ public class Game extends Canvas implements Runnable, Controllable {
 		}
 
 		Graphics g = bs.getDrawGraphics();
-		g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		if(settings.fullscreen) {
+			g.drawImage(img, fullScreenXOff, fullScreenYOff, fullScreenImageWidth, fullScreenImageHeight, null);
+		} else {
+			g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
+		}
+		
+		
 		if (settings.debugMode) {
-			int debugX = 2;
+			int debugX = fullScreenXOff + 2;
 			int debugY = 12;
 			g.setFont(new Font("Verdana", Font.PLAIN, 12));
 			g.setColor(Color.YELLOW);
@@ -180,21 +218,22 @@ public class Game extends Canvas implements Runnable, Controllable {
 
 	public static void runGame(Logger l, GameSettings settings) {
 		Game game = new Game(l, settings);
-		game.createJFrame();
-		game.requestFocus();
-		game.start();
 	}
 
 	public void createJFrame() {
 		frame = new JFrame();
 		frame.add(this);
-		frame.setSize(new Dimension(settings.windowWidth, settings.windowHeight));
+		if(settings.fullscreen) {
+			frame.setUndecorated(true);
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		} else {
+			frame.setSize(new Dimension(settings.windowWidth, settings.windowHeight));
+			frame.setLocationRelativeTo(null);
+		}
 		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle(TITLE + (settings.debugMode ? " - Debug Mode" : ""));
 		frame.setIconImages(GameInfo.WINDOW_ICONS);
-		frame.setVisible(true);
 
 		BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");

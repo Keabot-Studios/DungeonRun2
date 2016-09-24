@@ -83,19 +83,19 @@ public class Render3D extends Render {
 					for (int y = 0; y < height; y++) {
 						if (!north.opaque) {
 							Render texture = block.getTexture((int) Direction.NORTH.getId(), height);
-							renderWall(xBlock, zBlock, xBlock + 1, zBlock, y, texture, l.getFloorPos());
+							renderWall(xBlock, zBlock, xBlock + 1, zBlock, y / 2.0, texture, l.getFloorPos());
 						}
 						if (!east.opaque) {
 							Render texture = block.getTexture((int) Direction.EAST.getId(), height);
-							renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, height, texture, l.getFloorPos());
+							renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, y / 2.0, texture, l.getFloorPos());
 						}
 						if (!south.opaque) {
 							Render texture = block.getTexture((int) Direction.SOUTH.getId(), height);
-							renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, height, texture, 8);
+							renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, y / 2.0, texture, 8);
 						}
 						if (!west.opaque) {
 							Render texture = block.getTexture((int) Direction.WEST.getId(), height);
-							renderWall(xBlock, zBlock + 1, xBlock, zBlock, height, texture, 8);
+							renderWall(xBlock, zBlock + 1, xBlock, zBlock, y / 2.0, texture, 8);
 						}
 					}
 				}
