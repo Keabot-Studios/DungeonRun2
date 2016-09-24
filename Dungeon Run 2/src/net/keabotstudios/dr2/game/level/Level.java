@@ -33,7 +33,7 @@ public class Level {
 		player = new Player(0, 0, 0, "Player", settings);
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
-		ceilPos = 8;
+		ceilPos = 64;
 	}
 
 	public Player getPlayer() {
