@@ -16,7 +16,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
@@ -139,9 +138,6 @@ public class OptionsMenu extends JDialog {
 		JPanel controlsPanel = new JPanel();
 		optionsPane.addTab("Controls", null, controlsPanel, null);
 		controlsPanel.setLayout(new BorderLayout(0, 0));
-
-		JList inputAxisList = new JList();
-		controlsPanel.add(inputAxisList, BorderLayout.WEST);
 
 		JPanel inputAxisPane = new JPanel();
 		controlsPanel.add(inputAxisPane, BorderLayout.EAST);

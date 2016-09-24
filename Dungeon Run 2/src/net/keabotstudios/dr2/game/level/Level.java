@@ -29,7 +29,7 @@ public class Level {
 		this.height = height;
 		this.blocks = new Block[width * height];
 		Arrays.fill(blocks, Block.empty);
-		blocks[10 + 10 * width] = Block.brickWall;
+		blocks[10 + 10 * width] = Block.animTest;
 		player = new Player(0, 0, 0, "Player", settings);
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
@@ -41,7 +41,7 @@ public class Level {
 	}
 
 	public void update(Input input) {
-		player.update(input);
+		player.update(input, entities);
 		for (Entity e : entities) {
 			e.update(input);
 		}

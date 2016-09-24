@@ -1,18 +1,16 @@
 package net.keabotstudios.dr2.game.level.block;
 
 import net.keabotstudios.dr2.gfx.Render;
+import net.keabotstudios.dr2.gfx.Texture;
 
-public class SolidBlock extends Block {
+public class AnimatedBlock extends Block {
 
-	private final Render texture;
-	
-	public SolidBlock(int id, Render texture) {
+	public AnimatedBlock(int id) {
 		super(id, true, true);
-		this.texture = texture;
 	}
 
 	public Render getTexture(int side, boolean top) {
-		return texture;
+		return Texture.animTest;
 	}
 
 }

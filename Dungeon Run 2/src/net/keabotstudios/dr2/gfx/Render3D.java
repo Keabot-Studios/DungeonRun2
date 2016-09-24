@@ -1,5 +1,6 @@
 package net.keabotstudios.dr2.gfx;
 
+import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.block.Block;
 import net.keabotstudios.dr2.game.level.entity.Entity;
@@ -77,20 +78,28 @@ public class Render3D extends Render {
 				Block south = l.getBlock(xBlock, zBlock + 1);
 				if (block.opaque) {
 					if (!north.opaque) {
-						renderWall(xBlock, zBlock, xBlock + 1, zBlock, 0, block.texture, 8);
-						renderWall(xBlock, zBlock, xBlock + 1, zBlock, 0.5, block.texture, 8);
+						Render texture = block.getTexture((int) Direction.NORTH.getId(), false);
+						renderWall(xBlock, zBlock, xBlock + 1, zBlock, 0, texture, 8);
+						texture = block.getTexture((int) Direction.NORTH.getId(), true);
+						renderWall(xBlock, zBlock, xBlock + 1, zBlock, 0.5, texture, 8);
 					}
 					if (!east.opaque) {
-						renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, 0, block.texture, 8);
-						renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, 0.5, block.texture, 8);
+						Render texture = block.getTexture((int) Direction.EAST.getId(), true);
+						renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, 0, texture, 8);
+						texture = block.getTexture((int) Direction.EAST.getId(), false);
+						renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, 0.5, texture, 8);
 					}
-					if (!west.opaque) { 
-						renderWall(xBlock, zBlock + 1, xBlock, zBlock, 0, block.texture, 8);
-						renderWall(xBlock, zBlock + 1, xBlock, zBlock, 0.5, block.texture, 8);
+					if (!west.opaque) {
+						Render texture = block.getTexture((int) Direction.WEST.getId(), true);
+						renderWall(xBlock, zBlock + 1, xBlock, zBlock, 0, texture, 8);
+						texture = block.getTexture((int) Direction.WEST.getId(), false);
+						renderWall(xBlock, zBlock + 1, xBlock, zBlock, 0.5, texture, 8);
 					}
 					if (!south.opaque) {
-						renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, 0, block.texture, 8);
-						renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, 0.5, block.texture, 8);
+						Render texture = block.getTexture((int) Direction.SOUTH.getId(), true);
+						renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, 0, texture, 8);
+						texture = block.getTexture((int) Direction.SOUTH.getId(), true);
+						renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, 0.5, texture, 8);
 					}
 				}
 			}
@@ -174,8 +183,8 @@ public class Render3D extends Render {
 			if (zBufferWall[x] > zWall)
 				continue;
 			zBufferWall[x] = zWall;
+			
 			int xTex = (int) ((tex2 + tex3 * pixelRotationX) / zWall);
-
 			double yPixelTop = yPixelTopLeft + (yPixelTopRight - yPixelTopLeft) * pixelRotationX;
 			double yPixelBottom = yPixelBottomLeft + (yPixelBottomRight - yPixelBottomLeft) * pixelRotationX;
 

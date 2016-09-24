@@ -69,7 +69,6 @@ public class Game extends Canvas implements Runnable, Controllable {
 		gsm.setState(new LevelState(gsm, level));
 		
 		Dimension size = new Dimension(settings.windowWidth, settings.windowHeight);
-		System.out.println(size.toString());
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
@@ -130,6 +129,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 	private void update() {
 		input.updateControllerInput();
 		GameInfo.update();
+		Texture.update();
 		gsm.update(input);
 		if (input.getInputTapped("ESCAPE")) {
 			System.exit(0);

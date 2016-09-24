@@ -18,6 +18,12 @@ public class Render {
 		}
 	}
 
+	/**
+	 * Draws a Render to this Render object.
+	 * @param render the Render object to draw.
+	 * @param xOffs the x offset to draw the Render at.
+	 * @param yOffs the y offset to draw the Render at.
+	 */
 	public void render(Render render, int xOffs, int yOffs) {
 		for (int y = 0; y < render.height; y++) {
 			int yPix = y + yOffs;
