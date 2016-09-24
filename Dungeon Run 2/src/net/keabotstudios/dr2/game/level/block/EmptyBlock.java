@@ -8,7 +8,7 @@ public class EmptyBlock extends Block {
 		super(id, false, false);
 	}
 
-	public Render getTexture(int side, boolean top) {
+	public Render getTexture(int side, int y) {
 		return null;
 	}
 

@@ -53,15 +53,13 @@ public class Render3D extends Render {
 					double texScaleY = l.getFloorTexture().height / 8.0;
 					int xPix = (int) ((xx + xOff) * texScaleX);
 					int yPix = (int) ((yy + zOff) * texScaleY);
-					pixels[x + y * width] = l.getFloorTexture().pixels[(xPix & (l.getFloorTexture().width - 1))
-							+ (yPix & (l.getFloorTexture().height - 1)) * l.getFloorTexture().width];
+					pixels[x + y * width] = l.getFloorTexture().pixels[(xPix & (l.getFloorTexture().width - 1)) + (yPix & (l.getFloorTexture().height - 1)) * l.getFloorTexture().width];
 				} else {
 					double texScaleX = l.getCeilTexture().width / 8.0;
 					double texScaleY = l.getCeilTexture().height / 8.0;
 					int xPix = (int) ((xx + xOff) * texScaleX);
 					int yPix = (int) ((yy + zOff) * texScaleY);
-					pixels[x + y * width] = l.getCeilTexture().pixels[(xPix & (l.getCeilTexture().width - 1))
-							+ (yPix & (l.getCeilTexture().height - 1)) * l.getCeilTexture().width];
+					pixels[x + y * width] = l.getCeilTexture().pixels[(xPix & (l.getCeilTexture().width - 1)) + (yPix & (l.getCeilTexture().height - 1)) * l.getCeilTexture().width];
 				}
 
 				if (z > 500) {
@@ -71,46 +69,41 @@ public class Render3D extends Render {
 		}
 
 		int size = 20;
-		int height = (int) Math.ceil((l.getCeilPos() + l.getFloorPos())/8);
+		int height = (int) Math.ceil((l.getCeilPos() + l.getFloorPos()) / 8);
 		for (int xBlock = -size; xBlock <= size; xBlock++) {
 			for (int zBlock = -size; zBlock <= size; zBlock++) {
 				Block block = l.getBlock(xBlock, zBlock);
+
 				Block north = l.getBlock(xBlock, zBlock - 1);
 				Block east = l.getBlock(xBlock + 1, zBlock);
-				Block west = l.getBlock(xBlock - 1, zBlock);
 				Block south = l.getBlock(xBlock, zBlock + 1);
+				Block west = l.getBlock(xBlock - 1, zBlock);
+
 				if (block.opaque) {
-					if (!north.opaque) {
-						Render texture = block.getTexture((int) Direction.NORTH.getId(), false);
-						renderWall(xBlock, zBlock, xBlock + 1, zBlock, 0, texture, 8);
-						texture = block.getTexture((int) Direction.NORTH.getId(), true);
-						renderWall(xBlock, zBlock, xBlock + 1, zBlock, 0.5, texture, 8);
-					}
-					if (!east.opaque) {
-						Render texture = block.getTexture((int) Direction.EAST.getId(), true);
-						renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, 0, texture, 8);
-						texture = block.getTexture((int) Direction.EAST.getId(), false);
-						renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, 0.5, texture, 8);
-					}
-					if (!west.opaque) {
-						Render texture = block.getTexture((int) Direction.WEST.getId(), true);
-						renderWall(xBlock, zBlock + 1, xBlock, zBlock, 0, texture, 8);
-						texture = block.getTexture((int) Direction.WEST.getId(), false);
-						renderWall(xBlock, zBlock + 1, xBlock, zBlock, 0.5, texture, 8);
-					}
-					if (!south.opaque) {
-						Render texture = block.getTexture((int) Direction.SOUTH.getId(), true);
-						renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, 0, texture, 8);
-						texture = block.getTexture((int) Direction.SOUTH.getId(), true);
-						renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, 0.5, texture, 8);
+					for (int y = 0; y < height; y++) {
+						if (!north.opaque) {
+							Render texture = block.getTexture((int) Direction.NORTH.getId(), height);
+							renderWall(xBlock, zBlock, xBlock + 1, zBlock, y, texture, l.getFloorPos());
+						}
+						if (!east.opaque) {
+							Render texture = block.getTexture((int) Direction.EAST.getId(), height);
+							renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, height, texture, l.getFloorPos());
+						}
+						if (!south.opaque) {
+							Render texture = block.getTexture((int) Direction.SOUTH.getId(), height);
+							renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, height, texture, 8);
+						}
+						if (!west.opaque) {
+							Render texture = block.getTexture((int) Direction.WEST.getId(), height);
+							renderWall(xBlock, zBlock + 1, xBlock, zBlock, height, texture, 8);
+						}
 					}
 				}
 			}
 		}
 	}
 
-	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Render texture,
-			double floorPos) {
+	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Render texture, double floorPos) {
 		if (texture == null)
 			return;
 
@@ -187,7 +180,7 @@ public class Render3D extends Render {
 			if (zBufferWall[x] > zWall)
 				continue;
 			zBufferWall[x] = zWall;
-			
+
 			int xTex = (int) ((tex2 + tex3 * pixelRotationX) / zWall);
 			double yPixelTop = yPixelTopLeft + (yPixelTopRight - yPixelTopLeft) * pixelRotationX;
 			double yPixelBottom = yPixelBottomLeft + (yPixelBottomRight - yPixelBottomLeft) * pixelRotationX;
@@ -203,8 +196,7 @@ public class Render3D extends Render {
 			for (int y = yPixelTopInt; y < yPixelBottomInt; y++) {
 				double pixelRotationY = (y - yPixelTop) / (yPixelBottom - yPixelTop);
 				int yTex = (int) (texture.height * pixelRotationY);
-				pixels[x + y * width] = texture.pixels[(xTex & texture.width - 1)
-						+ (yTex & texture.height - 1) * texture.width];
+				pixels[x + y * width] = texture.pixels[(xTex & texture.width - 1) + (yTex & texture.height - 1) * texture.width];
 				zBuffer[x + y * width] = 1 / (tex0 + (tex1 - tex0) * pixelRotationX) * 8;
 			}
 		}

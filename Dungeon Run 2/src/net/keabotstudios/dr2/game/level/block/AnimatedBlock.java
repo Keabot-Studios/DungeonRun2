@@ -9,7 +9,7 @@ public class AnimatedBlock extends Block {
 		super(id, true, true);
 	}
 
-	public Render getTexture(int side, boolean top) {
+	public Render getTexture(int side, int y) {
 		return Texture.animTest;
 	}
 
