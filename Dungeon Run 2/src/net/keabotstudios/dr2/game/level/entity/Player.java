@@ -12,7 +12,7 @@ public class Player extends Entity {
 	public static final double WALK_SPEED = 4.0;
 	public static final double BOB_MAGNITUTDE = 0.1;
 	public static final double STRAFE_WALK_SPEED = 1 / Math.sqrt(2);
-	public static final double RUN_SPEED = 12.0;
+	public static final double RUN_SPEED = 1.8;
 	public static final double CROUCH_HEIGHT = 0.5;
 	public static final double CROUCH_SPEED = 0.5;
 	
