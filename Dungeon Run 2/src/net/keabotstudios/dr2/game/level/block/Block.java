@@ -24,6 +24,6 @@ public abstract class Block {
 		animTest = new AnimatedBlock(2);
 	}
 	
-	public abstract Render getTexture(int side, boolean top);
+	public abstract Render getTexture(int side, int y);
 
 }

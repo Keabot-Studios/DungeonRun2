@@ -11,7 +11,7 @@ public class SolidBlock extends Block {
 		this.texture = texture;
 	}
 
-	public Render getTexture(int side, boolean top) {
+	public Render getTexture(int side, int y) {
 		return texture;
 	}
 
