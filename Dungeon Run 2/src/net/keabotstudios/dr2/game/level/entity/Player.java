@@ -26,7 +26,7 @@ public class Player extends Entity {
 		this.settings = settings;
 	}
 
-	private double newMX, oldMX, xa, za, moveSpeed;
+	private double newMX, oldMX, xa, za, moveSpeed, eyeHeight;
 	private boolean walking, running, crouching;
 
 	public void update(Input input, ArrayList<Entity> entities) {
@@ -40,7 +40,7 @@ public class Player extends Entity {
 		za += (dz * Math.cos(rot) - dx * Math.sin(rot)) * WALK_SPEED;
 
 		x += xa;
-		y *= 0.9;
+		eyeHeight *= 0.9;
 		z += za;
 		xa *= 0.1;
 		za *= 0.1;
@@ -87,17 +87,14 @@ public class Player extends Entity {
 			}
 			oldMX = newMX;
 		if (walking && settings.enableBobbing) {
-			y += Math.sin(GameInfo.TIME / 6.0) * BOB_MAGNITUTDE * (crouching ? 0.3 : 1);
+			eyeHeight += Math.sin(GameInfo.TIME / 6.0) * BOB_MAGNITUTDE * (crouching ? 0.3 : 1);
 		}
 
-		if (settings.debugMode && input.getInput("F1")) {
-			y += 0.5;
-		}
-
-		if (settings.debugMode && input.getInputTapped("F5")) {
+		if (settings.debugMode && input.getInputTapped("F1")) {
 			x = 0;
 			y = 0;
 			z = 0;
+			eyeHeight = 0;
 			xa = 0;
 			za = 0;
 			rot = 0;
@@ -106,8 +103,12 @@ public class Player extends Entity {
 		}
 
 		if (crouching) {
-			y -= CROUCH_HEIGHT;
+			eyeHeight -= CROUCH_HEIGHT;
 		}
+	}
+	
+	public double getEyeHeight() {
+		return eyeHeight;
 	}
 
 	public boolean isWalking() {

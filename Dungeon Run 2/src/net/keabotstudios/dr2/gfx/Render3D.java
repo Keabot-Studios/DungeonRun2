@@ -5,6 +5,7 @@ import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.block.Block;
 import net.keabotstudios.dr2.game.level.entity.Entity;
+import net.keabotstudios.dr2.game.level.entity.Player;
 
 public class Render3D extends Render {
 
@@ -18,9 +19,9 @@ public class Render3D extends Render {
 		zBufferWall = new double[w];
 	}
 
-	public void setOffsets(Entity cam) {
+	public void setOffsets(Player cam) {
 		this.xOff = cam.getX() / 8.0;
-		this.yOff = cam.getY();
+		this.yOff = cam.getY() + cam.getEyeHeight();
 		this.zOff = cam.getZ() / 8.0;
 		this.rotOff = cam.getRotation();
 	}
@@ -68,11 +69,10 @@ public class Render3D extends Render {
 				}
 			}
 		}
-
-		int size = 20;
+		
 		int height = (int) Math.ceil((l.getCeilPos() + l.getFloorPos()) / 8);
-		for (int xBlock = -size; xBlock <= size; xBlock++) {
-			for (int zBlock = -size; zBlock <= size; zBlock++) {
+		for (int xBlock = -1; xBlock <= l.getWidth(); xBlock++) {
+			for (int zBlock = -1; zBlock <= l.getHeight(); zBlock++) {
 				Block block = l.getBlock(xBlock, zBlock);
 
 				Block north = l.getBlock(xBlock, zBlock - 1);
@@ -104,59 +104,10 @@ public class Render3D extends Render {
 		}
 		
 		for(Entity e : l.getEntites()) {
-			renderSprite(e.getX(), e.getY(), e.getZ(), e.getTexture(), 8);
+			renderSprite(e.getX(), e.getY(), e.getZ(), e.getTexture(), 1, 8);
 		}
 	}
 	
-	public void renderSprite(double x, double y, double z, Render texture, double floorPos) {
-		if (texture == null)
-			return;
-		double cos = Math.cos(rotOff);
-		double sin = Math.sin(rotOff);
-		double xOffScaled = (xOff / (floorPos * 2.0));
-		double yOffScaled = (-yOff / (floorPos * 2.0));
-		double zOffScaled = (zOff / (floorPos * 2.0));
-		
-		double xc = (((x / 2.0) / 8.0) - xOffScaled) * 2.0;
-		double yc = ((y / 2.0) - yOffScaled) * 2.0;
-		double zc = (((z / 2.0) / 8.0) - zOffScaled) * 2.0;
-		
-		double rotX = xc * cos - zc * sin;
-		double rotY = yc;
-		double rotZ = zc * cos - xc * sin;
-		
-		double xCenter = width / 2.0;
-		double yCenter = height / 2.0;
-		
-		double xPixel = rotX / rotZ * height + xCenter;
-		double yPixel = rotY / rotZ * height + yCenter;
-		
-		double xPixelL = xPixel - texture.width / rotZ;
-		double xPixelR = xPixel + texture.width / rotZ;
-		
-		double yPixelL = yPixel - texture.height / rotZ;
-		double yPixelR = yPixel + texture.height / rotZ;
-		
-		int xpl = (int) xPixelL;
-		int xpr = (int) xPixelR;
-		int ypl = (int) yPixelL;
-		int ypr = (int) yPixelR;
-		
-		if(xpl < 0) xpl = 0;
-		if(xpr > width) xpr = width;
-		if(ypl < 0) ypl = 0;
-		if(ypr > height) ypr = height;
-		
-		for(int yp = ypl; yp < ypr; yp++) {
-			for(int xp = xpl; xp < xpr; xp++) {
-				if(zBuffer[xp + yp * width] > rotZ) {
-					pixels[xp + yp * width] = 0x236DCF;
-					zBuffer[xp + yp * width] = rotZ;
-				}
-			}
-		}
-	}
-
 	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Render texture, double floorPos) {
 		if (texture == null)
 			return;
@@ -251,6 +202,64 @@ public class Render3D extends Render {
 				int yTex = (int) (texture.height * pixelRotationY);
 				pixels[x + y * width] = texture.pixels[(xTex & texture.width - 1) + (yTex & texture.height - 1) * texture.width];
 				zBuffer[x + y * width] = 1 / (tex0 + (tex1 - tex0) * pixelRotationX) * 8;
+			}
+		}
+	}
+
+	public void renderSprite(double x, double y, double z, Render texture, double scale, double floorPos) {
+		if (texture == null)
+			return;
+		double cos = Math.cos(rotOff);
+		double sin = Math.sin(rotOff);
+		double xOffScaled = (xOff / (floorPos * 2.0));
+		double yOffScaled = (-yOff / (floorPos * 2.0)) - 0.5;
+		double zOffScaled = (zOff / (floorPos * 2.0));
+		
+		double xc = (((x / 2.0) / 8.0) - xOffScaled) * 2.0;
+		double yc = ((-y / 2.0) - yOffScaled) * 2.0;
+		double zc = (((z / 2.0) / 8.0) - zOffScaled) * 2.0;
+		
+		double rotX = xc * cos - zc * sin;
+		double rotY = yc;
+		double rotZ = zc * cos + xc * sin;
+		
+		double xCenter = width / 2.0;
+		double yCenter = height / 2.0;
+		
+		double xPixel = rotX / rotZ * height + xCenter;
+		double yPixel = rotY / rotZ * height + yCenter;
+		
+		int texWidth = (int) (texture.width * scale) * 12;
+		int texHeight = (int) (texture.height * scale) * 12;
+		
+		double xPixelL = xPixel - texWidth / rotZ;
+		double xPixelR = xPixel + texWidth / rotZ;
+		
+		double yPixelL = yPixel - texHeight / rotZ;
+		double yPixelR = yPixel + texHeight / rotZ;
+		
+		int xpl = (int) xPixelL;
+		int xpr = (int) xPixelR;
+		int ypl = (int) yPixelL;
+		int ypr = (int) yPixelR;
+		
+		if(xpl < 0) xpl = 0;
+		if(xpr > width) xpr = width;
+		if(ypl < 0) ypl = 0;
+		if(ypr > height) ypr = height;
+		
+		rotZ *= 8.0;
+		
+		for(int yp = ypl; yp < ypr; yp++) {
+			double pixelRotationY = (yp - yPixelL) / (yPixelR - yPixelL);
+			int yTex = (int) (texture.height * pixelRotationY);
+			for(int xp = xpl; xp < xpr; xp++) {
+				double pixelRotationX = (xp - xPixelL) / (xPixelR - xPixelL);
+				int xTex = (int) (texture.width * pixelRotationX);
+				if(zBuffer[xp + yp * width] > rotZ) {
+					pixels[xp + yp * width] = texture.pixels[(xTex & texture.width - 1) + (yTex & texture.height - 1) * texture.width];
+					zBuffer[xp + yp * width] = rotZ;
+				}
 			}
 		}
 	}

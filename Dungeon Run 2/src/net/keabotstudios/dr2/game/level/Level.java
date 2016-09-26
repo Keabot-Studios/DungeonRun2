@@ -31,7 +31,7 @@ public class Level {
 		this.blocks = new Block[width * height];
 		Arrays.fill(blocks, Block.empty);
 		player = new Player(0, 0, 0, "Player", settings);
-		entities.add(new TestEntity(10, 0.5, 10, "Test"));
+		entities.add(new TestEntity(10, 1, 10, "Test"));
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
 		ceilPos = 4*8;
@@ -83,6 +83,14 @@ public class Level {
 
 	public ArrayList<Entity> getEntites() {
 		return entities;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 }

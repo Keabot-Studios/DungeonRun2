@@ -94,9 +94,6 @@ public class Game extends Canvas implements Runnable, Controllable {
 			fullScreenImageHeight = (int) (GameInfo.GAME_HEIGHT * fullScreenImageScale);
 			fullScreenXOff = (int) ((screenWidth - fullScreenImageWidth) / 2.0f);
 			fullScreenYOff = (int) ((screenHeight - fullScreenImageHeight) / 2.0f);
-			System.out.println(screenWidth + ", " + screenHeight);
-			System.out.println(fullScreenImageWidth + ", " + fullScreenImageHeight);
-			System.out.println(fullScreenXOff + ", " + fullScreenYOff);
 		}
 		
 		frame.setVisible(true);

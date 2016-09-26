@@ -6,12 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import net.java.games.input.Component.Identifier;
 import net.keabotstudios.superin.InputAxis;
 import net.keabotstudios.superserial.containers.SSDatabase;
 import net.keabotstudios.superserial.containers.SSField;
 import net.keabotstudios.superserial.containers.SSObject;
-import net.keabotstudios.superserial.containers.SSString;
 
 public class GameSettings {
 
