@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.GameSettings;
+import net.keabotstudios.dr2.game.object.CollisionBox;
+import net.keabotstudios.dr2.game.object.Position3D;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.superin.Input;
 
@@ -18,11 +20,11 @@ public class Player extends Entity {
 	public static final double RUN_SPEED = 1.8;
 	public static final double CROUCH_HEIGHT = 0.5;
 	public static final double CROUCH_SPEED = 0.5;
-	
+
 	private GameSettings settings;
 
 	public Player(double x, double z, double rot, String name, GameSettings settings) {
-		super(x, 0, z, rot, name, Color.GREEN.getRGB());
+		super(new Position3D(x, 0, z), new CollisionBox(1, 1.5, 1), rot, name, Color.GREEN.getRGB());
 		this.settings = settings;
 	}
 
@@ -33,24 +35,25 @@ public class Player extends Entity {
 		dz = 0;
 		dx = 0;
 		moveSpeed = (running ? RUN_SPEED : 1) * (crouching ? CROUCH_SPEED : 1);
-		
+
 		updateInput(input);
-		
+
 		xa += (dx * Math.cos(rot) + dz * Math.sin(rot)) * WALK_SPEED;
 		za += (dz * Math.cos(rot) - dx * Math.sin(rot)) * WALK_SPEED;
 
-		x += xa;
+		pos.setX(pos.getX() + xa);
 		eyeHeight *= 0.9;
-		z += za;
+		pos.setZ(pos.getZ() + za);
 		xa *= 0.1;
 		za *= 0.1;
 		rot += dRot;
 		dRot *= 0.8;
 		super.update(input);
 	}
-	
+
 	private void updateInput(Input input) {
-		walking = input.getInput("FORWARD") || input.getInput("BACKWARD") || input.getInput("STRAFE_LEFT") || input.getInput("STRAFE_RIGHT");
+		walking = input.getInput("FORWARD") || input.getInput("BACKWARD") || input.getInput("STRAFE_LEFT")
+				|| input.getInput("STRAFE_RIGHT");
 		if (input.getInputTapped("CROUCH"))
 			crouching = !crouching;
 		if (!crouching)
@@ -73,27 +76,25 @@ public class Player extends Entity {
 			dx += 1.0 * Math.abs(input.getInputValue("STRAFE_RIGHT")) * moveSpeed;
 		}
 
-			newMX = input.getMouseX();
-			if (newMX > oldMX && settings.mouseTurning) {
-				dRot += MOUSE_ROT_SPEED;
-			} else if (newMX < oldMX && settings.mouseTurning) {
-				dRot -= MOUSE_ROT_SPEED;
-			} else if (input.getInput("TURN_LEFT")) {
-				dRot -= ROT_SPEED * Math.abs(input.getInputValue("TURN_LEFT"));
-			} else if (input.getInput("TURN_RIGHT")) {
-				dRot += ROT_SPEED * Math.abs(input.getInputValue("TURN_RIGHT"));
-			} else if ((newMX > oldMX || newMX < oldMX) && settings.mouseTurning) {
-				dRot += MOUSE_ROT_SPEED * (newMX - oldMX);
-			}
-			oldMX = newMX;
+		newMX = input.getMouseX();
+		if (newMX > oldMX && settings.mouseTurning) {
+			dRot += MOUSE_ROT_SPEED;
+		} else if (newMX < oldMX && settings.mouseTurning) {
+			dRot -= MOUSE_ROT_SPEED;
+		} else if (input.getInput("TURN_LEFT")) {
+			dRot -= ROT_SPEED * Math.abs(input.getInputValue("TURN_LEFT"));
+		} else if (input.getInput("TURN_RIGHT")) {
+			dRot += ROT_SPEED * Math.abs(input.getInputValue("TURN_RIGHT"));
+		} else if ((newMX > oldMX || newMX < oldMX) && settings.mouseTurning) {
+			dRot += MOUSE_ROT_SPEED * (newMX - oldMX);
+		}
+		oldMX = newMX;
 		if (walking && settings.enableBobbing) {
 			eyeHeight += Math.sin(GameInfo.TIME / 6.0) * BOB_MAGNITUTDE * (crouching ? 0.3 : 1);
 		}
 
 		if (settings.debugMode && input.getInputTapped("F1")) {
-			x = 0;
-			y = 0;
-			z = 0;
+			pos = new Position3D(0, 0, 0);
 			eyeHeight = 0;
 			xa = 0;
 			za = 0;
@@ -106,7 +107,7 @@ public class Player extends Entity {
 			eyeHeight -= CROUCH_HEIGHT;
 		}
 	}
-	
+
 	public double getEyeHeight() {
 		return eyeHeight;
 	}
@@ -126,7 +127,7 @@ public class Player extends Entity {
 	public double getMoveSpeed() {
 		return moveSpeed;
 	}
-	
+
 	public Render getTexture() {
 		return null;
 	}
