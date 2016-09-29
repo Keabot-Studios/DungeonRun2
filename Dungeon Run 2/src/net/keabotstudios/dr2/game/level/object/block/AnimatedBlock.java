@@ -1,4 +1,4 @@
-package net.keabotstudios.dr2.game.level.block;
+package net.keabotstudios.dr2.game.level.object.block;
 
 import java.awt.Color;
 

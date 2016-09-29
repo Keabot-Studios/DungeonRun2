@@ -2,10 +2,11 @@ package net.keabotstudios.dr2.gfx;
 
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
+import net.keabotstudios.dr2.game.evel.object.Position3D;
 import net.keabotstudios.dr2.game.level.Level;
-import net.keabotstudios.dr2.game.level.block.Block;
-import net.keabotstudios.dr2.game.level.entity.Entity;
-import net.keabotstudios.dr2.game.level.entity.Player;
+import net.keabotstudios.dr2.game.level.object.block.Block;
+import net.keabotstudios.dr2.game.level.object.entity.Entity;
+import net.keabotstudios.dr2.game.level.object.entity.Player;
 
 public class Render3D extends Render {
 
@@ -20,9 +21,9 @@ public class Render3D extends Render {
 	}
 
 	public void setOffsets(Player cam) {
-		this.xOff = cam.getX() / 8.0;
-		this.yOff = cam.getY() + cam.getEyeHeight();
-		this.zOff = cam.getZ() / 8.0;
+		this.xOff = cam.getPos().getX() / 8.0;
+		this.yOff = cam.getPos().getY() + cam.getEyeHeight();
+		this.zOff = cam.getPos().getZ() / 8.0;
 		this.rotOff = cam.getRotation();
 	}
 
@@ -104,7 +105,7 @@ public class Render3D extends Render {
 		}
 		
 		for(Entity e : l.getEntites()) {
-			renderSprite(e.getX(), e.getY(), e.getZ(), e.getTexture(), 1, 8);
+			renderSprite(e.getPos(), e.getTexture(), 1, 8);
 		}
 	}
 	
@@ -206,7 +207,7 @@ public class Render3D extends Render {
 		}
 	}
 
-	public void renderSprite(double x, double y, double z, Render texture, double scale, double floorPos) {
+	public void renderSprite(Position3D pos, Render texture, double scale, double floorPos) {
 		if (texture == null)
 			return;
 		double cos = Math.cos(rotOff);
@@ -215,9 +216,9 @@ public class Render3D extends Render {
 		double yOffScaled = (-yOff / (floorPos * 2.0)) - 0.5;
 		double zOffScaled = (zOff / (floorPos * 2.0));
 		
-		double xc = (((x / 2.0) / 8.0) - xOffScaled) * 2.0;
-		double yc = ((-y / 2.0) - yOffScaled) * 2.0;
-		double zc = (((z / 2.0) / 8.0) - zOffScaled) * 2.0;
+		double xc = (((pos.getX() / 2.0) / 8.0) - xOffScaled) * 2.0;
+		double yc = ((-pos.getY() / 2.0) - yOffScaled) * 2.0;
+		double zc = (((pos.getZ() / 2.0) / 8.0) - zOffScaled) * 2.0;
 		
 		double rotX = xc * cos - zc * sin;
 		double rotY = yc;

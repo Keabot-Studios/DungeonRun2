@@ -1,7 +1,7 @@
-package net.keabotstudios.dr2.game.level.entity;
+package net.keabotstudios.dr2.game.level.object.entity;
 
-import net.keabotstudios.dr2.game.object.CollisionBox;
-import net.keabotstudios.dr2.game.object.Position3D;
+import net.keabotstudios.dr2.game.evel.object.CollisionBox;
+import net.keabotstudios.dr2.game.evel.object.Position3D;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.superin.Input;
 

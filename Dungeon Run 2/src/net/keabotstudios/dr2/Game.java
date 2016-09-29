@@ -24,7 +24,7 @@ import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.gamestate.GameStateManager;
 import net.keabotstudios.dr2.game.gamestate.LevelState;
 import net.keabotstudios.dr2.game.level.Level;
-import net.keabotstudios.dr2.game.level.block.Block;
+import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Controllable;

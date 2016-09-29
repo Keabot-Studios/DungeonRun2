@@ -1,6 +1,6 @@
-package net.keabotstudios.dr2.game.level.block;
+package net.keabotstudios.dr2.game.level.object.block;
 
-import net.keabotstudios.dr2.game.object.CollisionBox;
+import net.keabotstudios.dr2.game.evel.object.CollisionBox;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.dr2.gfx.Texture;
 

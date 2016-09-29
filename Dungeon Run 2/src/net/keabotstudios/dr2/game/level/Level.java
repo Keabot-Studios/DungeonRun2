@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.keabotstudios.dr2.game.GameSettings;
-import net.keabotstudios.dr2.game.level.block.Block;
-import net.keabotstudios.dr2.game.level.entity.Entity;
-import net.keabotstudios.dr2.game.level.entity.Player;
-import net.keabotstudios.dr2.game.level.entity.TestEntity;
+import net.keabotstudios.dr2.game.level.object.block.Block;
+import net.keabotstudios.dr2.game.level.object.entity.Entity;
+import net.keabotstudios.dr2.game.level.object.entity.Player;
+import net.keabotstudios.dr2.game.level.object.entity.TestEntity;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Input;
