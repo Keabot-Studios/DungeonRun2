@@ -1,4 +1,4 @@
-package net.keabotstudios.dr2.game.evel.object;
+package net.keabotstudios.dr2.game.level.object;
 
 public class Position3D {
 	private double x, y, z;

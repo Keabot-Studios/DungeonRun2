@@ -1,7 +1,8 @@
 package net.keabotstudios.dr2.game.level.object.entity;
 
-import net.keabotstudios.dr2.game.evel.object.CollisionBox;
-import net.keabotstudios.dr2.game.evel.object.Position3D;
+import net.keabotstudios.dr2.game.level.Level;
+import net.keabotstudios.dr2.game.level.object.CollisionBox;
+import net.keabotstudios.dr2.game.level.object.Position3D;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.superin.Input;
 
@@ -61,12 +62,30 @@ public abstract class Entity {
 		this.rot = rot;
 	}
 
-	public void update(Input input) {
+	public void update(Input input, Level level) {
 		if (rot > (Math.PI * 2.0)) {
 			rot = 0;
 		} else if (rot < 0) {
 			rot = (Math.PI * 2.0);
 		}
+	}
+
+	public boolean intersectsWith(Entity e) {
+		double left = getPos().getX();
+		double bottom = getPos().getY();
+		double front = getPos().getZ();
+		double right = left + getCollisionBox().getWidth();
+		double top = bottom + getCollisionBox().getHeight();
+		double back = front + getCollisionBox().getLength();
+
+		double eLeft = e.getPos().getX();
+		double eBottom = e.getPos().getY();
+		double eFront = e.getPos().getZ();
+		double eRight = eLeft + e.getCollisionBox().getWidth();
+		double eTop = eBottom + e.getCollisionBox().getHeight();
+		double eBack = eFront + e.getCollisionBox().getLength();
+
+		return !(left < eRight) && !(right > eLeft) && !(top < eBottom) && !(bottom > eTop) && !(front < eBack) && !(back > eFront);
 	}
 
 	public abstract Render getTexture();

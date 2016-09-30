@@ -47,10 +47,11 @@ public class Render {
 	}
 
 	public void render(Render render, int xOffs, int yOffs, float alpha) {
-		if(alpha >= 1.0f || alpha < 0.0f) {
+		if (alpha >= 1.0f || alpha < 0.0f) {
 			render(render, xOffs, yOffs);
 		}
-		if(alpha == 0.0f) return;
+		if (alpha == 0.0f)
+			return;
 		for (int y = 0; y < render.height; y++) {
 			int yPix = y + yOffs;
 			if (yPix < 0 || yPix >= height)
@@ -69,11 +70,22 @@ public class Render {
 	}
 
 	public int getAverageColor() {
-		double result = 0;
-		for (int i = 0; i < width * height; i++) {
-			result = (result + pixels[i]) / 2;
+		float redBucket = 0;
+		float greenBucket = 0;
+		float blueBucket = 0;
+		long pixelCount = 0;
+
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				Color c = new Color(pixels[x + y * width]);
+				pixelCount++;
+				redBucket += c.getRed() / 255.0f;
+				greenBucket += c.getGreen() / 255.0f;
+				blueBucket += c.getBlue() / 255.0f;
+			}
 		}
-		return (int) result;
+
+		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount).getRGB();
 	}
 
 }

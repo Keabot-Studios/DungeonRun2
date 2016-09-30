@@ -1,4 +1,4 @@
-package net.keabotstudios.dr2.game.evel.object;
+package net.keabotstudios.dr2.game.level.object;
 
 public class CollisionBox {
 	private double length, width, height;
@@ -27,8 +27,7 @@ public class CollisionBox {
 		height = val;
 	}
 	
-	public CollisionBox(double length, double width, double height)
-	{
+	public CollisionBox(double length, double width, double height) {
 		this.length = length;
 		this.width = width;
 		this.height = height;

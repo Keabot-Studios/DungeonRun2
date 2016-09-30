@@ -1,12 +1,13 @@
 package net.keabotstudios.dr2.game.level.object.entity;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.GameSettings;
-import net.keabotstudios.dr2.game.evel.object.CollisionBox;
-import net.keabotstudios.dr2.game.evel.object.Position3D;
+import net.keabotstudios.dr2.game.level.Level;
+import net.keabotstudios.dr2.game.level.object.CollisionBox;
+import net.keabotstudios.dr2.game.level.object.Position3D;
+import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.superin.Input;
 
@@ -14,7 +15,7 @@ public class Player extends Entity {
 
 	public static final double ROT_SPEED = 0.005;
 	public static final double MOUSE_ROT_SPEED = 0.01;
-	public static final double WALK_SPEED = 4.0;
+	public static final double WALK_SPEED = 0.5 / 8.0;
 	public static final double BOB_MAGNITUTDE = 0.1;
 	public static final double STRAFE_WALK_SPEED = 1 / Math.sqrt(2);
 	public static final double RUN_SPEED = 1.8;
@@ -24,31 +25,36 @@ public class Player extends Entity {
 	private GameSettings settings;
 
 	public Player(double x, double z, double rot, String name, GameSettings settings) {
-		super(new Position3D(x, 0, z), new CollisionBox(1, 1.5, 1), rot, name, Color.GREEN.getRGB());
+		super(new Position3D(x, 0, z), new CollisionBox(1, 1, 1.5), rot, name, Color.GREEN.getRGB());
 		this.settings = settings;
 	}
 
 	private double newMX, oldMX, xa, za, moveSpeed, eyeHeight;
 	private boolean walking, running, crouching;
 
-	public void update(Input input, ArrayList<Entity> entities) {
+	public void update(Input input, Level level) {
 		dz = 0;
 		dx = 0;
 		moveSpeed = (running ? RUN_SPEED : 1) * (crouching ? CROUCH_SPEED : 1);
 
 		updateInput(input);
-
+		
 		xa += (dx * Math.cos(rot) + dz * Math.sin(rot)) * WALK_SPEED;
 		za += (dz * Math.cos(rot) - dx * Math.sin(rot)) * WALK_SPEED;
-
-		pos.setX(pos.getX() + xa);
+		
+		if(isFree(pos.getX() + xa, pos.getZ(), level)) {
+			pos.setX(pos.getX() + xa);
+		}
+		if(isFree(pos.getX(), pos.getZ() + za, level)) {
+			pos.setZ(pos.getZ() + za);
+		}
+		
 		eyeHeight *= 0.9;
-		pos.setZ(pos.getZ() + za);
 		xa *= 0.1;
 		za *= 0.1;
 		rot += dRot;
 		dRot *= 0.8;
-		super.update(input);
+		super.update(input, level);
 	}
 
 	private void updateInput(Input input) {
@@ -130,6 +136,18 @@ public class Player extends Entity {
 
 	public Render getTexture() {
 		return null;
+	}
+	
+	private boolean isFree(double x, double z, Level level) {
+		int x0 = (int) Math.floor(x + 0.5);
+		int x1 = (int) Math.floor(x + 0.5 - 1);
+		int z0 = (int) Math.floor(z + 0.5);
+		int z1 = (int) Math.floor(z + 0.5 - 1);
+		if(level.getBlock(x0, z0).isSolid()) return false;
+		if(level.getBlock(x1, z0).isSolid()) return false;
+		if(level.getBlock(x0, z1).isSolid()) return false;
+		if(level.getBlock(x1, z1).isSolid()) return false;
+		return true;
 	}
 
 }

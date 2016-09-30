@@ -61,7 +61,6 @@ public class Game extends Canvas implements Runnable, Controllable {
 		this.logger = logger;
 		this.settings = settings;
 		Texture.load(this);
-		Block.init();
 		
 		screen = new Render(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -192,11 +191,11 @@ public class Game extends Canvas implements Runnable, Controllable {
 			g.setFont(new Font("Verdana", Font.PLAIN, 12));
 			g.setColor(Color.YELLOW);
 			g.drawString(fps + " FPS", debugX, debugY);
-			double playerX = level.getPlayer().getPos().getX() / 32.0;
+			double playerX = level.getPlayer().getPos().getX();
 			BigDecimal px = new BigDecimal(playerX).setScale(1, RoundingMode.HALF_EVEN);
-			double playerY = level.getPlayer().getPos().getY() / 32.0;
+			double playerY = level.getPlayer().getPos().getY();
 			BigDecimal py = new BigDecimal(playerY).setScale(1, RoundingMode.HALF_EVEN);
-			double playerZ = level.getPlayer().getPos().getZ() / 32.0;
+			double playerZ = level.getPlayer().getPos().getZ();
 			BigDecimal pz = new BigDecimal(playerZ).setScale(1, RoundingMode.HALF_EVEN);
 			double playerRot = level.getPlayer().getRotation();
 			BigDecimal pr = new BigDecimal(playerRot).setScale(3, RoundingMode.HALF_EVEN);
