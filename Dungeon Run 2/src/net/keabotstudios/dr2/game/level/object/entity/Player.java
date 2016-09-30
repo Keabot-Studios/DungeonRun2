@@ -21,6 +21,8 @@ public class Player extends Entity {
 	public static final double RUN_SPEED = 1.8;
 	public static final double CROUCH_HEIGHT = 0.5;
 	public static final double CROUCH_SPEED = 0.5;
+	public static final double JUMP_SPEED = 0.5;
+	public static final double GRAVITY = 0.2;
 
 	private GameSettings settings;
 
@@ -143,6 +145,7 @@ public class Player extends Entity {
 		int x1 = (int) Math.floor(x + 0.5 - 1);
 		int z0 = (int) Math.floor(z + 0.5);
 		int z1 = (int) Math.floor(z + 0.5 - 1);
+		
 		if(level.getBlock(x0, z0).isSolid()) return false;
 		if(level.getBlock(x1, z0).isSolid()) return false;
 		if(level.getBlock(x0, z1).isSolid()) return false;

@@ -3,6 +3,7 @@ package net.keabotstudios.dr2.game.level.object.block;
 import java.awt.Rectangle;
 
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
+import net.keabotstudios.dr2.game.level.object.Position3D;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.gfx.Render;
 
@@ -21,7 +22,7 @@ public abstract class Block {
 		this.minimapColor = minimapColor;
 		this.colOffsetX = 0;
 		this.colOffsetZ = 0;
-		this.collisionBox = new CollisionBox(1, 1, 0);
+		this.collisionBox = new CollisionBox(1, 1, Double.MAX_VALUE);
 	}
 
 	protected Block(int id, boolean solid, boolean opaque, int minimapColor, CollisionBox colBox, double colOffsetX, double colOffsetZ) {
@@ -49,10 +50,8 @@ public abstract class Block {
 
 	public abstract Render getTexture(int side, int y);
 	
-	public boolean intersectsWith(int wallX, int wallZ, Entity e) {
-		Rectangle block = new Rectangle(wallX * 8, wallZ * 8, (int) (collisionBox.getWidth() * 8.0), (int) (collisionBox.getLength() * 8.0));
-		Rectangle entity = new Rectangle((int) (e.getPos().getX() * 8.0), (int) (e.getPos().getZ() * 8.0), (int) (e.getCollisionBox().getWidth() * 8.0), (int) (e.getCollisionBox().getLength() * 8.0));
-		return block.intersects(entity);
+	public boolean collides(int wallX, int wallZ, Entity e) {
+		return CollisionBox.collides(collisionBox, new Position3D(wallX, 0, wallZ), e.getCollisionBox(), e.getPos());
 	}
 
 }
