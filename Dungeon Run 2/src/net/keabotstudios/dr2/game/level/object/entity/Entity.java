@@ -2,7 +2,7 @@ package net.keabotstudios.dr2.game.level.object.entity;
 
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
-import net.keabotstudios.dr2.game.level.object.Position3D;
+import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.superin.Input;
 
@@ -10,14 +10,14 @@ public abstract class Entity {
 
 	protected double rot, dx, dy, dz, dRot;
 
-	protected Position3D pos;
+	protected Vector3 pos;
 	protected CollisionBox collisionBox;
 
 	protected String name;
 	protected Render texture;
 	protected int minimapColor;
 
-	protected Entity(Position3D pos, CollisionBox colBox, double rot, String name, int minimapColor) {
+	protected Entity(Vector3 pos, CollisionBox colBox, double rot, String name, int minimapColor) {
 		super();
 		this.pos = pos;
 		this.collisionBox = colBox;
@@ -30,7 +30,7 @@ public abstract class Entity {
 		return name;
 	}
 
-	public Position3D getPos() {
+	public Vector3 getPos() {
 		return pos;
 	}
 
@@ -47,10 +47,10 @@ public abstract class Entity {
 	}
 
 	public void setPosition(double x, double y, double z) {
-		pos = new Position3D(x, y, z);
+		pos = new Vector3(x, y, z);
 	}
 
-	public void setPosition(Position3D pos) {
+	public void setPosition(Vector3 pos) {
 		this.pos = pos;
 	}
 
@@ -74,16 +74,16 @@ public abstract class Entity {
 		double left = getPos().getX();
 		double bottom = getPos().getY();
 		double front = getPos().getZ();
-		double right = left + getCollisionBox().getWidth();
-		double top = bottom + getCollisionBox().getHeight();
-		double back = front + getCollisionBox().getLength();
+		double right = left + getCollisionBox().getX();
+		double top = bottom + getCollisionBox().getY();
+		double back = front + getCollisionBox().getZ();
 
 		double eLeft = e.getPos().getX();
 		double eBottom = e.getPos().getY();
 		double eFront = e.getPos().getZ();
-		double eRight = eLeft + e.getCollisionBox().getWidth();
-		double eTop = eBottom + e.getCollisionBox().getHeight();
-		double eBack = eFront + e.getCollisionBox().getLength();
+		double eRight = eLeft + e.getCollisionBox().getX();
+		double eTop = eBottom + e.getCollisionBox().getY();
+		double eBack = eFront + e.getCollisionBox().getZ();
 
 		return !(left < eRight) && !(right > eLeft) && !(top < eBottom) && !(bottom > eTop) && !(front < eBack) && !(back > eFront);
 	}

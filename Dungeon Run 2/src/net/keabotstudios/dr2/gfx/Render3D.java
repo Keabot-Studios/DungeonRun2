@@ -2,7 +2,7 @@ package net.keabotstudios.dr2.gfx;
 
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.level.Level;
-import net.keabotstudios.dr2.game.level.object.Position3D;
+import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
@@ -206,7 +206,7 @@ public class Render3D extends Render {
 		}
 	}
 
-	public void renderSprite(Position3D pos, Render texture, double scale, double floorPos) {
+	public void renderSprite(Vector3 pos, Render texture, double scale, double floorPos) {
 		if (texture == null)
 			return;
 		double cos = Math.cos(rotOff);
