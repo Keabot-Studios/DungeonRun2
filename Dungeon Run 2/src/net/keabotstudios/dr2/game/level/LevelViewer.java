@@ -63,8 +63,8 @@ public class LevelViewer extends Canvas {
 		 AffineTransform trans = new AffineTransform();
 		
 		Player p = level.getPlayer();
-		double pWidth = p.getCollisionBox().getWidth() * SCALE;
-		double pHeight = p.getCollisionBox().getLength() * SCALE;
+		double pWidth = p.getCollisionBox().getX() * SCALE;
+		double pHeight = p.getCollisionBox().getY() * SCALE;
 		double pX = p.getPos().getX() * SCALE + SCALE;
 		double pY = p.getPos().getZ() * SCALE + SCALE;
 		
@@ -76,8 +76,8 @@ public class LevelViewer extends Canvas {
 		
 		for(Entity e : level.getEntites()) {
 			g.setColor(new Color(e.getMinimapColor()));
-			double eWidth = e.getCollisionBox().getWidth() * SCALE;
-			double eHeight = e.getCollisionBox().getLength() * SCALE;
+			double eWidth = e.getCollisionBox().getX() * SCALE;
+			double eHeight = e.getCollisionBox().getY() * SCALE;
 			double eX = e.getPos().getX() * SCALE + SCALE;
 			double eY = e.getPos().getZ() * SCALE + SCALE;
 			g.fillRect((int) (eX - eWidth / 2.0), (int) (eY - eHeight / 2.0), (int) eWidth, (int) eHeight);

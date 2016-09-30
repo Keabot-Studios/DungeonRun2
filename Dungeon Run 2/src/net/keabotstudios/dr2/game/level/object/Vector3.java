@@ -1,6 +1,6 @@
 package net.keabotstudios.dr2.game.level.object;
 
-public class Position3D {
+public class Vector3 {
 	private double x, y, z;
 
 	public double getX() {
@@ -27,7 +27,7 @@ public class Position3D {
 		z = val;
 	}
 	
-	public Position3D(double x, double y, double z)
+	public Vector3(double x, double y, double z)
 	{
 		this.x = x;
 		this.y = y;

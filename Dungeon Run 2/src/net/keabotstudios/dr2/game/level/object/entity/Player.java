@@ -6,7 +6,7 @@ import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
-import net.keabotstudios.dr2.game.level.object.Position3D;
+import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.superin.Input;
@@ -27,7 +27,7 @@ public class Player extends Entity {
 	private GameSettings settings;
 
 	public Player(double x, double z, double rot, String name, GameSettings settings) {
-		super(new Position3D(x, 0, z), new CollisionBox(1, 1, 1.5), rot, name, Color.GREEN.getRGB());
+		super(new Vector3(x, 0, z), new CollisionBox(1, 1, 1.5), rot, name, Color.GREEN.getRGB());
 		this.settings = settings;
 	}
 
@@ -102,7 +102,7 @@ public class Player extends Entity {
 		}
 
 		if (settings.debugMode && input.getInputTapped("F1")) {
-			pos = new Position3D(0, 0, 0);
+			pos = new Vector3(0, 0, 0);
 			eyeHeight = 0;
 			xa = 0;
 			za = 0;
