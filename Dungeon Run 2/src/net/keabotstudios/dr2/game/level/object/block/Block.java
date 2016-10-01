@@ -51,7 +51,7 @@ public abstract class Block {
 	public abstract Render getTexture(int side, int y);
 	
 	public boolean collides(int wallX, int wallZ, Entity e) {
-		return CollisionBox.collides(collisionBox, new Vector3(wallX, 0, wallZ), e.getCollisionBox(), e.getPos());
+		return CollisionBox.collides(collisionBox, new Vector3(wallX + colOffsetX, 0, wallZ + colOffsetZ), e.getCollisionBox(), e.getPos());
 	}
 
 }
