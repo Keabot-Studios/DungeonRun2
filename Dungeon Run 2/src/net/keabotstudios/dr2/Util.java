@@ -1,6 +1,5 @@
 package net.keabotstudios.dr2;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;

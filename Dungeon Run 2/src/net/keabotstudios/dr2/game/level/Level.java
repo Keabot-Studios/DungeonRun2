@@ -1,11 +1,8 @@
 package net.keabotstudios.dr2.game.level;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import net.keabotstudios.dr2.game.GameSettings;
-import net.keabotstudios.dr2.game.level.object.Vector2;
-import net.keabotstudios.dr2.game.level.object.block.AnimatedBlock;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.block.EmptyBlock;
 import net.keabotstudios.dr2.game.level.object.block.SolidBlock;
@@ -13,14 +10,14 @@ import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.dr2.game.level.object.entity.TestEntity;
 import net.keabotstudios.dr2.game.level.randomgen.MapGenerator;
-import net.keabotstudios.dr2.gfx.Render;
+import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Input;
 
 public class Level {
 
 	private double ceilPos;
-	private Render floorTex, ceilTex;
+	private Bitmap floorTex, ceilTex;
 	private int renderDistance = 5000;
 
 	private final int width, height;
@@ -51,31 +48,40 @@ public class Level {
 		// Arrays.fill(blocks, new EmptyBlock());
 		// blocks[(width / 2 - 1) + (height / 2 - 1) * width] = new
 		// AnimatedBlock();
+		/*player = new Player(5, 5, 0, "Player", settings);
+		Arrays.fill(blocks, new EmptyBlock());
+		
+		blocks[(width / 2 - 1) + (height / 2 - 1) * width] = new AnimatedBlock();*/
 		entities.add(new TestEntity(5, 1, 5, "Test"));
+		
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
-		ceilPos = 4 * 8;
+		ceilPos = 8;
 
-		viewer = new LevelViewer(this);
-		viewer.update();
+		if (settings.debugMode) {
+			viewer = new LevelViewer(this);
+			viewer.update();
+		}
 	}
 
 	public Player getPlayer() {
 		return player;
 	}
 
-	double lpx = 0, lpz = 0, lpr;
+	double lpx = 0, lpz = 0, lpr = 9;
 
 	public void update(Input input) {
 		player.update(input, this);
 		for (Entity e : entities) {
 			e.update(input, this);
 		}
-		if (lpx != player.getPos().getX() || lpz != player.getPos().getZ() || lpr != player.getRotation()) {
-			viewer.update();
-			lpx = player.getPos().getX();
-			lpz = player.getPos().getZ();
-			lpr = player.getRotation();
+		if (viewer != null) {
+			if (lpx != player.getPos().getX() || lpz != player.getPos().getZ() || lpr != player.getRotation()) {
+				viewer.update();
+				lpx = player.getPos().getX();
+				lpz = player.getPos().getZ();
+				lpr = player.getRotation();
+			}
 		}
 	}
 
@@ -100,11 +106,11 @@ public class Level {
 		return ceilPos;
 	}
 
-	public Render getFloorTexture() {
+	public Bitmap getFloorTexture() {
 		return floorTex;
 	}
 
-	public Render getCeilTexture() {
+	public Bitmap getCeilTexture() {
 		return ceilTex;
 	}
 

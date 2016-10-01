@@ -52,7 +52,6 @@ public class GameSettings {
 		SSObject gameSettings = new SSObject("game");
 		gameSettings.addField(SSField.Boolean("mouseTurning", this.mouseTurning));
 		gameSettings.addField(SSField.Boolean("enableBobbing", this.enableBobbing));
-		gameSettings.addField(SSField.Boolean("debugMode", this.debugMode));
 		gameSettings.addField(SSField.Boolean("fullscreen", this.fullscreen));
 		gameSettings.addField(SSField.Boolean("useXInput", this.useXInput));
 		gameSettings.addField(SSField.Integer("windowSizeIndex", this.windowSizeIndex));
@@ -85,7 +84,6 @@ public class GameSettings {
 			SSObject gameSettings = settings.getObject("game");
 			this.mouseTurning = gameSettings.getField("mouseTurning").getBoolean();
 			this.enableBobbing = gameSettings.getField("enableBobbing").getBoolean();
-			this.debugMode = gameSettings.getField("debugMode").getBoolean();
 			this.fullscreen = gameSettings.getField("fullscreen").getBoolean();
 			this.useXInput = gameSettings.getField("useXInput").getBoolean();
 			this.windowSizeIndex = gameSettings.getField("windowSizeIndex").getInteger();

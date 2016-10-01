@@ -7,8 +7,7 @@ import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
 import net.keabotstudios.dr2.game.level.object.Vector3;
-import net.keabotstudios.dr2.game.level.object.block.Block;
-import net.keabotstudios.dr2.gfx.Render;
+import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.superin.Input;
 
 public class Player extends Entity {
@@ -136,7 +135,7 @@ public class Player extends Entity {
 		return moveSpeed;
 	}
 
-	public Render getTexture() {
+	public Bitmap getTexture() {
 		return null;
 	}
 	

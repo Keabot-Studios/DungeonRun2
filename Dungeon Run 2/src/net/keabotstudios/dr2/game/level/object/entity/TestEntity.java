@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
 import net.keabotstudios.dr2.game.level.object.Vector3;
-import net.keabotstudios.dr2.gfx.Render;
+import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 
 public class TestEntity extends Entity {
@@ -13,7 +13,7 @@ public class TestEntity extends Entity {
 		super(new Vector3(x, y, z), new CollisionBox(0.5, 0.5, 0.5), 0, name, Color.GRAY.getRGB());
 	}
 
-	public Render getTexture() {
+	public Bitmap getTexture() {
 		return Texture.animTest;
 	}
 
