@@ -7,13 +7,13 @@ import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
 
-public class Render3D extends Render {
+public class Bitmap3D extends Bitmap {
 
 	private double[] zBuffer;
 	private double[] zBufferWall;
 	private double xOff, yOff, zOff, rotOff;
 
-	public Render3D(int w, int h) {
+	public Bitmap3D(int w, int h) {
 		super(w, h);
 		zBuffer = new double[w * h];
 		zBufferWall = new double[w];
@@ -83,19 +83,19 @@ public class Render3D extends Render {
 				if (block.isOpaque()) {
 					for (int y = 0; y < height; y++) {
 						if (!north.isOpaque()) {
-							Render texture = block.getTexture((int) Direction.NORTH.getId(), height);
+							Bitmap texture = block.getTexture((int) Direction.NORTH.getId(), height);
 							renderWall(xBlock, zBlock, xBlock + 1, zBlock, y / 2.0, texture, l.getFloorPos());
 						}
 						if (!east.isOpaque()) {
-							Render texture = block.getTexture((int) Direction.EAST.getId(), height);
+							Bitmap texture = block.getTexture((int) Direction.EAST.getId(), height);
 							renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, y / 2.0, texture, l.getFloorPos());
 						}
 						if (!south.isOpaque()) {
-							Render texture = block.getTexture((int) Direction.SOUTH.getId(), height);
+							Bitmap texture = block.getTexture((int) Direction.SOUTH.getId(), height);
 							renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, y / 2.0, texture, 8);
 						}
 						if (!west.isOpaque()) {
-							Render texture = block.getTexture((int) Direction.WEST.getId(), height);
+							Bitmap texture = block.getTexture((int) Direction.WEST.getId(), height);
 							renderWall(xBlock, zBlock + 1, xBlock, zBlock, y / 2.0, texture, 8);
 						}
 					}
@@ -108,7 +108,7 @@ public class Render3D extends Render {
 		}
 	}
 	
-	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Render texture, double floorPos) {
+	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Bitmap texture, double floorPos) {
 		if (texture == null)
 			return;
 		double cos = Math.cos(rotOff);
@@ -206,7 +206,7 @@ public class Render3D extends Render {
 		}
 	}
 
-	public void renderSprite(Vector3 pos, Render texture, double scale, double floorPos) {
+	public void renderSprite(Vector3 pos, Bitmap texture, double scale, double floorPos) {
 		if (texture == null)
 			return;
 		double cos = Math.cos(rotOff);

@@ -3,7 +3,7 @@ package net.keabotstudios.dr2.game.level.object.entity;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
 import net.keabotstudios.dr2.game.level.object.Vector3;
-import net.keabotstudios.dr2.gfx.Render;
+import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.superin.Input;
 
 public abstract class Entity {
@@ -14,7 +14,7 @@ public abstract class Entity {
 	protected CollisionBox collisionBox;
 
 	protected String name;
-	protected Render texture;
+	protected Bitmap texture;
 	protected int minimapColor;
 
 	protected Entity(Vector3 pos, CollisionBox colBox, double rot, String name, int minimapColor) {
@@ -88,6 +88,6 @@ public abstract class Entity {
 		return !(left < eRight) && !(right > eLeft) && !(top < eBottom) && !(bottom > eTop) && !(front < eBack) && !(back > eFront);
 	}
 
-	public abstract Render getTexture();
+	public abstract Bitmap getTexture();
 
 }
