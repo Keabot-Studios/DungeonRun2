@@ -4,15 +4,15 @@ import java.awt.Color;
 
 import net.keabotstudios.dr2.game.GameInfo;
 
-public class AnimatedRender extends Render {
+public class AnimatedBitmap extends Bitmap {
 
-	private Render[] frames;
+	private Bitmap[] frames;
 	private int currentFrame;
 	private long delay;
 	
 	private boolean hasPlayedOnce = false, playOnce = false;
 	
-	public AnimatedRender(Render[] frames, long delay) {
+	public AnimatedBitmap(Bitmap[] frames, long delay) {
 		super(frames[0].width, frames[0].height);
 		this.frames = frames;
 		this.delay = delay;
@@ -23,7 +23,7 @@ public class AnimatedRender extends Render {
 		this.delay = delay;
 	}
 	
-	public void setFrames(Render[] frames) {
+	public void setFrames(Bitmap[] frames) {
 		this.frames = frames;
 	}
 	

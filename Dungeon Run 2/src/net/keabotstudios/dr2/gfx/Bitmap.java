@@ -4,11 +4,11 @@ import java.awt.Color;
 
 import net.keabotstudios.dr2.Util;
 
-public class Render {
+public class Bitmap {
 	public final int width, height;
 	public final int[] pixels;
 
-	public Render(int w, int h) {
+	public Bitmap(int w, int h) {
 		width = w;
 		height = h;
 		pixels = new int[w * h];
@@ -21,52 +21,75 @@ public class Render {
 	}
 
 	/**
-	 * Draws a Render to this Render object.
+	 * Draws a Bitmap to this Bitmap object.
 	 * 
-	 * @param render
-	 *            the Render object to draw.
+	 * @param bitmap
+	 *            the Bitmap object to draw.
 	 * @param xOffs
 	 *            the x offset to draw the Render at.
 	 * @param yOffs
 	 *            the y offset to draw the Render at.
 	 */
-	public void render(Render render, int xOffs, int yOffs) {
-		for (int y = 0; y < render.height; y++) {
+	public void render(Bitmap bitmap, int xOffs, int yOffs) {
+		for (int y = 0; y < bitmap.height; y++) {
 			int yPix = y + yOffs;
 			if (yPix < 0 || yPix >= height)
 				continue;
-			for (int x = 0; x < render.width; x++) {
+			for (int x = 0; x < bitmap.width; x++) {
 				int xPix = x + xOffs;
 				if (xPix < 0 || xPix >= width)
 					continue;
-				int color = render.pixels[x + y * render.width];
+				int color = bitmap.pixels[x + y * bitmap.width];
 				if (color > 0xFF000000)
 					pixels[xPix + yPix * width] = color;
 			}
 		}
 	}
 
-	public void render(Render render, int xOffs, int yOffs, float alpha) {
-		if (alpha >= 1.0f || alpha < 0.0f) {
-			render(render, xOffs, yOffs);
-		}
-		if (alpha == 0.0f)
+	/**
+	 * Draws a Bitmap to this Bitmap object.
+	 * 
+	 * @param bitmap
+	 *            the Bitmap object to draw.
+	 * @param xOffs
+	 *            the x offset to draw the Bitmap at.
+	 * @param yOffs
+	 *            the y offset to draw the Bitmap at.
+	 * @param alpha
+	 * 			  the alpha value to draw the Bitmap at.
+	 */
+	public void render(Bitmap bitmap, int xOffs, int yOffs, float alpha) {
+		if (alpha >= 1.0f) {
+			render(bitmap, xOffs, yOffs);
+		} else if (alpha <= 0.0f)
 			return;
-		for (int y = 0; y < render.height; y++) {
+		for (int y = 0; y < bitmap.height; y++) {
 			int yPix = y + yOffs;
 			if (yPix < 0 || yPix >= height)
 				continue;
-			for (int x = 0; x < render.width; x++) {
+			for (int x = 0; x < bitmap.width; x++) {
 				int xPix = x + xOffs;
 				if (xPix < 0 || xPix >= width)
 					continue;
-				int color = render.pixels[x + y * render.width];
+				int color = bitmap.pixels[x + y * bitmap.width];
 				int currentColor = pixels[xPix + yPix * width];
 				if (color > 0xFF000000) {
 					pixels[xPix + yPix * width] = Util.overlayAlpha(color, currentColor, alpha);
 				}
 			}
 		}
+	}
+	
+	public Bitmap getSubBitmap(int x, int y, int width, int height) {
+		if(x + width > this.width || x < 0) return null;
+		if(y + height > this.height || y < 0) return null;
+		Bitmap result = new Bitmap(width, height);
+		for(int px = 0; px < width; px++) {
+			for(int py = 0; py < height; py++) {
+				result.pixels[px + py * width] = pixels[(px + x) + (py + y) * this.width];
+			}
+		}
+		return result;
 	}
 
 	public int getAverageColor() {

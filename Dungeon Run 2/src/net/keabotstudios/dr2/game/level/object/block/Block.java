@@ -1,11 +1,9 @@
 package net.keabotstudios.dr2.game.level.object.block;
 
-import java.awt.Rectangle;
-
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
 import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
-import net.keabotstudios.dr2.gfx.Render;
+import net.keabotstudios.dr2.gfx.Bitmap;
 
 public abstract class Block {
 
@@ -48,9 +46,9 @@ public abstract class Block {
 		return opaque;
 	}
 
-	public abstract Render getTexture(int side, int y);
+	public abstract Bitmap getTexture(int side, int y);
 	
-	public boolean collides(int wallX, int wallZ, Entity e) {
+	public boolean collides(int wallX, int wallZ, Entity e, double dx, double dy) {
 		return CollisionBox.collides(collisionBox, new Vector3(wallX + colOffsetX, 0, wallZ + colOffsetZ), e.getCollisionBox(), e.getPos());
 	}
 

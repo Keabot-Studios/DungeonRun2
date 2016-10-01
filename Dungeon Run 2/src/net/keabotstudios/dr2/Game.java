@@ -24,8 +24,7 @@ import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.gamestate.GameStateManager;
 import net.keabotstudios.dr2.game.gamestate.LevelState;
 import net.keabotstudios.dr2.game.level.Level;
-import net.keabotstudios.dr2.game.level.object.block.Block;
-import net.keabotstudios.dr2.gfx.Render;
+import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Controllable;
 import net.keabotstudios.superin.Input;
@@ -46,7 +45,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 	private Level level;
 	private Logger logger;
 	private JFrame frame;
-	private Render screen;
+	private Bitmap screen;
 	private BufferedImage img;
 	private int[] pixels;
 	private int fullScreenImageWidth = 0;
@@ -62,7 +61,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		this.settings = settings;
 		Texture.load(this);
 		
-		screen = new Render(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
+		screen = new Bitmap(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = Util.convertToPixels(img);
 		
