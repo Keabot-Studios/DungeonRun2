@@ -2,7 +2,7 @@ package net.keabotstudios.dr2.gfx;
 
 import java.awt.Color;
 
-import net.keabotstudios.dr2.Util;
+import net.keabotstudios.dr2.Util.ColorUtil;
 
 public class Bitmap {
 	public final int width, height;
@@ -16,7 +16,7 @@ public class Bitmap {
 
 	public void clear(Color col) {
 		for (int i = 0; i < pixels.length; i++) {
-			pixels[i] = col.getRGB();
+			pixels[i] = ColorUtil.toARGBColor(col.getRGB());
 		}
 	}
 
@@ -40,7 +40,7 @@ public class Bitmap {
 				if (xPix < 0 || xPix >= width)
 					continue;
 				int color = bitmap.pixels[x + y * bitmap.width];
-				if (color > 0xFF000000)
+				if (ColorUtil.alpha(color) > 0)
 					pixels[xPix + yPix * width] = color;
 			}
 		}
@@ -56,11 +56,12 @@ public class Bitmap {
 	 * @param yOffs
 	 *            the y offset to draw the Bitmap at.
 	 * @param alpha
-	 * 			  the alpha value to draw the Bitmap at.
+	 *            the alpha value to draw the Bitmap at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, float alpha) {
 		if (alpha >= 1.0f) {
 			render(bitmap, xOffs, yOffs);
+			return;
 		} else if (alpha <= 0.0f)
 			return;
 		for (int y = 0; y < bitmap.height; y++) {
@@ -73,22 +74,89 @@ public class Bitmap {
 					continue;
 				int color = bitmap.pixels[x + y * bitmap.width];
 				int currentColor = pixels[xPix + yPix * width];
-				if (color > 0xFF000000) {
-					pixels[xPix + yPix * width] = Util.overlayAlpha(color, currentColor, alpha);
-				}
+				if (ColorUtil.alpha(color) > 0)
+					pixels[xPix + yPix * width] = ColorUtil.overlayAlpha(color, currentColor, alpha);
+			}
+		}
+	}
+
+	/**
+	 * Draws a Bitmap to this Bitmap object.
+	 * 
+	 * @param bitmap
+	 *            the Bitmap object to draw.
+	 * @param xOffs
+	 *            the x offset to draw the Bitmap at.
+	 * @param yOffs
+	 *            the y offset to draw the Bitmap at.
+	 * @param scale
+	 *            the scale to draw the Bitmap.
+	 */
+	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale) {
+		if (scale == 1) {
+			render(bitmap, xOffs, yOffs);
+			return;
+		} else if (scale < 1)
+			return;
+		for (int y = 0; y < bitmap.width * scale; y++) {
+			int yPix = y + yOffs;
+			if (yPix < 0 || yPix >= height)
+				continue;
+			for (int x = 0; x < bitmap.height * scale; x++) {
+				int xPix = x + xOffs;
+				if (xPix < 0 || xPix >= width)
+					continue;
+				int color = bitmap.pixels[(x / scale) + (y / scale) * bitmap.width];
+				if (ColorUtil.alpha(color) > 0)
+					pixels[xPix + yPix * width] = color;
 			}
 		}
 	}
 	
-	public Bitmap getSubBitmap(int x, int y, int width, int height) {
-		if(x + width > this.width || x < 0) return null;
-		if(y + height > this.height || y < 0) return null;
-		Bitmap result = new Bitmap(width, height);
-		for(int px = 0; px < width; px++) {
-			for(int py = 0; py < height; py++) {
-				result.pixels[px + py * width] = pixels[(px + x) + (py + y) * this.width];
+	/**
+	 * Draws a Bitmap to this Bitmap object.
+	 * 
+	 * @param bitmap
+	 *            the Bitmap object to draw.
+	 * @param xOffs
+	 *            the x offset to draw the Bitmap at.
+	 * @param yOffs
+	 *            the y offset to draw the Bitmap at.
+	 * @param scale
+	 *            the scale to draw the Bitmap.
+	 * @param alpha
+	 *            the alpha value to draw the Bitmap at.
+	 */
+	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale, float alpha) {
+		if (scale == 1) {
+			render(bitmap, xOffs, yOffs);
+			return;
+		} else if (scale < 1)
+				return;
+		if (alpha >= 1.0f) {
+			render(bitmap, xOffs, yOffs);
+			return;
+		} else if (alpha <= 0.0f)
+			return;
+		for (int y = 0; y < bitmap.width * scale; y++) {
+			int yPix = y + yOffs;
+			if (yPix < 0 || yPix >= height)
+				continue;
+			for (int x = 0; x < bitmap.height * scale; x++) {
+				int xPix = x + xOffs;
+				if (xPix < 0 || xPix >= width)
+					continue;
+				int color = bitmap.pixels[(x / scale) + (y / scale) * bitmap.width];
+				int currentColor = pixels[xPix + yPix * width];
+				if (ColorUtil.alpha(color) > 0)
+					pixels[xPix + yPix * width] = ColorUtil.overlayAlpha(color, currentColor, alpha);
 			}
 		}
+	}
+
+	public Bitmap getSubBitmap(int x, int y, int width, int height) {
+		Bitmap result = new Bitmap(width, height);
+		result.render(this, -x, -y);
 		return result;
 	}
 
