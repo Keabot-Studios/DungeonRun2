@@ -38,14 +38,19 @@ public class MapGenerator {
 		PointsToChange = new ArrayList<Vector2>();
 
 		mapGenRandom = new Random(1234);
+		System.out.println("Generating Rooms...");
 		GenerateRooms();
 
+		System.out.println("Filling Empty Tiles...");
 		FillEmptyTiles();
 
+		System.out.println("Generating Paths...");
 		GeneratePaths();
 
+		System.out.println("Generating Map...");
 		GenerateIntMap();
 
+		System.out.println("Setting Spawn Point...");
 		setSpawnPoint();
 	}
 
@@ -142,7 +147,7 @@ public class MapGenerator {
 	private void GeneratePath(DungeonRoom startingRoom) {
 		DungeonPathDigger digger = new DungeonPathDigger();
 		digger.addtileMapVertices(dungeonTileMap, vertices, PointsToChange);
-		DungeonRoom finishingRoom = findRoomWithConnections(startingRoom);		
+		DungeonRoom finishingRoom = findRoomWithConnections(startingRoom);
 		while (finishingRoom == null || finishingRoom.equals(startingRoom)) {
 			finishingRoom = dungeonRooms.get(mapGenRandom.nextInt(dungeonRooms.size()));
 		}
@@ -177,9 +182,10 @@ public class MapGenerator {
 				}
 			}
 		}
+		System.out.println("Path Gen: " + (connectionCount() / maxConnections()) + "%");
 	}
 
-	private int connectionCount() {
+	public int connectionCount() {
 		int i = 0;
 		for (DungeonRoom room : dungeonRooms) {
 			i += room.connectionsToOtherRooms;
@@ -187,8 +193,11 @@ public class MapGenerator {
 		return i;
 	}
 
+	public int maxConnections() {
+		return (int) (0.5f * Math.pow(dungeonRooms.size(), 2f) + dungeonRooms.size() / 2f);
+	}
+
 	private void GeneratePaths() {
-		int maxConnectionCount = (int) (0.7f * Math.pow(dungeonRooms.size(), 3) + Math.pow(0.9f, dungeonRooms.size()));
 
 		boolean allConnected = false;
 		while (!allConnected) {
@@ -201,7 +210,7 @@ public class MapGenerator {
 			}
 		}
 
-		while (connectionCount() < maxConnectionCount && mapGenRandom.nextInt(100) <= 95) {
+		while (connectionCount() < maxConnections() && mapGenRandom.nextInt(5) <= 3) {
 			List<DungeonRoom> rooms = new ArrayList<DungeonRoom>();
 			for (DungeonRoom room : dungeonRooms) {
 				rooms.add(room);
