@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.keabotstudios.dr2.game.GameSettings;
+import net.keabotstudios.dr2.game.level.object.Vector2;
 import net.keabotstudios.dr2.game.level.object.block.AnimatedBlock;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.block.EmptyBlock;
@@ -11,6 +12,7 @@ import net.keabotstudios.dr2.game.level.object.block.SolidBlock;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.dr2.game.level.object.entity.TestEntity;
+import net.keabotstudios.dr2.game.level.randomgen.MapGenerator;
 import net.keabotstudios.dr2.gfx.Render;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.superin.Input;
@@ -23,25 +25,37 @@ public class Level {
 
 	private final int width, height;
 	private Block[] blocks;
-
 	private Player player;
 
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
-	
+
 	private LevelViewer viewer;
 
 	public Level(int width, int height, GameSettings settings) {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[width * height];
-		player = new Player(5, 5, 0, "Player", settings);
-		Arrays.fill(blocks, new EmptyBlock());
-		blocks[(width / 2 - 1) + (height / 2 - 1) * width] = new AnimatedBlock();
+
+		MapGenerator gen = new MapGenerator(width, height, 4, 8, 15);
+		gen.GenerateMap();
+		
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+
+				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? new SolidBlock(Texture.brick1)
+						: new EmptyBlock());
+			}
+		}
+		player = new Player(gen.getSpawnPoint().getX() + .5, gen.getSpawnPoint().getY() + .5, 0, "Player", settings);
+
+		// Arrays.fill(blocks, new EmptyBlock());
+		// blocks[(width / 2 - 1) + (height / 2 - 1) * width] = new
+		// AnimatedBlock();
 		entities.add(new TestEntity(5, 1, 5, "Test"));
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
-		ceilPos = 4*8;
-		
+		ceilPos = 4 * 8;
+
 		viewer = new LevelViewer(this);
 		viewer.update();
 	}
@@ -49,7 +63,7 @@ public class Level {
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	double lpx = 0, lpz = 0, lpr;
 
 	public void update(Input input) {
@@ -57,7 +71,7 @@ public class Level {
 		for (Entity e : entities) {
 			e.update(input, this);
 		}
-		if(lpx != player.getPos().getX() || lpz != player.getPos().getZ() || lpr != player.getRotation()) {
+		if (lpx != player.getPos().getX() || lpz != player.getPos().getZ() || lpr != player.getRotation()) {
 			viewer.update();
 			lpx = player.getPos().getX();
 			lpz = player.getPos().getZ();

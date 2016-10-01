@@ -70,7 +70,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		input.setInputs(settings.controls);
 		
 		gsm = new GameStateManager(this);
-		level = new Level(20, 20, settings);
+		level = new Level(50, 50, settings);
 		gsm.setState(new LevelState(gsm, level));
 		
 		Dimension size = new Dimension(settings.windowWidth, settings.windowHeight);
