@@ -40,7 +40,41 @@ public class Bitmap {
 				if (xPix < 0 || xPix >= width)
 					continue;
 				int color = bitmap.pixels[x + y * bitmap.width];
-				if (color > 0xFF000000)
+				if (ColorUtil.alpha(color) > 0)
+					pixels[xPix + yPix * width] = color;
+			}
+		}
+	}
+	
+	/**
+	 * Draws a Bitmap to this Bitmap object.
+	 * 
+	 * @param bitmap
+	 *            the Bitmap object to draw.
+	 * @param xOffs
+	 *            the x offset to draw the Bitmap at.
+	 * @param yOffs
+	 *            the y offset to draw the Bitmap at.
+	 * @param alpha
+	 * 			  the alpha value to draw the Bitmap at.
+	 */
+	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale) {
+		if (scale < 1)
+			return;
+		else if(scale == 1) {
+			render(bitmap, xOffs, yOffs);
+			return;
+		}
+		for (int y = 0; y < bitmap.height * scale; y++) {
+			int yPix = y + yOffs;
+			if (yPix < 0 || yPix >= height)
+				continue;
+			for (int x = 0; x < bitmap.width * scale; x++) {
+				int xPix = x + xOffs;
+				if (xPix < 0 || xPix >= width)
+					continue;
+				int color = bitmap.pixels[(x / scale) + (y / scale) * bitmap.width];
+				if (ColorUtil.alpha(color) > 0)
 					pixels[xPix + yPix * width] = color;
 			}
 		}
@@ -73,9 +107,8 @@ public class Bitmap {
 					continue;
 				int color = bitmap.pixels[x + y * bitmap.width];
 				int currentColor = pixels[xPix + yPix * width];
-				if (color > 0xFF000000) {
+				if (ColorUtil.alpha(color) > 0)
 					pixels[xPix + yPix * width] = ColorUtil.overlayAlpha(color, currentColor, alpha);
-				}
 			}
 		}
 	}
@@ -100,14 +133,14 @@ public class Bitmap {
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				Color c = new Color(pixels[x + y * width]);
+				int c = pixels[x + y * width];
 				pixelCount++;
-				redBucket += c.getRed() / 255.0f;
-				greenBucket += c.getGreen() / 255.0f;
-				blueBucket += c.getBlue() / 255.0f;
+				redBucket += ColorUtil.red(c) / 255.0f;
+				greenBucket += ColorUtil.green(c) / 255.0f;
+				blueBucket += ColorUtil.blue(c) / 255.0f;
 			}
 		}
 
-		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount).getRGB();
+		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount, 1.0f).getRGB();
 	}
 }
