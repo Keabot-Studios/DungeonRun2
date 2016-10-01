@@ -26,7 +26,7 @@ public class Player extends Entity {
 	private GameSettings settings;
 
 	public Player(double x, double z, double rot, String name, GameSettings settings) {
-		super(new Vector3(x, 0, z), new CollisionBox(1, 1, 1.5), rot, name, Color.GREEN.getRGB());
+		super(new Vector3(x, 0, z), new CollisionBox(0.8, 0.8, 1.5), rot, name, Color.GREEN.getRGB());
 		this.settings = settings;
 	}
 
@@ -141,9 +141,9 @@ public class Player extends Entity {
 	
 	private boolean isFree(double x, double z, Level level) {
 		int x0 = (int) Math.floor(x + 0.5);
-		int x1 = (int) Math.floor(x + 0.5 - 1);
+		int x1 = (int) Math.floor(x + 0.5 - collisionBox.getX());
 		int z0 = (int) Math.floor(z + 0.5);
-		int z1 = (int) Math.floor(z + 0.5 - 1);
+		int z1 = (int) Math.floor(z + 0.5 - collisionBox.getY());
 		
 		if(level.getBlock(x0, z0).isSolid()) return false;
 		if(level.getBlock(x1, z0).isSolid()) return false;
