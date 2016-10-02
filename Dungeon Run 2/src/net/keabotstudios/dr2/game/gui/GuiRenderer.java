@@ -7,25 +7,25 @@ import net.keabotstudios.dr2.gfx.Texture;
 
 public class GuiRenderer {
 
-	private static HashMap<GuiColor, Bitmap[]> bar;
-	private static HashMap<GuiColor, Bitmap> wideBar;
-	private static Bitmap[] symbols;
+	private static HashMap<GuiBarColor, Bitmap[]> bar;
+	private static HashMap<GuiBarColor, Bitmap> wideBar;
+	private static Bitmap[] barSymbols;
 
-	public enum GuiColor {
+	public enum GuiBarColor {
 		ORANGE, RED, PURPLE, GRAY, BLUE, CYAN, BROWN, GREEN, BACKGROUND
 	}
 
 	public static final String guiSymbols = "0123456789$+=/. ";
 
 	public static void init() {
-		bar = new HashMap<GuiColor, Bitmap[]>();
-		wideBar = new HashMap<GuiColor, Bitmap>();
+		bar = new HashMap<GuiBarColor, Bitmap[]>();
+		wideBar = new HashMap<GuiBarColor, Bitmap>();
 		int rx0 = 0;
 		int rx1 = 0;
-		for (int i = 0; i < GuiColor.values().length; i++) {
-			GuiColor col = GuiColor.values()[i];
-			Bitmap[] colBitmaps = new Bitmap[(col == GuiColor.BACKGROUND ? 1 : 3)];
-			if (col == GuiColor.BACKGROUND) {
+		for (int i = 0; i < GuiBarColor.values().length; i++) {
+			GuiBarColor col = GuiBarColor.values()[i];
+			Bitmap[] colBitmaps = new Bitmap[(col == GuiBarColor.BACKGROUND ? 1 : 3)];
+			if (col == GuiBarColor.BACKGROUND) {
 				colBitmaps[0] = Texture.gui.getSubBitmap(rx0, 0, 8, 16);
 				rx0 += 8;
 			} else {
@@ -38,11 +38,11 @@ public class GuiRenderer {
 			}
 			bar.put(col, colBitmaps);
 		}
-		symbols = new Bitmap[guiSymbols.length()];
+		barSymbols = new Bitmap[guiSymbols.length()];
 		rx0 = 0;
 		int ry = 32;
 		for (int i = 0; i < guiSymbols.length(); i++) {
-			symbols[i] = Texture.gui.getSubBitmap(rx0 % Texture.gui.width, ry, 16, 16);
+			barSymbols[i] = Texture.gui.getSubBitmap(rx0 % Texture.gui.width, ry, 16, 16);
 			rx0 += 16;
 			if (rx0 >= Texture.gui.width) {
 				rx0 = 0;
@@ -51,8 +51,8 @@ public class GuiRenderer {
 		}
 		rx0 = 0;
 		ry = 64;
-		for (int i = 0; i < GuiColor.values().length; i++) {
-			GuiColor col = GuiColor.values()[i];
+		for (int i = 0; i < GuiBarColor.values().length; i++) {
+			GuiBarColor col = GuiBarColor.values()[i];
 			Bitmap colBitmap;
 			colBitmap = Texture.gui.getSubBitmap(rx0, ry, 16, 16);
 			rx0 += 16;
@@ -60,16 +60,16 @@ public class GuiRenderer {
 		}
 	}
 
-	public static void renderStatBar(Bitmap bitmap, String label, int x, int y, int size, int value, int maxValue, GuiColor color, GuiColor barColor, GuiColor labelColor) {
-		if (color == GuiColor.BACKGROUND) {
+	public static void renderStatBar(Bitmap bitmap, String label, int x, int y, int size, int value, int maxValue, GuiBarColor color, GuiBarColor barColor, GuiBarColor labelColor) {
+		if (color == GuiBarColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
 			System.exit(0);
 		}
-		if (barColor == GuiColor.BACKGROUND) {
+		if (barColor == GuiBarColor.BACKGROUND) {
 			System.err.println("Can't use " + barColor.toString() + " as a GuiBar color!");
 			System.exit(0);
 		}
-		if (labelColor == GuiColor.BACKGROUND) {
+		if (labelColor == GuiBarColor.BACKGROUND) {
 			System.err.println("Can't use " + labelColor.toString() + " as a GuiBar color!");
 			System.exit(0);
 		}
@@ -99,12 +99,12 @@ public class GuiRenderer {
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {
 			bitmap.render(wideBar.get(labelColor), rx, y, size);
-			bitmap.render(symbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
+			bitmap.render(barSymbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
 			rx += 16;
 		}
 		rx += 8 * size;
 		for (int i = 0; i < maxValue; i++) {
-			bitmap.render(bar.get(GuiColor.BACKGROUND)[0], rx, y, size);
+			bitmap.render(bar.get(GuiBarColor.BACKGROUND)[0], rx, y, size);
 			rx += 8 * size;
 		}
 		rx -= (maxValue * 8) * size;
@@ -115,16 +115,16 @@ public class GuiRenderer {
 		}
 	}
 
-	public static void renderStatText(Bitmap bitmap, String label, int x, int y, int size, String text, GuiColor color, GuiColor labelColor, GuiColor textColor) {
-		if (color == GuiColor.BACKGROUND) {
+	public static void renderStatText(Bitmap bitmap, String label, int x, int y, int size, String text, GuiBarColor color, GuiBarColor labelColor, GuiBarColor textColor) {
+		if (color == GuiBarColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
 			System.exit(0);
 		}
-		if (labelColor == GuiColor.BACKGROUND) {
+		if (labelColor == GuiBarColor.BACKGROUND) {
 			System.err.println("Can't use " + labelColor.toString() + " as a Gui label color!");
 			System.exit(0);
 		}
-		if (textColor == GuiColor.BACKGROUND) {
+		if (textColor == GuiBarColor.BACKGROUND) {
 			System.err.println("Can't use " + labelColor.toString() + " as a Gui text color!");
 			System.exit(0);
 		}
@@ -158,23 +158,23 @@ public class GuiRenderer {
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {
 			bitmap.render(wideBar.get(labelColor), rx, y, size);
-			bitmap.render(symbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
+			bitmap.render(barSymbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
 			rx += 16;
 		}
 		rx += 8 * size;
 		for (int i = 0; i < text.length(); i++) {
 			bitmap.render(wideBar.get(textColor), rx, y, size);
-			bitmap.render(symbols[guiSymbols.indexOf(text.charAt(i))], rx, y, size);
+			bitmap.render(barSymbols[guiSymbols.indexOf(text.charAt(i))], rx, y, size);
 			rx += 16;
 		}
 	}
 
-	public static void renderLabel(Bitmap bitmap, String label, int x, int y, int size, GuiColor color, GuiColor labelColor) {
-		if (color == GuiColor.BACKGROUND) {
+	public static void renderLabel(Bitmap bitmap, String label, int x, int y, int size, GuiBarColor color, GuiBarColor labelColor) {
+		if (color == GuiBarColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
 			System.exit(0);
 		}
-		if (labelColor == GuiColor.BACKGROUND) {
+		if (labelColor == GuiBarColor.BACKGROUND) {
 			System.err.println("Can't use " + labelColor.toString() + " as a Gui label color!");
 			System.exit(0);
 		}
@@ -202,7 +202,7 @@ public class GuiRenderer {
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {
 			bitmap.render(wideBar.get(labelColor), rx, y, size);
-			bitmap.render(symbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
+			bitmap.render(barSymbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
 			rx += 16;
 		}
 	}

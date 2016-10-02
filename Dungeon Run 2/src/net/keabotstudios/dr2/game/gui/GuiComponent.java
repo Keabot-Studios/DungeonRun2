@@ -1,6 +1,7 @@
 package net.keabotstudios.dr2.game.gui;
 
 import net.keabotstudios.dr2.gfx.Bitmap;
+import net.keabotstudios.superin.Input;
 
 public abstract class GuiComponent {
 
@@ -37,5 +38,6 @@ public abstract class GuiComponent {
 	}
 	
 	public abstract void render(Bitmap bitmap);
+	public abstract void update(Input input);
 
 }
