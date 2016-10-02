@@ -49,4 +49,44 @@ public class Vector2 {
 	public String toString() {
 		return "(" + x + ", " + y + ")";
 	}
+	
+	public Vector2 add(Vector2 other)
+	{
+		return new Vector2(this.x + other.x, this.y + other.y);
+	}
+	
+	public Vector2 subtract(Vector2 other)
+	{
+		return new Vector2(this.x - other.x, this.y - other.y);
+	}
+	
+	public Vector2 multiply(Vector2 other)
+	{
+		return new Vector2(this.x * other.x, this.y * other.y);
+	}
+	
+	public Vector2 multiply(double scale)
+	{
+		return new Vector2(this.x * scale, this.y * scale);
+	}
+	
+	public Vector2 divide(Vector2 other)
+	{
+		return new Vector2(this.x / other.x, this.y / other.y);
+	}
+	
+	public Vector2 divide(double scale)
+	{
+		return new Vector2(this.x / scale, this.y / scale);
+	}
+	
+	public Vector2 inverse()
+	{
+		return new Vector2(-this.x, -this.y);
+	}
+	
+	public double distance(Vector2 other)
+	{
+		return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
+	}
 }
