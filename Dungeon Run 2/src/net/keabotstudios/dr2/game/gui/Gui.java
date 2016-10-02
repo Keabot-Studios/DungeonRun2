@@ -8,16 +8,18 @@ import net.keabotstudios.dr2.gfx.Texture;
 public class Gui {
 
 	private static HashMap<GuiColor, Bitmap[]> bar;
+	private static HashMap<GuiColor, Bitmap> wideBar;
 	private static Bitmap[] symbols;
 
 	public enum GuiColor {
 		ORANGE, RED, PURPLE, GRAY, BLUE, CYAN, BROWN, GREEN, BACKGROUND
 	}
 
-	public static final String guiSymbols = "0123456789$+=/ ";
+	public static final String guiSymbols = "0123456789$+=/. ";
 
 	public static void init() {
 		bar = new HashMap<GuiColor, Bitmap[]>();
+		wideBar = new HashMap<GuiColor, Bitmap>();
 		int rx0 = 0;
 		int rx1 = 0;
 		for (int i = 0; i < GuiColor.values().length; i++) {
@@ -47,15 +49,29 @@ public class Gui {
 				ry += 16;
 			}
 		}
+		rx0 = 0;
+		ry = 64;
+		for (int i = 0; i < GuiColor.values().length; i++) {
+			GuiColor col = GuiColor.values()[i];
+			Bitmap colBitmap;
+			colBitmap = Texture.gui.getSubBitmap(rx0, ry, 16, 16);
+			rx0 += 16;
+			wideBar.put(col, colBitmap);
+		}
 	}
 
-	public static void renderGuiBar(Bitmap bitmap, String label, int x, int y, int size, int value, int maxValue, GuiColor color, GuiColor barColor) {
+	public static void renderGuiBar(Bitmap bitmap, String label, int x, int y, int size, int value, int maxValue,
+			GuiColor color, GuiColor barColor, GuiColor labelColor) {
 		if (color == GuiColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
 			System.exit(0);
 		}
 		if (barColor == GuiColor.BACKGROUND) {
-			System.err.println("Can't use " + color.toString() + " as a GuiBar color!");
+			System.err.println("Can't use " + barColor.toString() + " as a GuiBar color!");
+			System.exit(0);
+		}
+		if (labelColor == GuiColor.BACKGROUND) {
+			System.err.println("Can't use " + labelColor.toString() + " as a GuiBar color!");
 			System.exit(0);
 		}
 		if (value > maxValue)
@@ -83,8 +99,9 @@ public class Gui {
 		}
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {
+			bitmap.render(wideBar.get(labelColor), rx, y, size);
 			bitmap.render(symbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
-			rx += 16 * size;
+			rx += 16;
 		}
 		rx += 8 * size;
 		for (int i = 0; i < maxValue; i++) {
@@ -99,13 +116,13 @@ public class Gui {
 		}
 	}
 
-	public static void renderGuiText(Bitmap bitmap, String label, int x, int y, int size, String[] text, GuiColor color) {
+	public static void renderLabel(Bitmap bitmap, String label, int x, int y, int size, GuiColor color, GuiColor labelColor) {
 		if (color == GuiColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
 			System.exit(0);
 		}
-		if(text == null || text.length == 0) {
-			System.err.println("Can't use a null/empty string[] as GUI text!");
+		if (labelColor == GuiColor.BACKGROUND) {
+			System.err.println("Can't use " + labelColor.toString() + " as a GuiBar color!");
 			System.exit(0);
 		}
 		for (int i = 0; i < label.length(); i++) {
@@ -114,19 +131,8 @@ public class Gui {
 				System.exit(0);
 			}
 		}
-		
-		int guiLength = label.length() * 2 + 1 + 3;
-		for (int i = 0; i < text.length; i++) {
-			for (int j = 0; j < text[i].length(); j++) {
-				if (!guiSymbols.contains("" + text[i].charAt(j))) {
-					System.err.println("Can't use " + text[i] + " as GUI text, GUI does not contain: " + text[i].charAt(j));
-					System.exit(0);
-				}
-				guiLength += 2;
-			}
-			guiLength += 1;
-		}
-		
+
+		int guiLength = label.length() * 2 + 4;
 		int rx = x;
 		for (int i = 0; i < guiLength; i++) {
 			Bitmap part = null;
@@ -142,17 +148,9 @@ public class Gui {
 		}
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {
+			bitmap.render(wideBar.get(labelColor), rx, y, size);
 			bitmap.render(symbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
-			rx += 16 * size;
-		}
-		rx += 8 * size;
-		for (int i = 0; i < text.length; i++) {
-			for (int j = 0; j < text[i].length(); j++) {
-				bitmap.render(symbols[guiSymbols.indexOf(text[i].charAt(j))], rx, y, size);
-				rx += 16 * size;
-			}
-			rx += 8 * size;
+			rx += 16;
 		}
 	}
-
 }
