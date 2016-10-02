@@ -60,8 +60,7 @@ public class Gui {
 		}
 	}
 
-	public static void renderGuiBar(Bitmap bitmap, String label, int x, int y, int size, int value, int maxValue,
-			GuiColor color, GuiColor barColor, GuiColor labelColor) {
+	public static void renderStatBar(Bitmap bitmap, String label, int x, int y, int size, int value, int maxValue, GuiColor color, GuiColor barColor, GuiColor labelColor) {
 		if (color == GuiColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
 			System.exit(0);
@@ -116,18 +115,72 @@ public class Gui {
 		}
 	}
 
+	public static void renderStatText(Bitmap bitmap, String label, String text, int x, int y, int size, GuiColor color, GuiColor labelColor, GuiColor textColor) {
+		if (color == GuiColor.BACKGROUND) {
+			System.err.println("Can't use " + color.toString() + " as a Gui color!");
+			System.exit(0);
+		}
+		if (labelColor == GuiColor.BACKGROUND) {
+			System.err.println("Can't use " + labelColor.toString() + " as a Gui label color!");
+			System.exit(0);
+		}
+		if (textColor == GuiColor.BACKGROUND) {
+			System.err.println("Can't use " + labelColor.toString() + " as a Gui text color!");
+			System.exit(0);
+		}
+		for (int i = 0; i < label.length(); i++) {
+			if (!guiSymbols.contains("" + label.charAt(i))) {
+				System.err.println("Can't use " + label + " as Gui label, Gui does not contain: " + label.charAt(i));
+				System.exit(0);
+			}
+		}
+		for (int i = 0; i < text.length(); i++) {
+			if (!guiSymbols.contains("" + text.charAt(i))) {
+				System.err.println("Can't use " + text + " as Gui text, Gui does not contain: " + text.charAt(i));
+				System.exit(0);
+			}
+		}
+
+		int guiLength = label.length() * 2 + 1 + text.length() * 2 + 4;
+		int rx = x;
+		for (int i = 0; i < guiLength; i++) {
+			Bitmap part = null;
+			if (i == 0) {
+				part = bar.get(color)[0];
+			} else if (i == guiLength - 1) {
+				part = bar.get(color)[2];
+			} else {
+				part = bar.get(color)[1];
+			}
+			bitmap.render(part, rx, y, size);
+			rx += part.width * size;
+		}
+		rx = x + (6 + 8) * size;
+		for (int i = 0; i < label.length(); i++) {
+			bitmap.render(wideBar.get(labelColor), rx, y, size);
+			bitmap.render(symbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
+			rx += 16;
+		}
+		rx += 8 * size;
+		for (int i = 0; i < text.length(); i++) {
+			bitmap.render(wideBar.get(textColor), rx, y, size);
+			bitmap.render(symbols[guiSymbols.indexOf(text.charAt(i))], rx, y, size);
+			rx += 16;
+		}
+	}
+
 	public static void renderLabel(Bitmap bitmap, String label, int x, int y, int size, GuiColor color, GuiColor labelColor) {
 		if (color == GuiColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
 			System.exit(0);
 		}
 		if (labelColor == GuiColor.BACKGROUND) {
-			System.err.println("Can't use " + labelColor.toString() + " as a GuiBar color!");
+			System.err.println("Can't use " + labelColor.toString() + " as a Gui label color!");
 			System.exit(0);
 		}
 		for (int i = 0; i < label.length(); i++) {
 			if (!guiSymbols.contains("" + label.charAt(i))) {
-				System.err.println("Can't use " + label + " as a GUI label, GUI does not contain: " + label.charAt(i));
+				System.err.println("Can't use " + label + " as Gui label, Gui does not contain: " + label.charAt(i));
 				System.exit(0);
 			}
 		}
@@ -153,4 +206,5 @@ public class Gui {
 			rx += 16;
 		}
 	}
+
 }
