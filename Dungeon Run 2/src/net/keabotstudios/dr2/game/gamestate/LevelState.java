@@ -9,7 +9,7 @@ import net.keabotstudios.dr2.gfx.Bitmap3D;
 import net.keabotstudios.superin.Input;
 
 public class LevelState extends GameState {
-	
+
 	private Level level;
 	private Bitmap3D bitmap3d;
 	private int testNum;
@@ -26,9 +26,12 @@ public class LevelState extends GameState {
 		bitmap.render(bitmap3d, 0, 0);
 		int guiX = -6;
 		int guiY = GameInfo.GAME_HEIGHT - (16 * 2) - 8;
-		Gui.renderGuiBar(bitmap, "+", guiX, guiY, 1, (int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.RED);
-		Gui.renderGuiBar(bitmap, "$", guiX, guiY + 20, 1, (int) -Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.GREEN);
-		Gui.renderLabel(bitmap, Integer.toString(testNum), guiX, guiY - 20, 1, GuiColor.GRAY, GuiColor.GREEN);
+		Gui.renderGuiBar(bitmap, "+", guiX, guiY, 1, (int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20,
+				GuiColor.ORANGE, GuiColor.RED);
+		Gui.renderGuiBar(bitmap, "$", guiX, guiY + 20, 1, (int) -Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10,
+				20, GuiColor.ORANGE, GuiColor.GREEN);
+		Gui.renderLabel(bitmap, "+" + Integer.toString(testNum) + "/" + Integer.toString((int) Math.pow(testNum, 1.01)), guiX,
+				guiY - 20, 1, GuiColor.GRAY);
 	}
 
 	public void update(Input input) {

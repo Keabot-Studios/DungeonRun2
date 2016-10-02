@@ -98,13 +98,9 @@ public class Gui {
 	}
 
 	public static void renderLabel(Bitmap bitmap, String label, int x, int y, int size,
-			GuiColor color, GuiColor barColor) {
+			GuiColor color) {
 		if (color == GuiColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
-			System.exit(0);
-		}
-		if (barColor == GuiColor.BACKGROUND) {
-			System.err.println("Can't use " + color.toString() + " as a GuiBar color!");
 			System.exit(0);
 		}
 		for (int i = 0; i < label.length(); i++) {
@@ -114,7 +110,7 @@ public class Gui {
 			}
 		}
 
-		int guiLength = label.length() * 2 + 1 + 4;
+		int guiLength = label.length() * 2 + 4;
 		int rx = x;
 		for (int i = 0; i < guiLength; i++) {
 			Bitmap part = null;
