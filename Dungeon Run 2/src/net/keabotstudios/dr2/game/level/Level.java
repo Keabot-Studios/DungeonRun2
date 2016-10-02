@@ -34,7 +34,7 @@ public class Level {
 		this.blocks = new Block[width * height];
 
 		MapGenerator gen = new MapGenerator(width, height, 8, 8, 15);
-		gen.GenerateMap();
+		gen.generateMap();
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {

@@ -30,7 +30,7 @@ public class MapGenerator {
 		this.maxRoomSize = maxRoomSize;
 	}
 
-	public void GenerateMap() {
+	public void generateMap() {
 		tileMap = new int[mapWidth][mapHeight];
 		dungeonTileMap = new DungeonTile[mapWidth][mapHeight];
 		dungeonRooms = new ArrayList<DungeonRoom>();
@@ -39,22 +39,22 @@ public class MapGenerator {
 
 		mapGenRandom = new Random(1234);
 		System.out.println("Generating Rooms...");
-		GenerateRooms();
+		generateRooms();
 
 		System.out.println("Filling Empty Tiles...");
-		FillEmptyTiles();
+		fillEmptyTiles();
 
 		System.out.println("Generating Paths...");
-		GeneratePaths();
+		generatePaths();
 
 		System.out.println("Generating Map...");
-		GenerateIntMap();
+		generateIntMap();
 
 		System.out.println("Setting Spawn Point...");
 		setSpawnPoint();
 	}
 
-	private void GenerateIntMap() {
+	private void generateIntMap() {
 		for (int x = 0; x < mapWidth; x++) {
 			for (int y = 0; y < mapHeight; y++) {
 				tileMap[x][y] = dungeonTileMap[x][y].getTileID();
@@ -62,7 +62,7 @@ public class MapGenerator {
 		}
 	}
 
-	private void FillEmptyTiles() {
+	private void fillEmptyTiles() {
 		for (int x = 0; x < mapWidth; x++) {
 			for (int y = 0; y < mapHeight; y++) {
 				if (dungeonTileMap[x][y] == null) {
@@ -73,13 +73,13 @@ public class MapGenerator {
 		}
 	}
 
-	private void GenerateRooms() {
+	private void generateRooms() {
 		for (int i = 0; i < roomCount; i++) {
-			GenerateRoom();
+			generateRoom();
 		}
 	}
 
-	private void GenerateRoom() {
+	private void generateRoom() {
 		int tries = 0;
 
 		DungeonRoom newRoom = new DungeonRoom();
@@ -144,7 +144,7 @@ public class MapGenerator {
 		return null;
 	}
 
-	private void GeneratePath(DungeonRoom startingRoom) {
+	private void generatePath(DungeonRoom startingRoom) {
 		DungeonPathDigger digger = new DungeonPathDigger();
 		digger.addtileMapVertices(dungeonTileMap, vertices, PointsToChange);
 		DungeonRoom finishingRoom = findRoomWithConnections(startingRoom);
@@ -197,7 +197,7 @@ public class MapGenerator {
 		return (int) (0.5f * Math.pow(dungeonRooms.size(), 2f) + dungeonRooms.size() / 2f);
 	}
 
-	private void GeneratePaths() {
+	private void generatePaths() {
 
 		boolean allConnected = false;
 		while (!allConnected) {
@@ -205,7 +205,7 @@ public class MapGenerator {
 			for (DungeonRoom room : dungeonRooms) {
 				if (room.connectionsToOtherRooms == 0) {
 					allConnected = false;
-					GeneratePath(room);
+					generatePath(room);
 				}
 			}
 		}
@@ -216,7 +216,7 @@ public class MapGenerator {
 				rooms.add(room);
 			}
 
-			GeneratePath(rooms.get(mapGenRandom.nextInt(rooms.size())));
+			generatePath(rooms.get(mapGenRandom.nextInt(rooms.size())));
 		}
 	}
 

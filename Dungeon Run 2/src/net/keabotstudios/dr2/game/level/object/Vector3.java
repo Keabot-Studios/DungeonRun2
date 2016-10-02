@@ -59,4 +59,36 @@ public class Vector3 {
 	public String toString() {
 		return "(" + x + ", " + y + ", " + z + ")";
 	}
+
+	public Vector3 add(Vector3 other) {
+		return new Vector3(this.x + other.x, this.y + other.y, this.z + other.z);
+	}
+
+	public Vector3 subtract(Vector3 other) {
+		return new Vector3(this.x - other.x, this.y - other.y, this.z - other.z);
+	}
+
+	public Vector3 multiply(Vector3 other) {
+		return new Vector3(this.x * other.x, this.y * other.y, this.z * other.z);
+	}
+
+	public Vector3 multiply(double scale) {
+		return new Vector3(this.x * scale, this.y * scale, this.z * scale);
+	}
+
+	public Vector3 divide(Vector3 other) {
+		return new Vector3(this.x / other.x, this.y / other.y, this.z / other.z);
+	}
+
+	public Vector3 divide(double scale) {
+		return new Vector3(this.x / scale, this.y / scale, this.z / scale);
+	}
+
+	public Vector3 inverse() {
+		return new Vector3(-this.x, -this.y, -this.z);
+	}
+
+	public double distance(Vector3 other) {
+		return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2) + Math.pow(this.z - other.z, 2));
+	}
 }
