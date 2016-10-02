@@ -25,7 +25,7 @@ public class LevelState extends GameState {
 		bitmap.render(bitmap3d, 0, 0);
 		int guiX = -6;
 		int guiY = (int) (GameInfo.GAME_HEIGHT - (16.0 * 2.0) - 8.0 - level.getPlayer().getEyeHeight() * 3.0);
-		if(guiY > GameInfo.GAME_HEIGHT - 38)
+		if (guiY > GameInfo.GAME_HEIGHT - 38)
 			guiY = GameInfo.GAME_HEIGHT - 38;
 		GuiRenderer.renderStatBar(bitmap, "+", guiX, guiY, 1, (int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiBarColor.ORANGE, GuiBarColor.RED, GuiBarColor.RED);
 		GuiRenderer.renderStatBar(bitmap, "$", guiX, guiY + 20, 1, (int) -Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiBarColor.ORANGE, GuiBarColor.GREEN, GuiBarColor.GREEN);

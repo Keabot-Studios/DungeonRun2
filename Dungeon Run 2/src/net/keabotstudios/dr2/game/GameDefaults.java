@@ -7,7 +7,7 @@ import net.java.games.input.Component;
 import net.keabotstudios.superin.InputAxis;
 
 public class GameDefaults {
-	
+
 	public static final boolean DEBUG_MODE = false, MOUSE_TURNING = true, FULLSCREEN = false, ENABLE_BOBBING = true, USE_XINPUT = true;
 	private static final float DEADZONE = 0.125f;
 	public static InputAxis[] CONTROLS = new InputAxis[] {

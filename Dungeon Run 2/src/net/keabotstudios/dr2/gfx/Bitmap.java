@@ -45,7 +45,7 @@ public class Bitmap {
 			}
 		}
 	}
-	
+
 	/**
 	 * Draws a Bitmap to this Bitmap object.
 	 * 
@@ -56,12 +56,12 @@ public class Bitmap {
 	 * @param yOffs
 	 *            the y offset to draw the Bitmap at.
 	 * @param alpha
-	 * 			  the alpha value to draw the Bitmap at.
+	 *            the alpha value to draw the Bitmap at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale) {
 		if (scale < 1)
 			return;
-		else if(scale == 1) {
+		else if (scale == 1) {
 			render(bitmap, xOffs, yOffs);
 			return;
 		}
@@ -90,7 +90,7 @@ public class Bitmap {
 	 * @param yOffs
 	 *            the y offset to draw the Bitmap at.
 	 * @param alpha
-	 * 			  the alpha value to draw the Bitmap at.
+	 *            the alpha value to draw the Bitmap at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, float alpha) {
 		if (alpha >= 1.0f) {
@@ -112,13 +112,15 @@ public class Bitmap {
 			}
 		}
 	}
-	
+
 	public Bitmap getSubBitmap(int x, int y, int width, int height) {
-		if(x + width > this.width || x < 0) return null;
-		if(y + height > this.height || y < 0) return null;
+		if (x + width > this.width || x < 0)
+			return null;
+		if (y + height > this.height || y < 0)
+			return null;
 		Bitmap result = new Bitmap(width, height);
-		for(int px = 0; px < width; px++) {
-			for(int py = 0; py < height; py++) {
+		for (int px = 0; px < width; px++) {
+			for (int py = 0; py < height; py++) {
 				result.pixels[px + py * width] = pixels[(px + x) + (py + y) * this.width];
 			}
 		}

@@ -66,31 +66,32 @@ public class Util {
 			int oBlue = (int) ((((topColor >> 0) & 0xFF) * topAlpha) + (((bottomColor >> 0) & 0xFF) * (1.0f - topAlpha)));
 			return ((oRed & 0x0ff) << 16) | ((oGreen & 0x0ff) << 8) | (oBlue & 0x0ff);
 		}
-		
+
 		public static Color toARGBColor(Color rgbCol) {
 			return new Color(rgbCol.getRGB(), false);
 		}
-		
+
 		public static int toARGBColor(int rgbCol) {
 			return new Color(rgbCol, false).getRGB();
 		}
-		
+
 		public static int alpha(int argbCol) {
-			return (argbCol>>24)&0xFF;
+			return (argbCol >> 24) & 0xFF;
 		}
 
 		public static int red(int argbCol) {
-			return (argbCol>>16)&0xFF;
+			return (argbCol >> 16) & 0xFF;
 		}
 
 		public static int green(int argbCol) {
-			return (argbCol>>8)&0xFF;
+			return (argbCol >> 8) & 0xFF;
 		}
+
 		public static int blue(int argbCol) {
-			return (argbCol)&0xFF;
+			return (argbCol) & 0xFF;
 		}
 	}
-	
+
 	public static class NetUtil {
 		private static final String IP_PORT_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." + "([01]?\\d\\d?|2[0-4]\\d|25[0-5]):" + "([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
 		private static final Pattern PATTERN;
@@ -115,7 +116,7 @@ public class Util {
 			}
 			return DEFAULT_PORT;
 		}
-		
+
 		public static String getIpFromIpString(String ip) {
 			if (NetUtil.isIpStringValid(ip)) {
 				String[] arr = ip.split(":");

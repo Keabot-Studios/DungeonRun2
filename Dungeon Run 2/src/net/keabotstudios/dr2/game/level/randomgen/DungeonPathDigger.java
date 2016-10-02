@@ -11,8 +11,7 @@ public class DungeonPathDigger {
 
 	Map<Vector2, Map<Vector2, Integer>> vertices = new HashMap<Vector2, Map<Vector2, Integer>>();
 
-	public void addtileMapVertices(DungeonTile[][] tileMap, Map<Vector2, Map<Vector2, Integer>> oldVertices,
-			List<Vector2> changes) {
+	public void addtileMapVertices(DungeonTile[][] tileMap, Map<Vector2, Map<Vector2, Integer>> oldVertices, List<Vector2> changes) {
 		if (oldVertices == null || oldVertices.size() == 0) {
 			for (int y = 0; y < tileMap[0].length; y++) {
 				for (int x = 0; x < tileMap.length; x++) {

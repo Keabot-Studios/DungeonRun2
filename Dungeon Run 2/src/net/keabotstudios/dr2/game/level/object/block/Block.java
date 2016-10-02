@@ -12,7 +12,7 @@ public abstract class Block {
 	protected double colOffsetX, colOffsetZ;
 
 	protected CollisionBox collisionBox;
-	
+
 	protected Block(int id, boolean solid, boolean opaque, int minimapColor) {
 		this.id = id;
 		this.solid = solid;
@@ -47,7 +47,7 @@ public abstract class Block {
 	}
 
 	public abstract Bitmap getTexture(int side, int y);
-	
+
 	public boolean collides(int wallX, int wallZ, Entity e, double dx, double dy) {
 		return CollisionBox.collides(collisionBox, new Vector3(wallX + colOffsetX, 0, wallZ + colOffsetZ), e.getCollisionBox(), e.getPos());
 	}

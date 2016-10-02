@@ -17,7 +17,7 @@ public class GameSettings {
 	public InputAxis[] controls;
 	public int windowSizeIndex;
 	public int windowWidth, windowHeight;
-	
+
 	public GameSettings() {
 		controls = GameDefaults.CONTROLS.clone();
 		windowSizeIndex = GameDefaults.WINDOW_INDEX;
@@ -27,7 +27,7 @@ public class GameSettings {
 		enableBobbing = GameDefaults.ENABLE_BOBBING;
 		useXInput = GameDefaults.USE_XINPUT;
 	}
-	
+
 	public void updateWindowSize() {
 		windowWidth = GameInfo.WINDOW_WIDTHS[windowSizeIndex];
 		windowHeight = (int) (windowWidth * GameInfo.ASPECT_RATIO);
@@ -48,7 +48,7 @@ public class GameSettings {
 
 	public boolean writeSettings() {
 		SSDatabase settings = new SSDatabase("settings");
-		
+
 		SSObject gameSettings = new SSObject("game");
 		gameSettings.addField(SSField.Boolean("mouseTurning", this.mouseTurning));
 		gameSettings.addField(SSField.Boolean("enableBobbing", this.enableBobbing));
@@ -56,7 +56,7 @@ public class GameSettings {
 		gameSettings.addField(SSField.Boolean("useXInput", this.useXInput));
 		gameSettings.addField(SSField.Integer("windowSizeIndex", this.windowSizeIndex));
 		settings.addObject(gameSettings);
-		
+
 		String filePath = GameInfo.getAppdataFolderPath() + File.separator + "settings" + SSDatabase.FILE_EXTENTION;
 		File file = new File(filePath);
 		file.getParentFile().mkdirs();
@@ -80,7 +80,7 @@ public class GameSettings {
 		try {
 			byte[] data = Files.readAllBytes(file.toPath());
 			SSDatabase settings = SSDatabase.Deserialize(data);
-			
+
 			SSObject gameSettings = settings.getObject("game");
 			this.mouseTurning = gameSettings.getField("mouseTurning").getBoolean();
 			this.enableBobbing = gameSettings.getField("enableBobbing").getBoolean();
@@ -88,7 +88,7 @@ public class GameSettings {
 			this.useXInput = gameSettings.getField("useXInput").getBoolean();
 			this.windowSizeIndex = gameSettings.getField("windowSizeIndex").getInteger();
 			this.updateWindowSize();
-			
+
 			System.out.println("Loaded settings successfully from: " + filePath);
 			return true;
 		} catch (IOException e) {
@@ -96,7 +96,7 @@ public class GameSettings {
 			return false;
 		}
 	}
-	
+
 	public GameSettings clone() {
 		GameSettings copy = new GameSettings();
 		copy.debugMode = debugMode;

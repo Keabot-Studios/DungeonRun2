@@ -182,7 +182,7 @@ public class MapGenerator {
 				}
 			}
 		}
-		System.out.println("Path Gen: " + (int)((float)connectionCount() / (float)maxConnections() * 100f) + "%");
+		System.out.println("Path Gen: " + (int) ((float) connectionCount() / (float) maxConnections() * 100f) + "%");
 	}
 
 	public int connectionCount() {

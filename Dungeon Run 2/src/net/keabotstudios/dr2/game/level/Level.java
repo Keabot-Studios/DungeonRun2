@@ -43,7 +43,7 @@ public class Level {
 			}
 		}
 		player = new Player(gen.getSpawnPoint().getX() + .5, gen.getSpawnPoint().getY() + .5, 0, "Player", settings);
-		
+
 		/*
 		 * Arrays.fill(blocks, new EmptyBlock()); blocks[(width / 2 - 1) +
 		 * (height / 2 - 1) * width] = new AnimatedBlock(); player = new
@@ -53,7 +53,7 @@ public class Level {
 		 * blocks[(width / 2 - 1) + (height / 2 - 1) * width] = new
 		 * AnimatedBlock();
 		 */
-		
+
 		entities.add(new TestEntity(5, 1, 5, "Test"));
 
 		floorTex = Texture.brick1Floor;

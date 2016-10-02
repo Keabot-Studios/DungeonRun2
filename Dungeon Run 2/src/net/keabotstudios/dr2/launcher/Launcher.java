@@ -26,12 +26,12 @@ import net.keabotstudios.superlog.Logger;
 import net.keabotstudios.superlog.Logger.LogLevel;
 
 public class Launcher {
-	
+
 	private JFrame frame;
 	private JPanel window = new JPanel();
 	private JButton play, options, help, quit;
 	private GameSettings settings;
-	
+
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
@@ -42,7 +42,7 @@ public class Launcher {
 		GameSettings settings = new GameSettings();
 		settings.updateSettingsFromFile();
 		Launcher launcher = new Launcher(l, settings);
-		if(args.length > 0) {
+		if (args.length > 0) {
 			List<String> argsList = Arrays.asList(args);
 			if (argsList.contains("debug")) {
 				settings.debugMode = true;
@@ -52,7 +52,7 @@ public class Launcher {
 		}
 		launcher.frame.setVisible(true);
 	}
-	
+
 	public Launcher(Logger l, GameSettings settings) {
 		this.settings = settings;
 		frame = new JFrame();
@@ -67,16 +67,27 @@ public class Launcher {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 	}
-	
+
 	private void content(Logger l) {
 		JPanel btnPanel = new JPanel();
 		btnPanel.setBackground(Color.BLACK);
 		window.add(btnPanel, BorderLayout.SOUTH);
 		GridBagLayout gbl_btnPanel = new GridBagLayout();
-		gbl_btnPanel.columnWidths = new int[] {5, 100, 5};
-		gbl_btnPanel.rowHeights = new int[] {5, 20, 20, 20, 20, 5};
+		gbl_btnPanel.columnWidths = new int[] {
+				5,
+				100,
+				5
+		};
+		gbl_btnPanel.rowHeights = new int[] {
+				5,
+				20,
+				20,
+				20,
+				20,
+				5
+		};
 		btnPanel.setLayout(gbl_btnPanel);
-		
+
 		play = new JButton("Play Game");
 		play.setBackground(Color.WHITE);
 		GridBagConstraints gbc_playSingle = new GridBagConstraints();
@@ -91,7 +102,7 @@ public class Launcher {
 				frame.dispose();
 			}
 		});
-		
+
 		options = new JButton("Options");
 		options.setBackground(Color.WHITE);
 		GridBagConstraints gbc_options = new GridBagConstraints();
@@ -105,7 +116,7 @@ public class Launcher {
 				settings = OptionsMenu.showOptions(frame, settings);
 			}
 		});
-		
+
 		help = new JButton("Help");
 		help.setBackground(Color.WHITE);
 		GridBagConstraints gbc_help = new GridBagConstraints();
@@ -119,7 +130,7 @@ public class Launcher {
 				// TODO
 			}
 		});
-		
+
 		quit = new JButton("Quit");
 		quit.setBackground(Color.WHITE);
 		GridBagConstraints gbc_quit = new GridBagConstraints();
@@ -133,12 +144,12 @@ public class Launcher {
 				System.exit(0);
 			}
 		});
-		
+
 		JPanel picPanel = new JPanel();
 		picPanel.setBackground(Color.BLACK);
 		window.add(picPanel, BorderLayout.CENTER);
 		picPanel.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel picture = new JLabel("");
 		picture.setBackground(Color.BLACK);
 		picPanel.add(picture);

@@ -54,7 +54,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 	private int fullScreenImageHeight = 0;
 	private int fullScreenXOff = 0;
 	private int fullScreenYOff = 0;
-	
+
 	private GameStateManager gsm;
 
 	public Game(Logger logger, GameSettings settings) {
@@ -63,26 +63,26 @@ public class Game extends Canvas implements Runnable, Controllable {
 		this.settings = settings;
 		Texture.load(this);
 		GuiRenderer.init();
-		
+
 		screen = new Bitmap(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		pixels = Util.convertToPixels(img);
-		
+
 		input = new Input(this, settings.useXInput);
 		input.setInputs(settings.controls);
-		
+
 		gsm = new GameStateManager(this);
 		level = new Level(50, 50, settings);
 		gsm.setState(new LevelState(gsm, level));
-		
+
 		Dimension size = new Dimension(settings.windowWidth, settings.windowHeight);
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
-		
+
 		createJFrame();
-		
-		if(settings.fullscreen) {
+
+		if (settings.fullscreen) {
 			GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 			int screenWidth = gd.getDisplayMode().getWidth();
 			int screenHeight = gd.getDisplayMode().getHeight();
@@ -96,7 +96,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 			fullScreenXOff = (int) ((screenWidth - fullScreenImageWidth) / 2.0f);
 			fullScreenYOff = (int) ((screenHeight - fullScreenImageHeight) / 2.0f);
 		}
-		
+
 		frame.setVisible(true);
 		requestFocus();
 		start();
@@ -173,7 +173,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		}
 		screen.clear(ColorUtil.toARGBColor(Color.BLACK));
 		gsm.render(screen);
-		
+
 		for (int i = 0; i < screen.width * screen.height; i++) {
 			pixels[i] = screen.pixels[i];
 		}
@@ -181,12 +181,12 @@ public class Game extends Canvas implements Runnable, Controllable {
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		if(settings.fullscreen) {
+		if (settings.fullscreen) {
 			g.drawImage(img, fullScreenXOff, fullScreenYOff, fullScreenImageWidth, fullScreenImageHeight, null);
 		} else {
 			g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
 		}
-		
+
 		if (settings.debugMode) {
 			int debugX = fullScreenXOff + 2;
 			int debugY = 12;
@@ -220,7 +220,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 	public void createJFrame() {
 		frame = new JFrame();
 		frame.add(this);
-		if(settings.fullscreen) {
+		if (settings.fullscreen) {
 			frame.setUndecorated(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		} else {

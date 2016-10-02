@@ -5,7 +5,7 @@ import net.keabotstudios.dr2.gfx.Bitmap;
 public class SolidBlock extends Block {
 
 	private final Bitmap texture;
-	
+
 	public SolidBlock(Bitmap texture) {
 		super(1, true, true, texture.getAverageColor());
 		this.texture = texture;

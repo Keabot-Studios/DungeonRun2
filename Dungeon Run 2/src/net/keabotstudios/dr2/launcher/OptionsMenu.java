@@ -61,10 +61,32 @@ public class OptionsMenu extends JDialog {
 		JPanel buttonPanel = new JPanel();
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		GridBagLayout gbl_buttonPanel = new GridBagLayout();
-		gbl_buttonPanel.columnWidths = new int[] { 10, 70, 50, 70, 70, 4 };
-		gbl_buttonPanel.rowHeights = new int[] { 5, 23, 5 };
-		gbl_buttonPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_buttonPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_buttonPanel.columnWidths = new int[] {
+				10,
+				70,
+				50,
+				70,
+				70,
+				4
+		};
+		gbl_buttonPanel.rowHeights = new int[] {
+				5,
+				23,
+				5
+		};
+		gbl_buttonPanel.columnWeights = new double[] {
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				Double.MIN_VALUE
+		};
+		gbl_buttonPanel.rowWeights = new double[] {
+				0.0,
+				0.0,
+				Double.MIN_VALUE
+		};
 		buttonPanel.setLayout(gbl_buttonPanel);
 
 		btnCancel = new JButton("Cancel");
@@ -114,10 +136,31 @@ public class OptionsMenu extends JDialog {
 		optionsPane.addTab("Graphics", null, graphicsPanel, null);
 		optionsPane.setEnabledAt(0, true);
 		GridBagLayout gbl_graphicsPanel = new GridBagLayout();
-		gbl_graphicsPanel.columnWidths = new int[] { 10, 50, 20, 50, 10 };
-		gbl_graphicsPanel.rowHeights = new int[] { 5, 15, 5, 10, 5 };
-		gbl_graphicsPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0 };
-		gbl_graphicsPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_graphicsPanel.columnWidths = new int[] {
+				10,
+				50,
+				20,
+				50,
+				10
+		};
+		gbl_graphicsPanel.rowHeights = new int[] {
+				5,
+				15,
+				5,
+				10,
+				5
+		};
+		gbl_graphicsPanel.columnWeights = new double[] {
+				0.0,
+				0.0,
+				0.0,
+				1.0
+		};
+		gbl_graphicsPanel.rowWeights = new double[] {
+				0.0,
+				0.0,
+				Double.MIN_VALUE
+		};
 		graphicsPanel.setLayout(gbl_graphicsPanel);
 
 		JLabel lblResolution = new JLabel("Resolution:");
@@ -136,7 +179,8 @@ public class OptionsMenu extends JDialog {
 		for (int i = 0; i < GameInfo.WINDOW_WIDTHS.length; i++) {
 			int w = GameInfo.WINDOW_WIDTHS[i];
 			int h = (int) (GameInfo.WINDOW_WIDTHS[i] * GameInfo.ASPECT_RATIO);
-			if(w > screenWidth || h > screenHeight) continue;
+			if (w > screenWidth || h > screenHeight)
+				continue;
 			String s = w + "x" + h;
 			cBoxResolution.addItem(s);
 		}
@@ -177,15 +221,14 @@ public class OptionsMenu extends JDialog {
 			}
 		});
 	}
-	
-	private void addControlsTab(JTabbedPane optionsPane)
-	{
+
+	private void addControlsTab(JTabbedPane optionsPane) {
 		JPanel controlsPanel = new JPanel();
 		optionsPane.addTab("Controls", null, controlsPanel, null);
 		controlsPanel.setLayout(new BorderLayout(0, 0));
 
 		JPanel inputAxisPane = new JPanel();
-		controlsPanel.add(inputAxisPane, BorderLayout.EAST);		
+		controlsPanel.add(inputAxisPane, BorderLayout.EAST);
 	}
 
 	public static GameSettings showOptions(JFrame parent, GameSettings settings) {

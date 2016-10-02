@@ -39,17 +39,17 @@ public class Player extends Entity {
 		moveSpeed = (running ? RUN_SPEED : 1) * (crouching ? CROUCH_SPEED : 1);
 
 		updateInput(input);
-		
+
 		xa += (dx * Math.cos(rot) + dz * Math.sin(rot)) * WALK_SPEED;
 		za += (dz * Math.cos(rot) - dx * Math.sin(rot)) * WALK_SPEED;
-		
-		if(isFree(pos.getX() + xa, pos.getZ(), level)) {
+
+		if (isFree(pos.getX() + xa, pos.getZ(), level)) {
 			pos.setX(pos.getX() + xa);
 		}
-		if(isFree(pos.getX(), pos.getZ() + za, level)) {
+		if (isFree(pos.getX(), pos.getZ() + za, level)) {
 			pos.setZ(pos.getZ() + za);
 		}
-		
+
 		eyeHeight *= 0.9;
 		xa *= 0.1;
 		za *= 0.1;
@@ -59,8 +59,7 @@ public class Player extends Entity {
 	}
 
 	private void updateInput(Input input) {
-		walking = input.getInput("FORWARD") || input.getInput("BACKWARD") || input.getInput("STRAFE_LEFT")
-				|| input.getInput("STRAFE_RIGHT");
+		walking = input.getInput("FORWARD") || input.getInput("BACKWARD") || input.getInput("STRAFE_LEFT") || input.getInput("STRAFE_RIGHT");
 		if (input.getInputTapped("CROUCH"))
 			crouching = !crouching;
 		if (!crouching)
@@ -138,17 +137,21 @@ public class Player extends Entity {
 	public Bitmap getTexture() {
 		return null;
 	}
-	
+
 	private boolean isFree(double x, double z, Level level) {
 		int x0 = (int) Math.floor(x + 0.5);
 		int x1 = (int) Math.floor(x + 0.5 - collisionBox.getX());
 		int z0 = (int) Math.floor(z + 0.5);
 		int z1 = (int) Math.floor(z + 0.5 - collisionBox.getY());
-		
-		if(level.getBlock(x0, z0).isSolid()) return false;
-		if(level.getBlock(x1, z0).isSolid()) return false;
-		if(level.getBlock(x0, z1).isSolid()) return false;
-		if(level.getBlock(x1, z1).isSolid()) return false;
+
+		if (level.getBlock(x0, z0).isSolid())
+			return false;
+		if (level.getBlock(x1, z0).isSolid())
+			return false;
+		if (level.getBlock(x0, z1).isSolid())
+			return false;
+		if (level.getBlock(x1, z1).isSolid())
+			return false;
 		return true;
 	}
 

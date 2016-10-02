@@ -72,7 +72,7 @@ public class Bitmap3D extends Bitmap {
 				}
 			}
 		}
-		
+
 		int height = (int) Math.ceil((l.getCeilPos() + l.getFloorPos()) / 8);
 		for (int xBlock = -1; xBlock <= l.getWidth(); xBlock++) {
 			for (int zBlock = -1; zBlock <= l.getHeight(); zBlock++) {
@@ -105,12 +105,12 @@ public class Bitmap3D extends Bitmap {
 				}
 			}
 		}
-		
-		for(Entity e : l.getEntites()) {
+
+		for (Entity e : l.getEntites()) {
 			renderSprite(e.getPos(), e.getTexture(), 1, 8);
 		}
 	}
-	
+
 	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Bitmap texture, double floorPos) {
 		if (texture == null)
 			return;
@@ -217,49 +217,53 @@ public class Bitmap3D extends Bitmap {
 		double xOffScaled = (xOff / (floorPos * 2.0));
 		double yOffScaled = (-yOff / (floorPos * 2.0)) - 0.5;
 		double zOffScaled = (zOff / (floorPos * 2.0));
-		
+
 		double xc = ((pos.getX() / 2.0) - xOffScaled) * 2.0;
 		double yc = ((-pos.getY() / 2.0) - yOffScaled) * 2.0;
 		double zc = ((pos.getZ() / 2.0) - zOffScaled) * 2.0;
-		
+
 		double rotX = xc * cos - zc * sin;
 		double rotY = yc;
 		double rotZ = zc * cos + xc * sin;
-		
+
 		double xCenter = width / 2.0;
 		double yCenter = height / 2.0;
-		
+
 		double xPixel = rotX / rotZ * height + xCenter;
 		double yPixel = rotY / rotZ * height + yCenter;
-		
+
 		int texWidth = (int) (texture.width * scale) * 12;
 		int texHeight = (int) (texture.height * scale) * 12;
-		
+
 		double xPixelL = xPixel - texWidth / rotZ;
 		double xPixelR = xPixel + texWidth / rotZ;
-		
+
 		double yPixelL = yPixel - texHeight / rotZ;
 		double yPixelR = yPixel + texHeight / rotZ;
-		
+
 		int xpl = (int) xPixelL;
 		int xpr = (int) xPixelR;
 		int ypl = (int) yPixelL;
 		int ypr = (int) yPixelR;
-		
-		if(xpl < 0) xpl = 0;
-		if(xpr > width) xpr = width;
-		if(ypl < 0) ypl = 0;
-		if(ypr > height) ypr = height;
-		
+
+		if (xpl < 0)
+			xpl = 0;
+		if (xpr > width)
+			xpr = width;
+		if (ypl < 0)
+			ypl = 0;
+		if (ypr > height)
+			ypr = height;
+
 		rotZ *= 8.0;
-		
-		for(int yp = ypl; yp < ypr; yp++) {
+
+		for (int yp = ypl; yp < ypr; yp++) {
 			double pixelRotationY = (yp - yPixelL) / (yPixelR - yPixelL);
 			int yTex = (int) (texture.height * pixelRotationY);
-			for(int xp = xpl; xp < xpr; xp++) {
+			for (int xp = xpl; xp < xpr; xp++) {
 				double pixelRotationX = (xp - xPixelL) / (xPixelR - xPixelL);
 				int xTex = (int) (texture.width * pixelRotationX);
-				if(zBuffer[xp + yp * width] > rotZ) {
+				if (zBuffer[xp + yp * width] > rotZ) {
 					pixels[xp + yp * width] = texture.pixels[(xTex & texture.width - 1) + (yTex & texture.height - 1) * texture.width];
 					zBuffer[xp + yp * width] = rotZ;
 				}

@@ -1,7 +1,7 @@
 package net.keabotstudios.dr2.game.level.object;
 
 public class CollisionBox extends Vector3 {
-	
+
 	public CollisionBox(double x, double y, double z) {
 		super(x, y, z);
 	}
@@ -19,12 +19,18 @@ public class CollisionBox extends Vector3 {
 		double bBack = bFront + boxB.getZ();
 		double bBottom = boxBPos.getY();
 		double bTop = bBottom + boxB.getY();
-		if(aLeft < bRight) return false;
-		if(aRight > bLeft) return false;
-		if(aTop < bBottom) return false;
-		if(aBottom > bTop) return false;
-		if(aBack < bFront) return false;
-		if(aFront > bBack) return false;
+		if (aLeft < bRight)
+			return false;
+		if (aRight > bLeft)
+			return false;
+		if (aTop < bBottom)
+			return false;
+		if (aBottom > bTop)
+			return false;
+		if (aBack < bFront)
+			return false;
+		if (aFront > bBack)
+			return false;
 		return true;
 	}
 }

@@ -5,9 +5,9 @@ import net.keabotstudios.superin.Input;
 
 public abstract class GuiComponent {
 
-	private int x, y, size;
-	
-	public GuiComponent(int x, int y, int size) {
+	protected int x, y, size;
+
+	protected GuiComponent(int x, int y, int size) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -36,8 +36,9 @@ public abstract class GuiComponent {
 	public void setSize(int size) {
 		this.size = size;
 	}
-	
+
 	public abstract void render(Bitmap bitmap);
+
 	public abstract void update(Input input);
 
 }

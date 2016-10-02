@@ -52,7 +52,6 @@ public class DungeonTile {
 	}
 
 	public String toString() {
-		return "(" + connectedUp + ", " + connectedDown + ", " + connectedLeft + ", " + connectedRight + ":"
-				+ getTileID() + ")";
+		return "(" + connectedUp + ", " + connectedDown + ", " + connectedLeft + ", " + connectedRight + ":" + getTileID() + ")";
 	}
 }
