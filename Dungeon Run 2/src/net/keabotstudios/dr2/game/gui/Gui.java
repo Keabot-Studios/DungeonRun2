@@ -1,26 +1,25 @@
 package net.keabotstudios.dr2.game.gui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import net.keabotstudios.dr2.game.level.object.Vector2;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 
 public class Gui {
 
 	private static HashMap<GuiColor, Bitmap[]> bar;
+	private static HashMap<GuiColor, Bitmap> wideBar;
 	private static Bitmap[] symbols;
 
 	public enum GuiColor {
 		ORANGE, RED, PURPLE, GRAY, BLUE, CYAN, BROWN, GREEN, BACKGROUND
 	}
 
-	public static final String guiSymbols = "0123456789$+=/ ";
+	public static final String guiSymbols = "0123456789$+=/. ";
 
 	public static void init() {
 		bar = new HashMap<GuiColor, Bitmap[]>();
+		wideBar = new HashMap<GuiColor, Bitmap>();
 		int rx0 = 0;
 		int rx1 = 0;
 		for (int i = 0; i < GuiColor.values().length; i++) {
@@ -40,20 +39,39 @@ public class Gui {
 			bar.put(col, colBitmaps);
 		}
 		symbols = new Bitmap[guiSymbols.length()];
-		for (int x = 0; x < 8; x++)
-			symbols[x] = Texture.gui.getSubBitmap(x * 16, 32, 16, 16);
-		for (int x = 0; x < 7; x++)
-			symbols[x + 8] = Texture.gui.getSubBitmap(x * 16, 48, 16, 16);
+		rx0 = 0;
+		int ry = 32;
+		for (int i = 0; i < guiSymbols.length(); i++) {
+			symbols[i] = Texture.gui.getSubBitmap(rx0 % Texture.gui.width, ry, 16, 16);
+			rx0 += 16;
+			if (rx0 >= Texture.gui.width) {
+				rx0 = 0;
+				ry += 16;
+			}
+		}
+		rx0 = 0;
+		ry = 64;
+		for (int i = 0; i < GuiColor.values().length; i++) {
+			GuiColor col = GuiColor.values()[i];
+			Bitmap colBitmap;
+			colBitmap = Texture.gui.getSubBitmap(rx0, ry, 16, 16);
+			rx0 += 16;
+			wideBar.put(col, colBitmap);
+		}
 	}
 
 	public static void renderGuiBar(Bitmap bitmap, String label, int x, int y, int size, int value, int maxValue,
-			GuiColor color, GuiColor barColor) {
+			GuiColor color, GuiColor barColor, GuiColor labelColor) {
 		if (color == GuiColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
 			System.exit(0);
 		}
 		if (barColor == GuiColor.BACKGROUND) {
-			System.err.println("Can't use " + color.toString() + " as a GuiBar color!");
+			System.err.println("Can't use " + barColor.toString() + " as a GuiBar color!");
+			System.exit(0);
+		}
+		if (labelColor == GuiColor.BACKGROUND) {
+			System.err.println("Can't use " + labelColor.toString() + " as a GuiBar color!");
 			System.exit(0);
 		}
 		if (value > maxValue)
@@ -81,6 +99,7 @@ public class Gui {
 		}
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {
+			bitmap.render(wideBar.get(labelColor), rx, y, size);
 			bitmap.render(symbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
 			rx += 16;
 		}
@@ -97,10 +116,13 @@ public class Gui {
 		}
 	}
 
-	public static void renderLabel(Bitmap bitmap, String label, int x, int y, int size,
-			GuiColor color) {
+	public static void renderLabel(Bitmap bitmap, String label, int x, int y, int size, GuiColor color, GuiColor labelColor) {
 		if (color == GuiColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
+			System.exit(0);
+		}
+		if (labelColor == GuiColor.BACKGROUND) {
+			System.err.println("Can't use " + labelColor.toString() + " as a GuiBar color!");
 			System.exit(0);
 		}
 		for (int i = 0; i < label.length(); i++) {
@@ -126,6 +148,7 @@ public class Gui {
 		}
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {
+			bitmap.render(wideBar.get(labelColor), rx, y, size);
 			bitmap.render(symbols[guiSymbols.indexOf(label.charAt(i))], rx, y, size);
 			rx += 16;
 		}
