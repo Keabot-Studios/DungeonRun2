@@ -24,9 +24,13 @@ public class LevelState extends GameState {
 		bitmap3d.renderDistanceLimiter(level.getRenderDistance());
 		bitmap.render(bitmap3d, 0, 0);
 		int guiX = -6;
-		int guiY = GameInfo.GAME_HEIGHT - (16 * 2) - 8;
+		int guiY = GameInfo.GAME_HEIGHT - (16 * 3) - 10;
 		Gui.renderGuiBar(bitmap, "+", guiX, guiY, 1, (int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.RED);
 		Gui.renderGuiBar(bitmap, "$", guiX, guiY + 20, 1, (int) -Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.GREEN);
+		String[] text = new String[] {
+				"" + ((int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 5.0) + 5), "/", "10"
+		};
+		Gui.renderGuiText(bitmap, "=", guiX, guiY + 40, 1, text, GuiColor.ORANGE);
 	}
 
 	public void update(Input input) {
