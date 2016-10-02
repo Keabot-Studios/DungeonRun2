@@ -35,31 +35,33 @@ public class Level {
 
 		MapGenerator gen = new MapGenerator(width, height, 8, 8, 15);
 		gen.GenerateMap();
-		
+
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 
-				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? new SolidBlock(Texture.brick1)
-						: new EmptyBlock());
+				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? new SolidBlock(Texture.brick1) : new EmptyBlock());
 			}
 		}
 		player = new Player(gen.getSpawnPoint().getX() + .5, gen.getSpawnPoint().getY() + .5, 0, "Player", settings);
-
-		// Arrays.fill(blocks, new EmptyBlock());
-		// blocks[(width / 2 - 1) + (height / 2 - 1) * width] = new
-		// AnimatedBlock();
-		/*player = new Player(5, 5, 0, "Player", settings);
-		Arrays.fill(blocks, new EmptyBlock());
 		
-		blocks[(width / 2 - 1) + (height / 2 - 1) * width] = new AnimatedBlock();*/
+		/*
+		 * Arrays.fill(blocks, new EmptyBlock()); blocks[(width / 2 - 1) +
+		 * (height / 2 - 1) * width] = new AnimatedBlock(); player = new
+		 * Player(5, 5, 0, "Player", settings); Arrays.fill(blocks, new
+		 * EmptyBlock());
+		 * 
+		 * blocks[(width / 2 - 1) + (height / 2 - 1) * width] = new
+		 * AnimatedBlock();
+		 */
+		
 		entities.add(new TestEntity(5, 1, 5, "Test"));
-		
+
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
 		ceilPos = 8;
 
 		if (settings.debugMode) {
-			viewer = new LevelViewer(this);
+			viewer = new LevelViewer(this, 5);
 			viewer.update();
 		}
 	}

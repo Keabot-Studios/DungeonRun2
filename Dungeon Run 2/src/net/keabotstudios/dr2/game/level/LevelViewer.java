@@ -18,7 +18,7 @@ import net.keabotstudios.dr2.game.level.object.entity.Player;
 public class LevelViewer extends Canvas {
 	private static final long serialVersionUID = 1L;
 	
-	private static final int SCALE = 20;
+	private final int scale;
 	
 	private JFrame frame;
 	private Level level;
@@ -28,15 +28,16 @@ public class LevelViewer extends Canvas {
 	// TODO    TESTING PURPOSES - REMOVE LATER
 	//---------------------------------------------------
 
-	public LevelViewer(Level l) {
+	public LevelViewer(Level l, int scale) {
 		level = l;
+		this.scale = scale;
 		
-		Dimension size = new Dimension((level.getWidth() + 1) * SCALE, (level.getHeight() + 1) * SCALE);
+		Dimension size = new Dimension((level.getWidth() + 1) * scale, (level.getHeight() + 1) * scale);
 		setMinimumSize(size);
 		setSize(size);
 		setMaximumSize(size);
 		
-		image = new BufferedImage((int)size.getWidth() + SCALE, (int)size.getHeight() + SCALE, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage((int)size.getWidth() + scale, (int)size.getHeight() + scale, BufferedImage.TYPE_INT_RGB);
 		playerArrow = Util.loadImage("/texture/playerArrow.png", null);
 		frame = new JFrame("Level Viewer");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,7 +56,7 @@ public class LevelViewer extends Canvas {
 		for(int x = -1; x < level.getWidth() + 2; x++) {
 			for(int y = -1; y < level.getHeight() + 2; y++) {
 				g.setColor(new Color(level.getBlock(x, y).getMinimapColor()));
-				g.fillRect(x * SCALE + SCALE, y * SCALE + SCALE, SCALE, SCALE);
+				g.fillRect(x * scale + scale, y * scale + scale, scale, scale);
 			}
 		}
 		
@@ -63,10 +64,10 @@ public class LevelViewer extends Canvas {
 		 AffineTransform trans = new AffineTransform();
 		
 		Player p = level.getPlayer();
-		double pWidth = p.getCollisionBox().getX() * SCALE;
-		double pHeight = p.getCollisionBox().getY() * SCALE;
-		double pX = p.getPos().getX() * SCALE + SCALE;
-		double pY = p.getPos().getZ() * SCALE + SCALE;
+		double pWidth = p.getCollisionBox().getX() * scale;
+		double pHeight = p.getCollisionBox().getY() * scale;
+		double pX = p.getPos().getX() * scale + scale;
+		double pY = p.getPos().getZ() * scale + scale;
 		
 		trans.setToIdentity();
 	    trans.rotate(-p.getRotation() + Math.PI, pX, pY);
@@ -76,10 +77,10 @@ public class LevelViewer extends Canvas {
 		
 		for(Entity e : level.getEntites()) {
 			g.setColor(new Color(e.getMinimapColor()));
-			double eWidth = e.getCollisionBox().getX() * SCALE;
-			double eHeight = e.getCollisionBox().getY() * SCALE;
-			double eX = e.getPos().getX() * SCALE + SCALE;
-			double eY = e.getPos().getZ() * SCALE + SCALE;
+			double eWidth = e.getCollisionBox().getX() * scale;
+			double eHeight = e.getCollisionBox().getY() * scale;
+			double eX = e.getPos().getX() * scale + scale;
+			double eY = e.getPos().getZ() * scale + scale;
 			g.fillRect((int) (eX - eWidth / 2.0), (int) (eY - eHeight / 2.0), (int) eWidth, (int) eHeight);
 		}
 		g.dispose();

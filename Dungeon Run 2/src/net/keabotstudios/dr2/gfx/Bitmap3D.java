@@ -1,5 +1,8 @@
 package net.keabotstudios.dr2.gfx;
 
+import java.awt.Color;
+
+import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.Vector3;
@@ -275,16 +278,16 @@ public class Bitmap3D extends Bitmap {
 				brightness = 255;
 			}
 
-			int r = (color >> 16) & 0xff;
-			int g = (color >> 8) & 0xff;
-			int b = (color) & 0xff;
+			int r = ColorUtil.red(color);
+			int g = ColorUtil.green(color);
+			int b = ColorUtil.blue(color);
+			int a = ColorUtil.alpha(color);
 
 			r = r * brightness / 255;
 			g = g * brightness / 255;
 			b = b * brightness / 255;
 
-			pixels[i] = r << 16 | g << 8 | b;
+			pixels[i] = new Color(r, g, b, a).getRGB();
 		}
 	}
-
 }

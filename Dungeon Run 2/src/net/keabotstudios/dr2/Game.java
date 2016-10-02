@@ -18,11 +18,13 @@ import java.math.RoundingMode;
 
 import javax.swing.JFrame;
 
+import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.gamestate.GameStateManager;
 import net.keabotstudios.dr2.game.gamestate.LevelState;
+import net.keabotstudios.dr2.game.gui.Gui;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
@@ -60,9 +62,10 @@ public class Game extends Canvas implements Runnable, Controllable {
 		this.logger = logger;
 		this.settings = settings;
 		Texture.load(this);
+		Gui.init();
 		
 		screen = new Bitmap(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
-		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		pixels = Util.convertToPixels(img);
 		
 		input = new Input(this, settings.useXInput);
@@ -168,10 +171,10 @@ public class Game extends Canvas implements Runnable, Controllable {
 			createBufferStrategy(3);
 			return;
 		}
-		
+		screen.clear(ColorUtil.toARGBColor(Color.BLACK));
 		gsm.render(screen);
-
-		for (int i = 0; i < GameInfo.GAME_WIDTH * GameInfo.GAME_HEIGHT; i++) {
+		
+		for (int i = 0; i < screen.width * screen.height; i++) {
 			pixels[i] = screen.pixels[i];
 		}
 

@@ -2,6 +2,7 @@ package net.keabotstudios.dr2.game.gamestate;
 
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.gui.Gui;
+import net.keabotstudios.dr2.game.gui.Gui.GuiColor;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Bitmap3D;
@@ -23,8 +24,11 @@ public class LevelState extends GameState {
 	public void render(Bitmap bitmap) {
 		bitmap3d.renderLevel(level);
 		bitmap3d.renderDistanceLimiter(level.getRenderDistance());
-		bitmap.render(bitmap3d, 0, 0);	
-		gui.render(bitmap, level);
+		bitmap.render(bitmap3d, 0, 0);
+		int guiX = -6;
+		int guiY = GameInfo.GAME_HEIGHT - (16 * 2) - 8;
+		Gui.renderGuiBar(bitmap, "+", guiX, guiY, 1, (int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.RED);
+		Gui.renderGuiBar(bitmap, "$", guiX, guiY + 20, 1, (int) -Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.GREEN);
 	}
 
 	public void update(Input input) {
