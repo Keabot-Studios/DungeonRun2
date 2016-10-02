@@ -2,7 +2,6 @@ package net.keabotstudios.dr2.game.gui;
 
 import net.keabotstudios.dr2.game.gui.GuiRenderer.GuiBarColor;
 import net.keabotstudios.dr2.gfx.Bitmap;
-import net.keabotstudios.superin.Input;
 
 public class GuiStatBar extends GuiHudLabel {
 
@@ -47,7 +46,5 @@ public class GuiStatBar extends GuiHudLabel {
 	public void render(Bitmap bitmap) {
 		GuiRenderer.renderStatBar(bitmap, label, x, y, size, value, maxValue, color, barColor, labelColor);
 	}
-
-	public void update(Input input) {}
 
 }
