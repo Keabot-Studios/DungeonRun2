@@ -12,13 +12,12 @@ public class LevelState extends GameState {
 	
 	private Level level;
 	private Bitmap3D bitmap3d;
-	private Gui gui;
+	private int testNum;
 
 	public LevelState(GameStateManager gsm, Level level) {
 		super(gsm);
 		this.level = level;
 		this.bitmap3d = new Bitmap3D(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
-		this.gui = new Gui();
 	}
 
 	public void render(Bitmap bitmap) {
@@ -29,11 +28,13 @@ public class LevelState extends GameState {
 		int guiY = GameInfo.GAME_HEIGHT - (16 * 2) - 8;
 		Gui.renderGuiBar(bitmap, "+", guiX, guiY, 1, (int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.RED);
 		Gui.renderGuiBar(bitmap, "$", guiX, guiY + 20, 1, (int) -Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.GREEN);
+		Gui.renderLabel(bitmap, Integer.toString(testNum), guiX, guiY - 20, 1, GuiColor.GRAY, GuiColor.GREEN);
 	}
 
 	public void update(Input input) {
 		level.update(input);
 		bitmap3d.setOffsets(level.getPlayer());
+		testNum++;
 	}
 
 }
