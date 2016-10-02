@@ -115,7 +115,7 @@ public class Gui {
 		}
 	}
 
-	public static void renderStatText(Bitmap bitmap, String label, String text, int x, int y, int size, GuiColor color, GuiColor labelColor, GuiColor textColor) {
+	public static void renderStatText(Bitmap bitmap, String label, int x, int y, int size, String text, GuiColor color, GuiColor labelColor, GuiColor textColor) {
 		if (color == GuiColor.BACKGROUND) {
 			System.err.println("Can't use " + color.toString() + " as a Gui color!");
 			System.exit(0);

@@ -12,7 +12,6 @@ public class LevelState extends GameState {
 
 	private Level level;
 	private Bitmap3D bitmap3d;
-	private int testNum;
 
 	public LevelState(GameStateManager gsm, Level level) {
 		super(gsm);
@@ -25,17 +24,17 @@ public class LevelState extends GameState {
 		bitmap3d.renderDistanceLimiter(level.getRenderDistance());
 		bitmap.render(bitmap3d, 0, 0);
 		int guiX = -6;
-		int guiY = GameInfo.GAME_HEIGHT - (16 * 2) - 8;
+		int guiY = (int) (GameInfo.GAME_HEIGHT - (16.0 * 2.0) - 8.0 - level.getPlayer().getEyeHeight() * 3.0);
+		if(guiY > GameInfo.GAME_HEIGHT - 38)
+			guiY = GameInfo.GAME_HEIGHT - 38;
 		Gui.renderStatBar(bitmap, "+", guiX, guiY, 1, (int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.RED, GuiColor.RED);
 		Gui.renderStatBar(bitmap, "$", guiX, guiY + 20, 1, (int) -Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.GREEN, GuiColor.GREEN);
-		Gui.renderStatText(bitmap, "+", Integer.toString(testNum) + "/" + Integer.toString((int) Math.pow(testNum, 1.01)), guiX, guiY - 20, 1, GuiColor.GRAY, GuiColor.RED, GuiColor.RED);
-		Gui.renderLabel(bitmap, (int) level.getPlayer().getPos().getX() + "." + (int) level.getPlayer().getPos().getZ(), guiX, 8, 1, GuiColor.GRAY, GuiColor.BLUE);
+		Gui.renderStatText(bitmap, "+", guiX, 70 + 6, 1, "" + GameInfo.FPS, GuiColor.GRAY, GuiColor.BLUE, GuiColor.BLUE);
 	}
 
 	public void update(Input input) {
 		level.update(input);
 		bitmap3d.setOffsets(level.getPlayer());
-		testNum++;
 	}
 
 }

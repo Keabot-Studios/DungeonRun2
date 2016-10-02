@@ -143,7 +143,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 				update();
 				skippedSecs -= secsPerTick;
 				tickCount++;
-				if (tickCount % 60 == 0 && settings.debugMode) {
+				if (tickCount % 60 == 0) {
 					fps = frames;
 					tickCount = 0;
 					frames = 0;
@@ -156,7 +156,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 
 	private void update() {
 		input.updateControllerInput();
-		GameInfo.update();
+		GameInfo.update(fps);
 		Texture.update();
 		gsm.update(input);
 		if (input.getInputTapped("ESCAPE")) {

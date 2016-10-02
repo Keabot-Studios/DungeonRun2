@@ -21,9 +21,11 @@ public class GameInfo {
 	public static final int MAX_UPS = 60;
 	
 	public static long TIME;
+	public static int FPS;
 
-	public static void update() {
+	public static void update(int fps) {
 		TIME++;
+		FPS = fps;
 	}
 
 	public static void init(Logger l) {
