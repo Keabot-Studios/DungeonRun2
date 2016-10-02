@@ -1,8 +1,8 @@
 package net.keabotstudios.dr2.game.gamestate;
 
 import net.keabotstudios.dr2.game.GameInfo;
-import net.keabotstudios.dr2.game.gui.Gui;
-import net.keabotstudios.dr2.game.gui.Gui.GuiColor;
+import net.keabotstudios.dr2.game.gui.GuiRenderer;
+import net.keabotstudios.dr2.game.gui.GuiRenderer.GuiColor;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Bitmap3D;
@@ -27,9 +27,9 @@ public class LevelState extends GameState {
 		int guiY = (int) (GameInfo.GAME_HEIGHT - (16.0 * 2.0) - 8.0 - level.getPlayer().getEyeHeight() * 3.0);
 		if(guiY > GameInfo.GAME_HEIGHT - 38)
 			guiY = GameInfo.GAME_HEIGHT - 38;
-		Gui.renderStatBar(bitmap, "+", guiX, guiY, 1, (int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.RED, GuiColor.RED);
-		Gui.renderStatBar(bitmap, "$", guiX, guiY + 20, 1, (int) -Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.GREEN, GuiColor.GREEN);
-		Gui.renderStatText(bitmap, "+", guiX, 70 + 6, 1, "" + GameInfo.FPS, GuiColor.GRAY, GuiColor.BLUE, GuiColor.BLUE);
+		GuiRenderer.renderStatBar(bitmap, "+", guiX, guiY, 1, (int) Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.RED, GuiColor.RED);
+		GuiRenderer.renderStatBar(bitmap, "$", guiX, guiY + 20, 1, (int) -Math.round(Math.sin(GameInfo.TIME / 60.0) * 10.0) + 10, 20, GuiColor.ORANGE, GuiColor.GREEN, GuiColor.GREEN);
+		GuiRenderer.renderStatText(bitmap, "+", guiX, 70 + 6, 1, "" + GameInfo.FPS, GuiColor.GRAY, GuiColor.BLUE, GuiColor.BLUE);
 	}
 
 	public void update(Input input) {

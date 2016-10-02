@@ -24,7 +24,7 @@ import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.gamestate.GameStateManager;
 import net.keabotstudios.dr2.game.gamestate.LevelState;
-import net.keabotstudios.dr2.game.gui.Gui;
+import net.keabotstudios.dr2.game.gui.GuiRenderer;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
@@ -62,7 +62,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		this.logger = logger;
 		this.settings = settings;
 		Texture.load(this);
-		Gui.init();
+		GuiRenderer.init();
 		
 		screen = new Bitmap(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);

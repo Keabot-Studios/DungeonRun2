@@ -5,7 +5,7 @@ import java.util.HashMap;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 
-public class Gui {
+public class GuiRenderer {
 
 	private static HashMap<GuiColor, Bitmap[]> bar;
 	private static HashMap<GuiColor, Bitmap> wideBar;
