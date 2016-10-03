@@ -25,8 +25,8 @@ public class Player extends Entity {
 
 	private Game game;
 
-	public Player(double x, double z, double rot, String name, Game game) {
-		super(new Vector3(x, 0, z), new CollisionBox(0.8, 0.8, 1.5), rot, name, Color.GREEN.getRGB());
+	public Player(Vector3 pos, double rot, String name, Game game) {
+		super(pos, new CollisionBox(0.8, 0.8, 1.5), rot, name, Color.GREEN.getRGB());
 		this.game = game;
 	}
 

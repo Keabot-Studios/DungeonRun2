@@ -14,6 +14,7 @@ public class Texture {
 	public static Bitmap brick1;
 	public static Bitmap brick1Floor;
 	public static Bitmap test;
+	public static AnimatedBitmap spawnPoint;
 	public static AnimatedBitmap animTest;
 	public static Bitmap guiBar;
 
@@ -25,11 +26,13 @@ public class Texture {
 		brick1Floor = loadBitmap("/texture/brick1Floor.png", game.getLogger());
 		test = loadBitmap("/texture/test.png", game.getLogger());
 		animTest = new AnimatedBitmap(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 10);
+		spawnPoint = new AnimatedBitmap(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 10);
 		guiBar = loadBitmap("/texture/guiBar.png", game.getLogger());
 	}
 
 	public static void update() {
 		animTest.update();
+		spawnPoint.update();
 	}
 
 	public static Bitmap loadBitmap(String file, Logger logger) {

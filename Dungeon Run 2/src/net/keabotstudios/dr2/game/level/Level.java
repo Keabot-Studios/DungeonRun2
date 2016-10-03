@@ -3,11 +3,13 @@ package net.keabotstudios.dr2.game.level;
 import java.util.ArrayList;
 
 import net.keabotstudios.dr2.Game;
+import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.block.EmptyBlock;
 import net.keabotstudios.dr2.game.level.object.block.SolidBlock;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
+import net.keabotstudios.dr2.game.level.object.entity.SpawnPointEntity;
 import net.keabotstudios.dr2.game.level.object.entity.TestEntity;
 import net.keabotstudios.dr2.game.level.randomgen.MapGenerator;
 import net.keabotstudios.dr2.gfx.Bitmap;
@@ -38,10 +40,16 @@ public class Level {
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? new SolidBlock(Texture.brick1) : new EmptyBlock());
+				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? new SolidBlock(Texture.brick1)
+						: new EmptyBlock());
 			}
 		}
-		player = new Player(gen.getSpawnPoint().getX() + .5, gen.getSpawnPoint().getY() + .5, 0, "Player", game);
+
+		SpawnPointEntity spawnEntity = new SpawnPointEntity(
+				new Vector3(gen.getSpawnPoint().getX(), 1, gen.getSpawnPoint().getY()), "Spawn");
+		entities.add(spawnEntity);
+
+		player = new Player(spawnEntity.getPos(), 0, "Player", game);
 
 		/*
 		 * Arrays.fill(blocks, new EmptyBlock()); blocks[(width / 2 - 1) +
@@ -130,5 +138,4 @@ public class Level {
 	public int getHeight() {
 		return height;
 	}
-
 }
