@@ -59,7 +59,8 @@ public class Player extends Entity {
 	}
 
 	private void updateInput(Input input) {
-		walking = input.getInput("FORWARD") || input.getInput("BACKWARD") || input.getInput("STRAFE_LEFT") || input.getInput("STRAFE_RIGHT");
+		walking = input.getInput("FORWARD") || input.getInput("BACKWARD") || input.getInput("STRAFE_LEFT")
+				|| input.getInput("STRAFE_RIGHT");
 		if (input.getInputTapped("CROUCH"))
 			crouching = !crouching;
 		if (!crouching)
@@ -145,4 +146,7 @@ public class Player extends Entity {
 		return true;
 	}
 
+	public Game getCurrentGame() {
+		return game;
+	}
 }

@@ -58,7 +58,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		this.logger = logger;
 		this.settings = settings;
 		Texture.load(this);
-		GuiRenderer.init();
+		GuiRenderer.init(this);
 
 		screen = new Bitmap(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -233,4 +233,10 @@ public class Game extends Canvas implements Runnable, Controllable {
 		return input;
 	}
 
+	public Rectangle getFullscreenRect()
+	{
+		if(!settings.fullscreen)
+			return null;
+		return new Rectangle(fullScreenXOff, fullScreenYOff, fullScreenImageWidth, fullScreenImageHeight);
+	}
 }
