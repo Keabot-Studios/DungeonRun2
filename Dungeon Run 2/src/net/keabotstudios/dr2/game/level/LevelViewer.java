@@ -3,12 +3,24 @@ package net.keabotstudios.dr2.game.level;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import net.keabotstudios.dr2.Util;
 import net.keabotstudios.dr2.game.GameInfo;
@@ -42,10 +54,39 @@ public class LevelViewer extends Canvas {
 		frame = new JFrame("Level Viewer");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setIconImages(GameInfo.WINDOW_ICONS);
+		JMenuBar menu = new JMenuBar();
+		JButton export = new JButton("Export");
+		export.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				File outputfile = new File("map.png");
+			    try {
+			    	BufferedImage out = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+			    	Graphics g = out.getGraphics();
+			    	g.drawImage(image, 0, 0, null);
+			    	g.setColor(Color.YELLOW);
+			    	g.setFont(new Font("Verdana", Font.PLAIN, 10));
+			    	DateFormat dateFormatYMD = new SimpleDateFormat("dd/MM/yyyy");
+			    	DateFormat dateFormatHMS = new SimpleDateFormat("HH:mm:ss");
+			    	Date date = new Date();
+			    	g.drawString(l.getWidth() + "x" + l.getHeight() + " Map", 2, 10);
+			    	g.drawString(dateFormatYMD.format(date), 2, 20);
+			    	g.drawString(dateFormatHMS.format(date), 2, 30);
+			    	g.dispose();
+					ImageIO.write(out, "png", outputfile);
+					System.out.println("Writing map to: " + outputfile.getPath());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		menu.add(export);
+		frame.setJMenuBar(menu);
 		frame.add(this);
 		frame.pack();
 		frame.setResizable(false);
 		frame.setVisible(true);
+		
+		
 	}
 
 	public void update() {

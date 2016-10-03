@@ -5,8 +5,8 @@ import java.awt.Color;
 import net.keabotstudios.dr2.Util.ColorUtil;
 
 public class Bitmap {
-	protected final int width, height;
-	protected final int[] pixels;
+	protected int width, height;
+	protected int[] pixels;
 
 	public Bitmap(int w, int h) {
 		width = w;
@@ -118,6 +118,47 @@ public class Bitmap {
 			}
 		}
 	}
+	
+	/**
+	 * Draws a Bitmap to this Bitmap object.
+	 * 
+	 * @param bitmap
+	 *            the Bitmap object to draw.
+	 * @param xOffs
+	 *            the x offset to draw the Bitmap at.
+	 * @param yOffs
+	 *            the y offset to draw the Bitmap at.
+	 * @param scale
+	 *            the scale to draw the Bitmap at.
+	 * @param alpha
+	 *            the alpha value to draw the Bitmap at.
+	 */
+	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale, float alpha) {
+		if (scale < 1)
+			return;
+		else if (scale == 1) {
+			render(bitmap, xOffs, yOffs, alpha);
+			return;
+		}
+		if (alpha >= 1.0f) {
+			render(bitmap, xOffs, yOffs);
+		} else if (alpha <= 0.0f)
+			return;
+		for (int y = 0; y < bitmap.height * scale; y++) {
+			int yPix = y + yOffs;
+			if (yPix < 0 || yPix >= height)
+				continue;
+			for (int x = 0; x < bitmap.width * scale; x++) {
+				int xPix = x + xOffs;
+				if (xPix < 0 || xPix >= width)
+					continue;
+				int color = bitmap.pixels[(x / scale) + (y / scale) * bitmap.width];
+				int currentColor = pixels[xPix + yPix * width];
+				if (ColorUtil.alpha(color) > 0)
+					pixels[xPix + yPix * width] = ColorUtil.overlayAlpha(color, currentColor, alpha);
+			}
+		}
+	}
 
 	/**
 	 * Gets a Bitmap with the pixels of this Bitmap object.
@@ -171,6 +212,25 @@ public class Bitmap {
 		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount, 1.0f).getRGB();
 	}
 
+	/**
+	 * Creates a new Bitmap with targetColor replaced by color.
+	 * 
+	 * @param targetColor
+	 *            The color to change.
+	 * @param color
+	 *            The color to change targetColor to.
+	 * 
+	 * @return The color replaced Bitmap.
+	 */
+	public Bitmap replaceColor(int targetColor, int color) {
+		Bitmap out = this.clone();
+		for (int i = 0; i < out.pixels.length; i++) {
+			if (out.pixels[i] == targetColor)
+				out.pixels[i] = color;
+		}
+		return out;
+	}
+
 	public int getWidth() {
 		return width;
 	}
@@ -181,5 +241,11 @@ public class Bitmap {
 
 	public int[] getPixels() {
 		return pixels;
+	}
+
+	protected Bitmap clone() {
+		Bitmap out = new Bitmap(width, height);
+		out.pixels = pixels.clone();
+		return out;
 	}
 }

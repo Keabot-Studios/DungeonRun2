@@ -8,6 +8,9 @@ import net.keabotstudios.superlog.Logger;
 
 public class Texture {
 
+	public static Bitmap font_main;
+	public static Bitmap font_small;
+	
 	public static Bitmap brick1;
 	public static Bitmap brick1Floor;
 	public static Bitmap test;
@@ -15,6 +18,9 @@ public class Texture {
 	public static Bitmap guiBar;
 
 	public static void load(Game game) {
+		font_main = loadBitmap("/font/main.png", game.getLogger());
+		font_small = loadBitmap("/font/small.png", game.getLogger());
+		
 		brick1 = loadBitmap("/texture/brick1.png", game.getLogger());
 		brick1Floor = loadBitmap("/texture/brick1Floor.png", game.getLogger());
 		test = loadBitmap("/texture/test.png", game.getLogger());

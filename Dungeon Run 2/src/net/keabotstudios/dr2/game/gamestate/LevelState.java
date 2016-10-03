@@ -1,14 +1,18 @@
 package net.keabotstudios.dr2.game.gamestate;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.gui.GuiRenderer;
 import net.keabotstudios.dr2.game.gui.GuiRenderer.GuiBarColor;
 import net.keabotstudios.dr2.game.gui.GuiStatBar;
 import net.keabotstudios.dr2.game.gui.GuiStatText;
+import net.keabotstudios.dr2.game.gui.font.Font;
+import net.keabotstudios.dr2.game.gui.font.FontCharacter;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Bitmap3D;
@@ -48,11 +52,26 @@ public class LevelState extends GameState {
 			rot.render(bitmap);
 			dir.render(bitmap);
 		}
+		
+		Font font = Font.SMALL;
+		FontCharacter[] characters = font.getCharacters();
+		int fontSize = 5;
+		int cX = 5;
+		int cY = 94;
+		float alpha = (float) Math.sin(GameInfo.TIME / 60.0);
+		for(int i = 0; i < characters.length; i++) {
+			if((cX + (characters[i].getWidth() + 2) * fontSize) > GameInfo.GAME_WIDTH) {
+				cX = 5;
+				cY += (font.getHeight() + 2) * fontSize;
+			}
+			characters[i].render(bitmap, cX, cY, fontSize, ColorUtil.toARGBColor(Color.BLUE.getRGB()), alpha);
+			cX += (characters[i].getWidth() + 2) * fontSize;
+		}
 	}
 
 	public void update() {
 		int guiX = -6;
-		int guiY = (int) (GameInfo.GAME_HEIGHT - (16.0 * 2.0) - 8.0 - this.level.getPlayer().getEyeHeight() * 3.0);
+		int guiY = (int) (GameInfo.GAME_HEIGHT - (16.0 * 2.0) - 8.0 + this.level.getPlayer().getEyeHeight() * 3.0);
 		if (guiY > GameInfo.GAME_HEIGHT - 40) {
 			guiY = GameInfo.GAME_HEIGHT - 40;
 		}

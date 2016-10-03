@@ -12,7 +12,7 @@ import net.keabotstudios.superin.Input;
 
 public class Player extends Entity {
 
-	public static final double ROT_SPEED = 0.005;
+	public static final double ROT_SPEED = 0.01;
 	public static final double MOUSE_ROT_SPEED = 0.01;
 	public static final double WALK_SPEED = 0.5 / 8.0;
 	public static final double BOB_MAGNITUTDE = 0.1;
@@ -62,8 +62,8 @@ public class Player extends Entity {
 		walking = input.getInput("FORWARD") || input.getInput("BACKWARD") || input.getInput("STRAFE_LEFT") || input.getInput("STRAFE_RIGHT");
 		if (input.getInputTapped("CROUCH"))
 			crouching = !crouching;
-		if (!crouching)
-			running = input.getInput("RUN");
+		if (!crouching && input.getInputTapped("RUN"))
+			running = !running;
 		if (crouching)
 			running = false;
 

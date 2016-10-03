@@ -61,10 +61,14 @@ public class Util {
 
 	public static class ColorUtil {
 		public static int overlayAlpha(int topColor, int bottomColor, float topAlpha) {
-			int oRed = (int) ((((topColor >> 16) & 0xFF) * topAlpha) + (((bottomColor >> 16) & 0xFF) * (1.0f - topAlpha)));
-			int oGreen = (int) ((((topColor >> 8) & 0xFF) * topAlpha) + (((bottomColor >> 8) & 0xFF) * (1.0f - topAlpha)));
-			int oBlue = (int) ((((topColor >> 0) & 0xFF) * topAlpha) + (((bottomColor >> 0) & 0xFF) * (1.0f - topAlpha)));
-			return ((oRed & 0x0ff) << 16) | ((oGreen & 0x0ff) << 8) | (oBlue & 0x0ff);
+			int oRed = (int) ((ColorUtil.red(topColor) * topAlpha) + (ColorUtil.red(bottomColor) * (1.0f - topAlpha)));
+			int oGreen = (int) ((ColorUtil.green(topColor) * topAlpha) + (ColorUtil.green(bottomColor) * (1.0f - topAlpha)));
+			int oBlue = (int) ((ColorUtil.blue(topColor) * topAlpha) + (ColorUtil.blue(bottomColor) * (1.0f - topAlpha)));
+			return makeARGBColor(0xFF, oRed, oGreen, oBlue);
+		}
+		
+		public static int makeARGBColor(int alpha, int red, int green, int blue) {
+			return (alpha << 24 | (red & 0xFF) << 16) | ((green & 0xFF) << 8) | (blue & 0xFF);
 		}
 
 		public static Color toARGBColor(Color rgbCol) {
