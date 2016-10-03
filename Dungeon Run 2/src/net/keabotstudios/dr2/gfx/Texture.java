@@ -26,7 +26,7 @@ public class Texture {
 		brick1Floor = loadBitmap("/texture/brick1Floor.png", game.getLogger());
 		test = loadBitmap("/texture/test.png", game.getLogger());
 		animTest = new AnimatedBitmap(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 10);
-		spawnPoint = new AnimatedBitmap(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 10);
+		spawnPoint = new AnimatedBitmap(loadBitmapSheet("/texture/spawnTexture.png", 16, 16, game.getLogger()), 10);
 		guiBar = loadBitmap("/texture/guiBar.png", game.getLogger());
 	}
 
