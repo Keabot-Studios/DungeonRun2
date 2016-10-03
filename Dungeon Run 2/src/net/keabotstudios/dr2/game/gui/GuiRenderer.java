@@ -2,6 +2,7 @@ package net.keabotstudios.dr2.game.gui;
 
 import java.util.HashMap;
 
+import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 
@@ -33,8 +34,11 @@ public class GuiRenderer {
 	public static final String DIR_CHAR = "‰";
 
 	private static final String guiSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,/$-ƒ„†‡ˆ‰ ";
+	
+	public static Game game;
 
-	public static void init() {
+	public static void init(Game game) {
+		GuiRenderer.game = game;
 		bar = new HashMap<GuiBarColor, Bitmap[]>();
 		wideBar = new HashMap<GuiBarColor, Bitmap>();
 		int rx0 = 0;
