@@ -15,7 +15,24 @@ public class GuiRenderer {
 		ORANGE, RED, PURPLE, GRAY, BLUE, CYAN, BROWN, GREEN, BACKGROUND
 	}
 
-	public static final String guiSymbols = "0123456789$+=/. ";
+	/** Character you want to use when you want to display the health icon. */
+	public static final String HEALTH_CHAR = "ƒ";
+	/**
+	 * Character you want to use when you want to display the ammunition icon.
+	 */
+	public static final String AMMO_CHAR = "„";
+	/** Character you want to use when you want to display the fps icon. */
+	public static final String FPS_CHAR = "†";
+	/** Character you want to use when you want to display the position icon. */
+	public static final String POS_CHAR = "‡";
+	/** Character you want to use when you want to display the rotation icon. */
+	public static final String ROT_CHAR = "ˆ";
+	/**
+	 * Character you want to use when you want to display the direction icon.
+	 */
+	public static final String DIR_CHAR = "‰";
+
+	private static final String guiSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,/$-ƒ„†‡ˆ‰ ";
 
 	public static void init() {
 		bar = new HashMap<GuiBarColor, Bitmap[]>();
@@ -29,28 +46,28 @@ public class GuiRenderer {
 				colBitmaps[0] = Texture.guiBar.getSubBitmap(rx0, 0, 8, 16);
 				rx0 += 8;
 			} else {
-				colBitmaps[0] = Texture.guiBar.getSubBitmap(rx1, 16, 6, 16);
+				colBitmaps[0] = Texture.guiBar.getSubBitmap(rx1, 32, 6, 16);
 				rx1 += 6;
 				colBitmaps[1] = Texture.guiBar.getSubBitmap(rx0, 0, 8, 16);
 				rx0 += 8;
-				colBitmaps[2] = Texture.guiBar.getSubBitmap(rx1, 16, 6, 16);
+				colBitmaps[2] = Texture.guiBar.getSubBitmap(rx1, 32, 6, 16);
 				rx1 += 6;
 			}
 			bar.put(col, colBitmaps);
 		}
 		barSymbols = new Bitmap[guiSymbols.length()];
 		rx0 = 0;
-		int ry = 32;
+		int ry = 48;
 		for (int i = 0; i < guiSymbols.length(); i++) {
-			barSymbols[i] = Texture.guiBar.getSubBitmap(rx0 % Texture.guiBar.width, ry, 16, 16);
+			barSymbols[i] = Texture.guiBar.getSubBitmap(rx0 % Texture.guiBar.getWidth(), ry, 16, 16);
 			rx0 += 16;
-			if (rx0 >= Texture.guiBar.width) {
+			if (rx0 >= Texture.guiBar.getWidth()) {
 				rx0 = 0;
 				ry += 16;
 			}
 		}
 		rx0 = 0;
-		ry = 64;
+		ry = 16;
 		for (int i = 0; i < GuiBarColor.values().length; i++) {
 			GuiBarColor col = GuiBarColor.values()[i];
 			Bitmap colBitmap;
@@ -101,7 +118,7 @@ public class GuiRenderer {
 				part = bar.get(color)[1];
 			}
 			bitmap.render(part, rx, y, size);
-			rx += part.width * size;
+			rx += part.getWidth() * size;
 		}
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {
@@ -118,7 +135,7 @@ public class GuiRenderer {
 		for (int i = 0; i < value; i++) {
 			Bitmap part = bar.get(barColor)[1];
 			bitmap.render(part, rx, y, size);
-			rx += part.width * size;
+			rx += part.getWidth() * size;
 		}
 	}
 
@@ -156,7 +173,7 @@ public class GuiRenderer {
 				part = bar.get(color)[1];
 			}
 			bitmap.render(part, rx, y, size);
-			rx += part.width * size;
+			rx += part.getWidth() * size;
 		}
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {
@@ -198,7 +215,7 @@ public class GuiRenderer {
 				part = bar.get(color)[1];
 			}
 			bitmap.render(part, rx, y, size);
-			rx += part.width * size;
+			rx += part.getWidth() * size;
 		}
 		rx = x + (6 + 8) * size;
 		for (int i = 0; i < label.length(); i++) {

@@ -1,7 +1,6 @@
 package net.keabotstudios.dr2.game.gamestate;
 
 import net.keabotstudios.dr2.gfx.Bitmap;
-import net.keabotstudios.superin.Input;
 
 public abstract class GameState {
 
@@ -13,6 +12,6 @@ public abstract class GameState {
 
 	public abstract void render(Bitmap bitmap);
 
-	public abstract void update(Input input);
+	public abstract void update();
 
 }

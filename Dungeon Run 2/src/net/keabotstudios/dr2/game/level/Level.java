@@ -2,7 +2,7 @@ package net.keabotstudios.dr2.game.level;
 
 import java.util.ArrayList;
 
-import net.keabotstudios.dr2.game.GameSettings;
+import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.block.EmptyBlock;
 import net.keabotstudios.dr2.game.level.object.block.SolidBlock;
@@ -28,7 +28,7 @@ public class Level {
 
 	private LevelViewer viewer;
 
-	public Level(int width, int height, GameSettings settings) {
+	public Level(int width, int height, Game game) {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[width * height];
@@ -38,11 +38,10 @@ public class Level {
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-
 				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? new SolidBlock(Texture.brick1) : new EmptyBlock());
 			}
 		}
-		player = new Player(gen.getSpawnPoint().getX() + .5, gen.getSpawnPoint().getY() + .5, 0, "Player", settings);
+		player = new Player(gen.getSpawnPoint().getX() + .5, gen.getSpawnPoint().getY() + .5, 0, "Player", game);
 
 		/*
 		 * Arrays.fill(blocks, new EmptyBlock()); blocks[(width / 2 - 1) +
@@ -60,7 +59,7 @@ public class Level {
 		ceilTex = Texture.brick1;
 		ceilPos = 8;
 
-		if (settings.debugMode) {
+		if (game.getSettings().debugMode) {
 			viewer = new LevelViewer(this, 5);
 			viewer.update();
 		}

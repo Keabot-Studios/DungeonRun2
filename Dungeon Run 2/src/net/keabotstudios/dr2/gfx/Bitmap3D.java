@@ -12,6 +12,8 @@ import net.keabotstudios.dr2.game.level.object.entity.Player;
 
 public class Bitmap3D extends Bitmap {
 
+	private static final double CLIP_DISTANCE = 0.2;
+
 	private double[] zBuffer;
 	private double[] zBufferWall;
 	private double xOff, yOff, zOff, rotOff;
@@ -138,20 +140,19 @@ public class Bitmap3D extends Bitmap {
 
 		double tex20 = 0;
 		double tex30 = texture.width;
-		double clip = 0.3;
 
-		if (rotLeftZ < clip && rotRightZ < clip)
+		if (rotLeftZ < CLIP_DISTANCE && rotRightZ < CLIP_DISTANCE)
 			return;
 
-		if (rotLeftZ < clip) {
-			double clip0 = (clip - rotLeftZ) / (rotRightZ - rotLeftZ);
+		if (rotLeftZ < CLIP_DISTANCE) {
+			double clip0 = (CLIP_DISTANCE - rotLeftZ) / (rotRightZ - rotLeftZ);
 			rotLeftZ = rotLeftZ + (rotRightZ - rotLeftZ) * clip0;
 			rotLeftX = rotLeftX + (rotRightX - rotLeftX) * clip0;
 			tex20 = tex20 + (tex30 - tex20) * clip0;
 		}
 
-		if (rotRightZ < clip) {
-			double clip0 = (clip - rotLeftZ) / (rotRightZ - rotLeftZ);
+		if (rotRightZ < CLIP_DISTANCE) {
+			double clip0 = (CLIP_DISTANCE - rotLeftZ) / (rotRightZ - rotLeftZ);
 			rotRightZ = rotLeftZ + (rotRightZ - rotLeftZ) * clip0;
 			rotRightX = rotLeftX + (rotRightX - rotLeftX) * clip0;
 			tex30 = tex20 + (tex30 - tex20) * clip0;

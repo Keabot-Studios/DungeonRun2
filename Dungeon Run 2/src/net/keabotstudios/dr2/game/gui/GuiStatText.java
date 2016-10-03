@@ -4,13 +4,13 @@ import net.keabotstudios.dr2.game.gui.GuiRenderer.GuiBarColor;
 import net.keabotstudios.dr2.gfx.Bitmap;
 
 public class GuiStatText extends GuiHudLabel {
-	
+
 	private GuiBarColor textColor;
 	private String text;
-	
+
 	public GuiStatText(int x, int y, int size, String label, String text, GuiBarColor color, GuiBarColor labelColor, GuiBarColor textColor) {
 		super(x, y, size, label, color, labelColor);
-		if(!GuiRenderer.isHudTextRendererable(text)) {
+		if (!GuiRenderer.isHudTextRendererable(text)) {
 			System.out.println("Can't use " + text + " as Gui text!");
 			System.exit(-1);
 		}
@@ -39,8 +39,9 @@ public class GuiStatText extends GuiHudLabel {
 	}
 
 	public void setText(String text) {
-		if(text.equals(this.text)) return;
-		if(!GuiRenderer.isHudTextRendererable(text)) {
+		if (text.equals(this.text))
+			return;
+		if (!GuiRenderer.isHudTextRendererable(text)) {
 			System.out.println("Can't use " + text + " as Gui text!");
 			System.exit(-1);
 		}
@@ -48,7 +49,7 @@ public class GuiStatText extends GuiHudLabel {
 	}
 
 	public void render(Bitmap bitmap) {
-		GuiRenderer.renderStatText(bitmap, text, x, y, size, text, textColor, textColor, textColor);
+		GuiRenderer.renderStatText(bitmap, label, x, y, size, text, color, textColor, textColor);
 	}
 
 }

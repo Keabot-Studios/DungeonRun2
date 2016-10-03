@@ -5,21 +5,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import javax.swing.JFrame;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
-import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.gamestate.GameStateManager;
@@ -57,7 +53,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 
 	private GameStateManager gsm;
 
-	public Game(Logger logger, GameSettings settings) {
+	public Game(Logger logger, GameSettings settings, GraphicsDevice currentDisplay) {
 		GameInfo.init(logger);
 		this.logger = logger;
 		this.settings = settings;
@@ -72,7 +68,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		input.setInputs(settings.controls);
 
 		gsm = new GameStateManager(this);
-		level = new Level(50, 50, settings);
+		level = new Level(50, 50, this);
 		gsm.setState(new LevelState(gsm, level));
 
 		Dimension size = new Dimension(settings.windowWidth, settings.windowHeight);
@@ -80,26 +76,30 @@ public class Game extends Canvas implements Runnable, Controllable {
 		setPreferredSize(size);
 		setMaximumSize(size);
 
-		createJFrame();
+		createJFrame(currentDisplay);
 
 		if (settings.fullscreen) {
-			GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-			int screenWidth = gd.getDisplayMode().getWidth();
-			int screenHeight = gd.getDisplayMode().getHeight();
-			size = new Dimension(screenWidth, screenHeight);
-			setMinimumSize(size);
-			setPreferredSize(size);
-			setMaximumSize(size);
-			float fullScreenImageScale = Util.getScaleOfRectangeInArea(screenWidth, screenHeight, GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
-			fullScreenImageWidth = (int) (GameInfo.GAME_WIDTH * fullScreenImageScale);
-			fullScreenImageHeight = (int) (GameInfo.GAME_HEIGHT * fullScreenImageScale);
-			fullScreenXOff = (int) ((screenWidth - fullScreenImageWidth) / 2.0f);
-			fullScreenYOff = (int) ((screenHeight - fullScreenImageHeight) / 2.0f);
+			calculateFullscreenBounds(currentDisplay);
 		}
 
 		frame.setVisible(true);
 		requestFocus();
 		start();
+	}
+
+	private void calculateFullscreenBounds(GraphicsDevice display) {
+		GraphicsDevice gd = display;
+		int screenWidth = gd.getDisplayMode().getWidth();
+		int screenHeight = gd.getDisplayMode().getHeight();
+		Dimension size = new Dimension(screenWidth, screenHeight);
+		setMinimumSize(size);
+		setPreferredSize(size);
+		setMaximumSize(size);
+		float fullScreenImageScale = Util.getScaleOfRectangeInArea(screenWidth, screenHeight, GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
+		fullScreenImageWidth = (int) (GameInfo.GAME_WIDTH * fullScreenImageScale);
+		fullScreenImageHeight = (int) (GameInfo.GAME_HEIGHT * fullScreenImageScale);
+		fullScreenXOff = (int) ((screenWidth - fullScreenImageWidth) / 2.0f);
+		fullScreenYOff = (int) ((screenHeight - fullScreenImageHeight) / 2.0f);
 	}
 
 	public void requestFocus() {
@@ -158,9 +158,12 @@ public class Game extends Canvas implements Runnable, Controllable {
 		input.updateControllerInput();
 		GameInfo.update(fps);
 		Texture.update();
-		gsm.update(input);
+		gsm.update();
 		if (input.getInputTapped("ESCAPE")) {
 			System.exit(0);
+		}
+		if (input.getInputTapped("F1")) {
+			settings.debugMode = !settings.debugMode;
 		}
 		input.update();
 	}
@@ -174,8 +177,8 @@ public class Game extends Canvas implements Runnable, Controllable {
 		screen.clear(ColorUtil.toARGBColor(Color.BLACK));
 		gsm.render(screen);
 
-		for (int i = 0; i < screen.width * screen.height; i++) {
-			pixels[i] = screen.pixels[i];
+		for (int i = 0; i < screen.getWidth() * screen.getHeight(); i++) {
+			pixels[i] = screen.getPixels()[i];
 		}
 
 		Graphics g = bs.getDrawGraphics();
@@ -186,46 +189,23 @@ public class Game extends Canvas implements Runnable, Controllable {
 		} else {
 			g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
 		}
-
-		if (settings.debugMode) {
-			int debugX = fullScreenXOff + 2;
-			int debugY = 12;
-			g.setFont(new Font("Verdana", Font.PLAIN, 12));
-			g.setColor(Color.YELLOW);
-			g.drawString(fps + " FPS", debugX, debugY);
-			double playerX = level.getPlayer().getPos().getX();
-			BigDecimal px = new BigDecimal(playerX).setScale(1, RoundingMode.HALF_EVEN);
-			double playerY = level.getPlayer().getPos().getY();
-			BigDecimal py = new BigDecimal(playerY).setScale(1, RoundingMode.HALF_EVEN);
-			double playerZ = level.getPlayer().getPos().getZ();
-			BigDecimal pz = new BigDecimal(playerZ).setScale(1, RoundingMode.HALF_EVEN);
-			double playerRot = level.getPlayer().getRotation();
-			BigDecimal pr = new BigDecimal(playerRot).setScale(3, RoundingMode.HALF_EVEN);
-			g.drawString("XYZ: " + px.doubleValue() + ", " + py.doubleValue() + ", " + pz.doubleValue(), debugX, debugY + 12);
-			g.drawString("Rotation: " + pr.doubleValue(), debugX, debugY + 12 * 2);
-			Direction pdir = Direction.getFromRad(level.getPlayer().getRotation());
-			g.drawString("Direction: " + pdir.getId() + " (" + pdir.name() + ")", debugX, debugY + 12 * 3);
-			g.drawString("Move Speed: " + level.getPlayer().getMoveSpeed(), debugX, debugY + 12 * 4);
-			g.drawString("Crouching: " + level.getPlayer().isCrouching(), debugX, debugY + 12 * 5);
-			g.drawString("Running: " + level.getPlayer().isRunning(), debugX, debugY + 12 * 6);
-		}
 		g.dispose();
 		bs.show();
 	}
 
-	public static void runGame(Logger l, GameSettings settings) {
-		new Game(l, settings);
-	}
-
-	public void createJFrame() {
+	public void createJFrame(GraphicsDevice display) {
 		frame = new JFrame();
 		frame.add(this);
 		if (settings.fullscreen) {
 			frame.setUndecorated(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			display.setFullScreenWindow(frame);
 		} else {
 			frame.setSize(new Dimension(settings.windowWidth, settings.windowHeight));
-			frame.setLocationRelativeTo(null);
+			Rectangle displayBounds = display.getDefaultConfiguration().getBounds();
+			int fX = (int) (displayBounds.x + displayBounds.getWidth() / 2 + frame.getX() - frame.getWidth() / 2);
+			int fY = (int) (displayBounds.y + displayBounds.getHeight() / 2 + frame.getY() - frame.getHeight() / 2);
+			frame.setLocation(fX, fY);
 		}
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -243,6 +223,14 @@ public class Game extends Canvas implements Runnable, Controllable {
 
 	public Component getComponent() {
 		return this;
+	}
+
+	public GameSettings getSettings() {
+		return settings;
+	}
+
+	public Input getInput() {
+		return input;
 	}
 
 }

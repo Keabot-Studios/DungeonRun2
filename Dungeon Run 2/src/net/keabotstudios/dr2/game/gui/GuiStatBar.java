@@ -28,8 +28,10 @@ public class GuiStatBar extends GuiHudLabel {
 	}
 
 	public void setValue(int value) {
-		if(value < 0) value = 0;
-		if(value > maxValue) value = maxValue;
+		if (value < 0)
+			value = 0;
+		if (value > maxValue)
+			value = maxValue;
 		this.value = value;
 	}
 
@@ -38,8 +40,10 @@ public class GuiStatBar extends GuiHudLabel {
 	}
 
 	public void setMaxValue(int maxValue) {
-		if(maxValue < 0) maxValue = 0;
-		if(value > maxValue) value = maxValue;
+		if (maxValue < 0)
+			maxValue = 0;
+		if (value > maxValue)
+			value = maxValue;
 		this.maxValue = maxValue;
 	}
 

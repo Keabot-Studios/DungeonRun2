@@ -9,7 +9,7 @@ public abstract class GuiHudBar extends GuiComponent {
 
 	protected GuiHudBar(int x, int y, int size, GuiBarColor color) {
 		super(x, y, size);
-		if(color == GuiBarColor.BACKGROUND) {
+		if (color == GuiBarColor.BACKGROUND) {
 			System.out.println("Can't use " + color.name() + " as a Gui color!");
 			System.exit(-1);
 		}
@@ -21,13 +21,13 @@ public abstract class GuiHudBar extends GuiComponent {
 	}
 
 	public void setColor(GuiBarColor color) {
-		if(color == GuiBarColor.BACKGROUND) {
+		if (color == GuiBarColor.BACKGROUND) {
 			System.out.println("Can't use " + color.name() + " as a Gui color!");
 			System.exit(-1);
 		}
 		this.color = color;
 	}
-	
+
 	public void update(Input input) {}
 
 }

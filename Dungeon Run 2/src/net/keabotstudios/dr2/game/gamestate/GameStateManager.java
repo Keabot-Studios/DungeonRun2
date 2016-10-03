@@ -2,7 +2,6 @@ package net.keabotstudios.dr2.game.gamestate;
 
 import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.gfx.Bitmap;
-import net.keabotstudios.superin.Input;
 
 public class GameStateManager {
 
@@ -14,11 +13,11 @@ public class GameStateManager {
 		this.game = game;
 	}
 
-	public void update(Input input) {
+	public void update() {
 		if (currentState != null)
-			currentState.update(input);
+			currentState.update();
 		else
-			nullState.update(input);
+			nullState.update();
 	}
 
 	public void render(Bitmap render) {

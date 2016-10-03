@@ -2,8 +2,8 @@ package net.keabotstudios.dr2.game.level.object.entity;
 
 import java.awt.Color;
 
+import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.game.GameInfo;
-import net.keabotstudios.dr2.game.GameSettings;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
 import net.keabotstudios.dr2.game.level.object.Vector3;
@@ -23,11 +23,11 @@ public class Player extends Entity {
 	public static final double JUMP_SPEED = 0.5;
 	public static final double GRAVITY = 0.2;
 
-	private GameSettings settings;
+	private Game game;
 
-	public Player(double x, double z, double rot, String name, GameSettings settings) {
+	public Player(double x, double z, double rot, String name, Game game) {
 		super(new Vector3(x, 0, z), new CollisionBox(0.8, 0.8, 1.5), rot, name, Color.GREEN.getRGB());
-		this.settings = settings;
+		this.game = game;
 	}
 
 	private double newMX, oldMX, xa, za, moveSpeed, eyeHeight;
@@ -83,30 +83,20 @@ public class Player extends Entity {
 		}
 
 		newMX = input.getMouseX();
-		if (newMX > oldMX && settings.mouseTurning) {
+		if (newMX > oldMX && game.getSettings().mouseTurning) {
 			dRot += MOUSE_ROT_SPEED;
-		} else if (newMX < oldMX && settings.mouseTurning) {
+		} else if (newMX < oldMX && game.getSettings().mouseTurning) {
 			dRot -= MOUSE_ROT_SPEED;
 		} else if (input.getInput("TURN_LEFT")) {
 			dRot -= ROT_SPEED * Math.abs(input.getInputValue("TURN_LEFT"));
 		} else if (input.getInput("TURN_RIGHT")) {
 			dRot += ROT_SPEED * Math.abs(input.getInputValue("TURN_RIGHT"));
-		} else if ((newMX > oldMX || newMX < oldMX) && settings.mouseTurning) {
+		} else if ((newMX > oldMX || newMX < oldMX) && game.getSettings().mouseTurning) {
 			dRot += MOUSE_ROT_SPEED * (newMX - oldMX);
 		}
 		oldMX = newMX;
-		if (walking && settings.enableBobbing) {
+		if (walking && game.getSettings().enableBobbing) {
 			eyeHeight += Math.sin(GameInfo.TIME / 6.0) * BOB_MAGNITUTDE * (crouching ? 0.3 : 1);
-		}
-
-		if (settings.debugMode && input.getInputTapped("F1")) {
-			pos = new Vector3(0, 0, 0);
-			eyeHeight = 0;
-			xa = 0;
-			za = 0;
-			rot = 0;
-			dRot = 0;
-			return;
 		}
 
 		if (crouching) {

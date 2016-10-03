@@ -98,7 +98,7 @@ public class Launcher {
 		btnPanel.add(play, gbc_playSingle);
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Game.runGame(l, settings);
+				new Game(l, settings, frame.getGraphicsConfiguration().getDevice());
 				frame.dispose();
 			}
 		});

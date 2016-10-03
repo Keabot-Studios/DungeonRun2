@@ -5,8 +5,8 @@ import java.awt.Color;
 import net.keabotstudios.dr2.Util.ColorUtil;
 
 public class Bitmap {
-	public final int width, height;
-	public final int[] pixels;
+	protected final int width, height;
+	protected final int[] pixels;
 
 	public Bitmap(int w, int h) {
 		width = w;
@@ -14,6 +14,12 @@ public class Bitmap {
 		pixels = new int[w * h];
 	}
 
+	/**
+	 * Sets the entire Bitmap to one color.
+	 * 
+	 * @param col
+	 *            the color to set this Bitmap to.
+	 */
 	public void clear(Color col) {
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = col.getRGB();
@@ -55,8 +61,8 @@ public class Bitmap {
 	 *            the x offset to draw the Bitmap at.
 	 * @param yOffs
 	 *            the y offset to draw the Bitmap at.
-	 * @param alpha
-	 *            the alpha value to draw the Bitmap at.
+	 * @param scale
+	 *            the scale to draw the Bitmap at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale) {
 		if (scale < 1)
@@ -113,6 +119,20 @@ public class Bitmap {
 		}
 	}
 
+	/**
+	 * Gets a Bitmap with the pixels of this Bitmap object.
+	 * 
+	 * @param x
+	 *            the x of the resulting Bitmap on this Bitmap.
+	 * @param y
+	 *            the y of the resulting Bitmap on this Bitmap.
+	 * @param width
+	 *            the width of the resulting Bitmap.
+	 * @param height
+	 *            the height of the resulting Bitmap.
+	 * 
+	 * @return the Bitmap with the pixels of this Bitmap object.
+	 */
 	public Bitmap getSubBitmap(int x, int y, int width, int height) {
 		if (x + width > this.width || x < 0)
 			return null;
@@ -127,6 +147,11 @@ public class Bitmap {
 		return result;
 	}
 
+	/**
+	 * Gets the average color of all pixels on this Bitmap.
+	 * 
+	 * @return the average color of all pixels on this Bitmap.
+	 */
 	public int getAverageColor() {
 		float redBucket = 0;
 		float greenBucket = 0;
@@ -144,5 +169,17 @@ public class Bitmap {
 		}
 
 		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount, 1.0f).getRGB();
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int[] getPixels() {
+		return pixels;
 	}
 }
