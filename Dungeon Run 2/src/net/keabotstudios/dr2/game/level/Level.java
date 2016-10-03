@@ -45,11 +45,10 @@ public class Level {
 			}
 		}
 
-		SpawnPointEntity spawnEntity = new SpawnPointEntity(
-				new Vector3(gen.getSpawnPoint().getX(), 1, gen.getSpawnPoint().getY()), "Spawn");
+		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX(), 1, gen.getSpawnPoint().getY()), "Spawn");
 		entities.add(spawnEntity);
 
-		player = new Player(spawnEntity.getPos(), 0, "Player", game);
+		player = new Player(spawnEntity.getPos().clone(), 0, "Player", game);
 
 		/*
 		 * Arrays.fill(blocks, new EmptyBlock()); blocks[(width / 2 - 1) +

@@ -47,8 +47,7 @@ public class AnimatedBitmap extends Bitmap {
 				else
 					currentFrame = 0;
 			}
-			clear(Color.BLACK);
-			render(frames[currentFrame], 0, 0);
+			this.pixels = frames[currentFrame].getPixels();
 		}
 	}
 

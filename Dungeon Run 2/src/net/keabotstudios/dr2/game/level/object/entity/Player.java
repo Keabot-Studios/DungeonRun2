@@ -20,8 +20,8 @@ public class Player extends Entity {
 	public static final double RUN_SPEED = 1.8;
 	public static final double CROUCH_HEIGHT = 0.5;
 	public static final double CROUCH_SPEED = 0.5;
-	public static final double JUMP_SPEED = 0.5;
-	public static final double GRAVITY = 0.2;
+	public static final double JUMP_HEIGHT = 1;
+	public static final double GRAVITY = 0.002;
 
 	private Game game;
 
@@ -31,11 +31,11 @@ public class Player extends Entity {
 	}
 
 	private double newMX, oldMX, xa, za, moveSpeed, eyeHeight;
-	private boolean walking, running, crouching;
+	private boolean walking, running, crouching, jumping;
 
 	public void update(Input input, Level level) {
-		dz = 0;
 		dx = 0;
+		dz = 0;
 		moveSpeed = (running ? RUN_SPEED : 1) * (crouching ? CROUCH_SPEED : 1);
 
 		updateInput(input);
@@ -48,6 +48,16 @@ public class Player extends Entity {
 		}
 		if (isFree(pos.getX(), pos.getZ() + za, level)) {
 			pos.setZ(pos.getZ() + za);
+		}
+		
+		if(pos.getY() > 0) {
+			dy -= GRAVITY;
+			pos.setY(pos.getY() + dy);
+			jumping = true;
+		} else {
+			jumping = false;
+			pos.setY(0);
+			dy = 0;
 		}
 
 		eyeHeight *= 0.9;
@@ -67,6 +77,10 @@ public class Player extends Entity {
 			running = !running;
 		if (crouching)
 			running = false;
+		if(input.getInputTapped("JUMP") && !jumping) {
+			jumping = true;
+			dy += JUMP_HEIGHT;
+		}
 
 		boolean strafing = input.getInput("STRAFE_LEFT") || input.getInput("STRAFE_RIGHT");
 

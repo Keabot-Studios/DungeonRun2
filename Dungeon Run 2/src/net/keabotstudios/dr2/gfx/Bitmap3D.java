@@ -264,10 +264,12 @@ public class Bitmap3D extends Bitmap {
 			for (int xp = xpl; xp < xpr; xp++) {
 				double pixelRotationX = (xp - xPixelL) / (xPixelR - xPixelL);
 				int xTex = (int) (texture.width * pixelRotationX);
-				if (zBuffer[xp + yp * width] > rotZ) {
-					pixels[xp + yp * width] = texture.pixels[(xTex & texture.width - 1) + (yTex & texture.height - 1) * texture.width];
-					zBuffer[xp + yp * width] = rotZ;
-				}
+				int color = texture.pixels[(xTex & texture.width - 1) + (yTex & texture.height - 1) * texture.width];
+				if (ColorUtil.alpha(color) > 0)
+					if (zBuffer[xp + yp * width] > rotZ) {
+						pixels[xp + yp * width] = color;
+						zBuffer[xp + yp * width] = rotZ;
+					}
 			}
 		}
 	}

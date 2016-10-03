@@ -10,11 +10,11 @@ import net.keabotstudios.dr2.gfx.Texture;
 public class SpawnPointEntity extends Entity {
 
 	public SpawnPointEntity(Vector3 pos, String name) {
-		super(pos, new CollisionBox(0.5, 0.5, 0.5), 0, name, Color.GRAY.getRGB());
+		super(pos, new CollisionBox(0.5, 0.5, 0.5), 0, name, Color.BLUE.getRGB());
 	}
 
 	public Bitmap getTexture() {
-		return Texture.animTest;
+		return Texture.spawnPoint;
 	}
 
 }

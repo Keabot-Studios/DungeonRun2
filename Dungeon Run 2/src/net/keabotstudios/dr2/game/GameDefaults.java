@@ -19,21 +19,22 @@ public class GameDefaults {
 			new InputAxis("TURN_RIGHT", KeyEvent.VK_E, Component.Identifier.Axis.RX, DEADZONE, InputAxis.EMPTY),
 			new InputAxis("RUN", KeyEvent.VK_SHIFT, Component.Identifier.Button._3, 1.0f, InputAxis.EMPTY),
 			new InputAxis("CROUCH", KeyEvent.VK_CONTROL, Component.Identifier.Button._2, 1.0f, InputAxis.EMPTY),
-			new InputAxis("SHOOT", KeyEvent.VK_SPACE, Component.Identifier.Button._6, 1.0f, MouseEvent.BUTTON1),
+			new InputAxis("SHOOT", InputAxis.EMPTY, Component.Identifier.Button._6, 1.0f, MouseEvent.BUTTON1),
+			new InputAxis("JUMP", KeyEvent.VK_SPACE, Component.Identifier.Button._1, 1.0f, MouseEvent.BUTTON1),
 			new InputAxis("ACTION", KeyEvent.VK_ENTER, Component.Identifier.Button._0, 1.0f, MouseEvent.BUTTON3),
 			new InputAxis("RELOAD", KeyEvent.VK_R, Component.Identifier.Button._4, 1.0f, InputAxis.EMPTY),
+			new InputAxis("MENU_UP", KeyEvent.VK_UP, Component.Identifier.Axis.Y, -DEADZONE, InputAxis.EMPTY),
+			new InputAxis("MENU_DOWN", KeyEvent.VK_DOWN, Component.Identifier.Axis.Y, DEADZONE, InputAxis.EMPTY),
+			new InputAxis("MENU_LEFT", KeyEvent.VK_LEFT, Component.Identifier.Axis.X, -DEADZONE, InputAxis.EMPTY),
+			new InputAxis("MENU_RIGHT", KeyEvent.VK_RIGHT, Component.Identifier.Axis.X, DEADZONE, InputAxis.EMPTY),
+			new InputAxis("MENU_CONFIRM", KeyEvent.VK_ENTER, Component.Identifier.Button._0, 1.0f, InputAxis.EMPTY),
+			new InputAxis("ESCAPE", KeyEvent.VK_ESCAPE),
 			new InputAxis("F1", KeyEvent.VK_F1),
 			new InputAxis("F2", KeyEvent.VK_F2),
 			new InputAxis("F3", KeyEvent.VK_F3),
 			new InputAxis("F4", KeyEvent.VK_F4),
 			new InputAxis("F5", KeyEvent.VK_F5),
-			new InputAxis("F6", KeyEvent.VK_F6),
-			new InputAxis("ESCAPE", KeyEvent.VK_ESCAPE),
-			new InputAxis("MENU_UP", KeyEvent.VK_UP, Component.Identifier.Axis.Y, -DEADZONE, InputAxis.EMPTY),
-			new InputAxis("MENU_DOWN", KeyEvent.VK_DOWN, Component.Identifier.Axis.Y, DEADZONE, InputAxis.EMPTY),
-			new InputAxis("MENU_LEFT", KeyEvent.VK_LEFT, Component.Identifier.Axis.X, -DEADZONE, InputAxis.EMPTY),
-			new InputAxis("MENU_RIGHT", KeyEvent.VK_RIGHT, Component.Identifier.Axis.X, DEADZONE, InputAxis.EMPTY),
-			new InputAxis("MENU_CONFIRM", KeyEvent.VK_ENTER, Component.Identifier.Button._0, 1.0f, InputAxis.EMPTY)
+			new InputAxis("F6", KeyEvent.VK_F6)
 	};
 	public static final int WINDOW_INDEX = 0;
 
