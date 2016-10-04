@@ -18,6 +18,8 @@ public class MapGenerator {
 	int[][] tileMap;
 	DungeonTile[][] dungeonTileMap;
 
+	private int conCount;
+
 	List<DungeonRoom> dungeonRooms = new ArrayList<DungeonRoom>();
 
 	Random mapGenRandom;
@@ -43,6 +45,8 @@ public class MapGenerator {
 
 		System.out.println("Filling Empty Tiles...");
 		fillEmptyTiles();
+		
+		setConnectionCount();
 
 		System.out.println("Generating Paths...");
 		generatePaths();
@@ -182,7 +186,7 @@ public class MapGenerator {
 				}
 			}
 		}
-		System.out.println("Path Gen: " + (int) ((float) connectionCount() / (float) maxConnections() * 100f) + "%");
+		System.out.println("Path Gen: " + (int) ((float) connectionCount() / (float) conCount * 100f) + "%");
 	}
 
 	public int connectionCount() {
@@ -191,6 +195,16 @@ public class MapGenerator {
 			i += room.connectionsToOtherRooms;
 		}
 		return i;
+	}
+
+	private void setConnectionCount() {
+		int remaining = maxConnections() - dungeonRooms.size() * 2;		
+		
+		float chance = mapGenRandom.nextFloat();
+		
+		int amount = (int)Math.floor(Math.log(chance)/Math.log(.75));
+		
+		conCount = dungeonRooms.size() * 2 + Math.max(0, Math.max(remaining, amount));
 	}
 
 	public int maxConnections() {
@@ -210,7 +224,7 @@ public class MapGenerator {
 			}
 		}
 
-		while (connectionCount() < maxConnections() && mapGenRandom.nextInt(5) <= 3) {
+		while (connectionCount() < conCount) {
 			List<DungeonRoom> rooms = new ArrayList<DungeonRoom>();
 			for (DungeonRoom room : dungeonRooms) {
 				rooms.add(room);
