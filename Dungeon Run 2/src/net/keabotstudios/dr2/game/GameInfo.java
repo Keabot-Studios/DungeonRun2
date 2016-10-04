@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.Util;
-import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.superlog.Logger;
 
 public class GameInfo {

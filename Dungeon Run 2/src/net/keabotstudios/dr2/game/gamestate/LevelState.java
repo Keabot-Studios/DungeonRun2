@@ -1,18 +1,14 @@
 package net.keabotstudios.dr2.game.gamestate;
 
-import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.gui.GuiRenderer;
 import net.keabotstudios.dr2.game.gui.GuiRenderer.GuiBarColor;
 import net.keabotstudios.dr2.game.gui.GuiStatBar;
 import net.keabotstudios.dr2.game.gui.GuiStatText;
-import net.keabotstudios.dr2.game.gui.font.Font;
-import net.keabotstudios.dr2.game.gui.font.FontCharacter;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Bitmap3D;

@@ -2,12 +2,9 @@ package net.keabotstudios.dr2.game.gui.font;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Locale;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
-import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 

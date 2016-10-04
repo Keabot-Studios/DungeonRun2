@@ -20,7 +20,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 import net.keabotstudios.dr2.Util;
 import net.keabotstudios.dr2.game.GameInfo;

@@ -1,7 +1,5 @@
 package net.keabotstudios.dr2.gfx;
 
-import java.awt.Color;
-
 import net.keabotstudios.dr2.game.GameInfo;
 
 public class AnimatedBitmap extends Bitmap {
