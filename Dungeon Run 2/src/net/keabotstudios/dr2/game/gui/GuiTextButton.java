@@ -2,9 +2,7 @@ package net.keabotstudios.dr2.game.gui;
 
 import java.awt.Rectangle;
 
-import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.gfx.Bitmap;
-import net.keabotstudios.superin.Input;
 
 public class GuiTextButton extends GuiButton implements GuiAction {
 
@@ -22,6 +20,5 @@ public class GuiTextButton extends GuiButton implements GuiAction {
 	@Override
 	public void render(Bitmap bitmap) {
 		super.render(bitmap);
-
 	}
 }
