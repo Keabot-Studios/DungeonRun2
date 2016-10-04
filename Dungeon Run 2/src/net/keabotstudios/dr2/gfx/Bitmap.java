@@ -118,7 +118,7 @@ public class Bitmap {
 			}
 		}
 	}
-	
+
 	/**
 	 * Draws a Bitmap to this Bitmap object.
 	 * 
@@ -227,6 +227,30 @@ public class Bitmap {
 		for (int i = 0; i < out.pixels.length; i++) {
 			if (out.pixels[i] == targetColor)
 				out.pixels[i] = color;
+		}
+		return out;
+	}
+
+	public Bitmap rotate(double rot) {
+		Bitmap out = new Bitmap(width, height);
+		if(rot == 0.0) return this.clone();
+		double cos = Math.cos(-rot);
+		double sin = Math.sin(-rot);
+		int xCenter = width / 2;
+		int yCenter = height / 2;
+		for (int a = 0, y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++, a++) {
+				int xp = x - xCenter;
+				int yp = y - yCenter;
+				int xx = (int) Math.round((xp * cos) - (yp * sin));
+				int yy = (int) Math.round((xp * sin) + (yp * cos));
+				xp = xx + xCenter;
+				yp = yy + yCenter;
+				if ((xp >= 0) && (xp < width) && (yp >= 0) && (yp < height))
+					out.pixels[a] = pixels[xp + yp * width];
+				else
+					out.pixels[a] = ColorUtil.makeARGBColor(0, 0, 0, 0);
+			}
 		}
 		return out;
 	}

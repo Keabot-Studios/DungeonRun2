@@ -52,21 +52,6 @@ public class LevelState extends GameState {
 			rot.render(bitmap);
 			dir.render(bitmap);
 		}
-		
-		Font font = Font.SMALL;
-		FontCharacter[] characters = font.getCharacters();
-		int fontSize = 5;
-		int cX = 5;
-		int cY = 94;
-		float alpha = (float) Math.sin(GameInfo.TIME / 60.0);
-		for(int i = 0; i < characters.length; i++) {
-			if((cX + (characters[i].getWidth() + 2) * fontSize) > GameInfo.GAME_WIDTH) {
-				cX = 5;
-				cY += (font.getHeight() + 2) * fontSize;
-			}
-			characters[i].render(bitmap, cX, cY, fontSize, ColorUtil.toARGBColor(Color.BLUE.getRGB()), alpha);
-			cX += (characters[i].getWidth() + 2) * fontSize;
-		}
 	}
 
 	public void update() {

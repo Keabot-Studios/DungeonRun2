@@ -1,10 +1,13 @@
 package net.keabotstudios.dr2.game.gui.font;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
+import net.keabotstudios.dr2.Util.ColorUtil;
+import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 
@@ -37,7 +40,8 @@ public enum Font {
 			4,
 			3,
 			2
-	}, 11, 7, 0), SMALL(Texture.font_small, new String[] {
+	}, 11, 7, 2, 0),
+	SMALL(Texture.font_small, new String[] {
 			"ABCDEFGHIJKLMNOP",
 			"QRSTUVWXYZ012345",
 			"6789?_~@#$      ",
@@ -49,12 +53,12 @@ public enum Font {
 			4,
 			3,
 			2
-	}, 6, 2, 1);
+	}, 6, 2, 2, 1);
 
 	private Bitmap texture;
 	private String[] lines;
 	private int[] widths;
-	private int height, spaceWidth;
+	private int height, spaceWidth, charSpaceWidth;
 	private FontCharacter[] characters;
 	private int type;
 
@@ -62,12 +66,13 @@ public enum Font {
 	private static final int ALL_CAPS = 1;
 	private static final int NO_CAPS = 2;
 
-	private Font(Bitmap texture, String[] lines, int[] widths, int height, int spaceWidth, int type) {
+	private Font(Bitmap texture, String[] lines, int[] widths, int height, int spaceWidth, int charSpaceWidth, int type) {
 		this.texture = texture;
 		this.lines = lines;
 		this.widths = widths;
 		this.height = height;
 		this.spaceWidth = spaceWidth;
+		this.charSpaceWidth = charSpaceWidth;
 		this.type = type;
 	}
 
@@ -147,6 +152,27 @@ public enum Font {
 
 	public boolean hasChar(char c) {
 		return getCharacterIndex(c) >= 0;
+	}
+	
+	public void drawString(Bitmap bitmap, String string, int x, int y, int color) {
+		drawString(bitmap, string, x, y, 1, 1.0f, color);
+	}
+
+	public void drawString(Bitmap bitmap, String string, int x, int y, int size, int color) {
+		drawString(bitmap, string, x, y, size, 1.0f, color);
+	}
+
+	public void drawString(Bitmap bitmap, String string, int x, int y, int size, float alpha, int color) {
+		for (int i = 0; i < string.length(); i++) {
+			char c = string.charAt(i);
+			if(c == ' ') {
+				x += spaceWidth * size;
+			} if (hasChar(c)) {
+				FontCharacter character = characters[getCharacterIndex(c)];
+				character.render(bitmap, x, y, size, ColorUtil.toARGBColor(Color.BLUE.getRGB()), alpha);
+				x += (characters[i].getWidth() + charSpaceWidth) * size;
+			}
+		}
 	}
 
 	public static void load() {
