@@ -32,9 +32,7 @@ public class Bitmap3D extends Bitmap {
 	}
 
 	public void renderLevel(Level l) {
-		for (int x = 0; x < width; x++) {
-			zBufferWall[x] = 0;
-		}
+			zBufferWall = new double[width];
 
 		double cos = Math.cos(rotOff);
 		double sin = Math.sin(rotOff);
