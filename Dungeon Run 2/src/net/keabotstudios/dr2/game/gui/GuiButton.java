@@ -33,19 +33,17 @@ public class GuiButton extends GuiComponent implements GuiAction {
 
 	@Override
 	public void update(Input input) {
-		if (input.getInputTapped("SHOOT")) {
-
+		if (input.getInputTapped("MENU_ENTER")) {
+			
 		}
 	}
 
 	public boolean isSelected(Input input) {
-		return input.getMouseX() * GameInfo.getResScale(GuiRenderer.game) > rectangle.getX()
-				&& input.getMouseX() * GameInfo.getResScale(GuiRenderer.game) < rectangle.getMaxX()
-				&& input.getMouseY() * GameInfo.getResScale(GuiRenderer.game) > rectangle.getY();
-		
+		return input.getMouseX() * GameInfo.getResScale(GuiRenderer.game) > rectangle.getX() && input.getMouseX() * GameInfo.getResScale(GuiRenderer.game) < rectangle.getMaxX() && input.getMouseY() * GameInfo.getResScale(GuiRenderer.game) > rectangle.getY();
+
 	}
 
 	public void onAction() {
-		
+
 	}
 }

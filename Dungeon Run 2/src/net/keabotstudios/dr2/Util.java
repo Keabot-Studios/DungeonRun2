@@ -66,13 +66,13 @@ public class Util {
 			int oBlue = (int) ((ColorUtil.blue(topColor) * topAlpha) + (ColorUtil.blue(bottomColor) * (1.0f - topAlpha)));
 			return makeARGBColor(0xFF, oRed, oGreen, oBlue);
 		}
-		
+
 		public static int makeARGBColor(int alpha, int red, int green, int blue) {
 			return (alpha << 24 | (red & 0xFF) << 16) | ((green & 0xFF) << 8) | (blue & 0xFF);
 		}
 
-		public static Color toARGBColor(Color rgbCol) {
-			return new Color(rgbCol.getRGB(), false);
+		public static int toARGBColor(Color rgbCol) {
+			return new Color(rgbCol.getRGB(), false).getRGB();
 		}
 
 		public static int toARGBColor(int rgbCol) {

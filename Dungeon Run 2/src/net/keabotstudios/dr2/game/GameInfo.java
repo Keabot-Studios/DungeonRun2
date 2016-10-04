@@ -17,7 +17,16 @@ public class GameInfo {
 	public static final float ASPECT_RATIO = 3.0f / 4.0f;
 	public static final int GAME_WIDTH = 640;
 	public static final int GAME_HEIGHT = (int) (GAME_WIDTH * ASPECT_RATIO);
-	public static final int[] WINDOW_WIDTHS = { 640, 800, 1024, 1152, 1280, 1400, 1600, 2048 };
+	public static final int[] WINDOW_WIDTHS = {
+			640,
+			800,
+			1024,
+			1152,
+			1280,
+			1400,
+			1600,
+			2048
+	};
 
 	public static final int MAX_UPS = 60;
 
@@ -41,20 +50,15 @@ public class GameInfo {
 		if (OS.contains("WIN")) {
 			return System.getenv("AppData") + File.separator + APPDATA_FOLDER_NAME;
 		} else {
-			return System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support"
-					+ File.separator + APPDATA_FOLDER_NAME;
+			return System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support" + File.separator + APPDATA_FOLDER_NAME;
 		}
 	}
 
 	public static float getResScale(Game game) {
 		if (GameDefaults.FULLSCREEN) {
-			return Util.getScaleOfRectangeInArea(game.getFullscreenRect().width,
-					game.getFullscreenRect().height, WINDOW_WIDTHS[0],
-					(int)((float)WINDOW_WIDTHS[0] * ASPECT_RATIO));
+			return Util.getScaleOfRectangeInArea(game.getFullscreenRect().width, game.getFullscreenRect().height, WINDOW_WIDTHS[0], (int) ((float) WINDOW_WIDTHS[0] * ASPECT_RATIO));
 		}
-		return Util.getScaleOfRectangeInArea(GAME_WIDTH,
-				GAME_HEIGHT, WINDOW_WIDTHS[0],
-				(int)((float)WINDOW_WIDTHS[0] * ASPECT_RATIO));
+		return Util.getScaleOfRectangeInArea(GAME_WIDTH, GAME_HEIGHT, WINDOW_WIDTHS[0], (int) ((float) WINDOW_WIDTHS[0] * ASPECT_RATIO));
 	}
 
 }

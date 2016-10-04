@@ -49,8 +49,8 @@ public class Player extends Entity {
 		if (isFree(pos.getX(), pos.getZ() + za, level)) {
 			pos.setZ(pos.getZ() + za);
 		}
-		
-		if(pos.getY() > 0) {
+
+		if (pos.getY() > 0) {
 			dy -= GRAVITY;
 			pos.setY(pos.getY() + dy);
 			jumping = true;
@@ -69,15 +69,14 @@ public class Player extends Entity {
 	}
 
 	private void updateInput(Input input) {
-		walking = input.getInput("FORWARD") || input.getInput("BACKWARD") || input.getInput("STRAFE_LEFT")
-				|| input.getInput("STRAFE_RIGHT");
+		walking = input.getInput("FORWARD") || input.getInput("BACKWARD") || input.getInput("STRAFE_LEFT") || input.getInput("STRAFE_RIGHT");
 		if (input.getInputTapped("CROUCH"))
 			crouching = !crouching;
 		if (!crouching && input.getInputTapped("RUN"))
 			running = !running;
 		if (crouching)
 			running = false;
-		if(input.getInputTapped("JUMP") && !jumping) {
+		if (input.getInputTapped("JUMP") && !jumping) {
 			jumping = true;
 			dy += JUMP_HEIGHT;
 		}

@@ -34,7 +34,7 @@ public class GuiRenderer {
 	public static final String DIR_CHAR = "‰";
 
 	private static final String guiSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,/$-ƒ„†‡ˆ‰ ";
-	
+
 	public static Game game;
 
 	public static void init(Game game) {

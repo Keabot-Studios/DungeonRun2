@@ -10,12 +10,14 @@ import net.keabotstudios.dr2.game.gui.GuiRenderer.GuiBarColor;
 import net.keabotstudios.dr2.game.gui.GuiStatBar;
 import net.keabotstudios.dr2.game.gui.GuiStatText;
 import net.keabotstudios.dr2.game.level.Level;
+import net.keabotstudios.dr2.game.level.Minimap;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Bitmap3D;
 
 public class LevelState extends GameState {
 
 	private Level level;
+	private Minimap minimap;
 	private Bitmap3D bitmap3d;
 
 	private GuiStatBar health, ammo;
@@ -24,6 +26,7 @@ public class LevelState extends GameState {
 	public LevelState(GameStateManager gsm, Level level) {
 		super(gsm);
 		this.level = level;
+		this.minimap = new Minimap(level, GameInfo.GAME_WIDTH - 110, 10, 100, 100, 0.5f);
 		bitmap3d = new Bitmap3D(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		int guiX = -6;
 		int guiY = (int) (GameInfo.GAME_HEIGHT - (16.0 * 2.0) - 8.0);
@@ -48,6 +51,7 @@ public class LevelState extends GameState {
 			rot.render(bitmap);
 			dir.render(bitmap);
 		}
+		minimap.render(bitmap);
 	}
 
 	public void update() {
@@ -78,6 +82,7 @@ public class LevelState extends GameState {
 			dir.setText(pdir.getId() + "," + pdir.name());
 		}
 		level.update(gsm.game.getInput());
+		minimap.update();
 		bitmap3d.setOffsets(level.getPlayer());
 	}
 

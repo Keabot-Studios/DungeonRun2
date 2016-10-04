@@ -27,6 +27,18 @@ public class Bitmap {
 	}
 
 	/**
+	 * Sets the entire Bitmap to one color.
+	 * 
+	 * @param col
+	 *            the ARGB color to set this Bitmap to.
+	 */
+	public void clear(int col) {
+		for (int i = 0; i < pixels.length; i++) {
+			pixels[i] = col;
+		}
+	}
+
+	/**
 	 * Draws a Bitmap to this Bitmap object.
 	 * 
 	 * @param bitmap
@@ -175,14 +187,13 @@ public class Bitmap {
 	 * @return the Bitmap with the pixels of this Bitmap object.
 	 */
 	public Bitmap getSubBitmap(int x, int y, int width, int height) {
-		if (x + width > this.width || x < 0)
-			return null;
-		if (y + height > this.height || y < 0)
-			return null;
 		Bitmap result = new Bitmap(width, height);
 		for (int px = 0; px < width; px++) {
 			for (int py = 0; py < height; py++) {
-				result.pixels[px + py * width] = pixels[(px + x) + (py + y) * this.width];
+				if ((px + x) >= this.width || (px + x) < 0 || (py + y) >= this.height || (py + y) < 0)
+					result.pixels[px + py * width] = ColorUtil.makeARGBColor(0, 0, 0, 0);
+				else
+					result.pixels[px + py * width] = pixels[(px + x) + (py + y) * this.width];
 			}
 		}
 		return result;
@@ -233,7 +244,8 @@ public class Bitmap {
 
 	public Bitmap rotate(double rot) {
 		Bitmap out = new Bitmap(width, height);
-		if(rot == 0.0) return this.clone();
+		if (rot == 0.0)
+			return this.clone();
 		double cos = Math.cos(-rot);
 		double sin = Math.sin(-rot);
 		int xCenter = width / 2;
@@ -253,6 +265,45 @@ public class Bitmap {
 			}
 		}
 		return out;
+	}
+
+	public void drawRect(int x, int y, int width, int height, int color) {
+		for (int yPix = 0; yPix < height; yPix++) {
+			if (yPix < 0 || yPix >= this.height)
+				continue;
+			for (int xPix = 0; x < width; xPix++) {
+				if (xPix < 0 || xPix >= this.width)
+					continue;
+				if ((xPix == 0 || xPix == width - 1) && (yPix == 0 || yPix == height - 1)) {
+					pixels[xPix + yPix * this.width] = color;
+				}
+			}
+		}
+	}
+
+	public void fillRect(int x, int y, int width, int height, int color) {
+		for (int yPix = y; yPix < y + height; yPix++) {
+			if (yPix < 0 || yPix >= this.height)
+				continue;
+			for (int xPix = x; xPix < x + width; xPix++) {
+				if (xPix < 0 || xPix >= this.width)
+					continue;
+				pixels[xPix + yPix * this.width] = color;
+			}
+		}
+	}
+	
+	public void fillRect(int x, int y, int width, int height, int color, float alpha) {
+		for (int yPix = y; yPix < y + height; yPix++) {
+			if (yPix < 0 || yPix >= this.height)
+				continue;
+			for (int xPix = x; xPix < x + width; xPix++) {
+				if (xPix < 0 || xPix >= this.width)
+					continue;
+				int currentColor = pixels[xPix + yPix * width];
+				pixels[xPix + yPix * this.width] = ColorUtil.overlayAlpha(color, currentColor, alpha);
+			}
+		}
 	}
 
 	public int getWidth() {

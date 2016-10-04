@@ -58,19 +58,19 @@ public class LevelViewer extends Canvas {
 		export.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				File outputfile = new File("map.png");
-			    try {
-			    	BufferedImage out = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-			    	Graphics g = out.getGraphics();
-			    	g.drawImage(image, 0, 0, null);
-			    	g.setColor(Color.YELLOW);
-			    	g.setFont(new Font("Verdana", Font.PLAIN, 10));
-			    	DateFormat dateFormatYMD = new SimpleDateFormat("dd/MM/yyyy");
-			    	DateFormat dateFormatHMS = new SimpleDateFormat("HH:mm:ss");
-			    	Date date = new Date();
-			    	g.drawString(l.getWidth() + "x" + l.getHeight() + " Map", 2, 10);
-			    	g.drawString(dateFormatYMD.format(date), 2, 20);
-			    	g.drawString(dateFormatHMS.format(date), 2, 30);
-			    	g.dispose();
+				try {
+					BufferedImage out = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+					Graphics g = out.getGraphics();
+					g.drawImage(image, 0, 0, null);
+					g.setColor(Color.YELLOW);
+					g.setFont(new Font("Verdana", Font.PLAIN, 10));
+					DateFormat dateFormatYMD = new SimpleDateFormat("dd/MM/yyyy");
+					DateFormat dateFormatHMS = new SimpleDateFormat("HH:mm:ss");
+					Date date = new Date();
+					g.drawString(l.getWidth() + "x" + l.getHeight() + " Map", 2, 10);
+					g.drawString(dateFormatYMD.format(date), 2, 20);
+					g.drawString(dateFormatHMS.format(date), 2, 30);
+					g.dispose();
 					ImageIO.write(out, "png", outputfile);
 					System.out.println("Writing map to: " + outputfile.getPath());
 				} catch (IOException e1) {
@@ -84,8 +84,7 @@ public class LevelViewer extends Canvas {
 		frame.pack();
 		frame.setResizable(false);
 		frame.setVisible(true);
-		
-		
+
 	}
 
 	public void update() {

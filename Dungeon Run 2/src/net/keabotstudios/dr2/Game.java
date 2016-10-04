@@ -176,13 +176,10 @@ public class Game extends Canvas implements Runnable, Controllable {
 			createBufferStrategy(3);
 			return;
 		}
-		
-		
+
 		screen.clear(ColorUtil.toARGBColor(Color.BLACK));
 		gsm.render(screen);
 
-		screen.render(Texture.spawnPoint.rotate(2.0), 300, 300, 5);
-		
 		for (int i = 0; i < screen.getWidth() * screen.getHeight(); i++) {
 			pixels[i] = screen.getPixels()[i];
 		}
@@ -239,9 +236,8 @@ public class Game extends Canvas implements Runnable, Controllable {
 		return input;
 	}
 
-	public Rectangle getFullscreenRect()
-	{
-		if(!settings.fullscreen)
+	public Rectangle getFullscreenRect() {
+		if (!settings.fullscreen)
 			return null;
 		return new Rectangle(fullScreenXOff, fullScreenYOff, fullScreenImageWidth, fullScreenImageHeight);
 	}

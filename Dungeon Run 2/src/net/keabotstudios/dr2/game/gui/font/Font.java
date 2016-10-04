@@ -37,8 +37,7 @@ public enum Font {
 			4,
 			3,
 			2
-	}, 11, 7, 2, 0),
-	SMALL(Texture.font_small, new String[] {
+	}, 11, 7, 2, 0), SMALL(Texture.font_small, new String[] {
 			"ABCDEFGHIJKLMNOP",
 			"QRSTUVWXYZ012345",
 			"6789?_~@#$      ",
@@ -150,7 +149,7 @@ public enum Font {
 	public boolean hasChar(char c) {
 		return getCharacterIndex(c) >= 0;
 	}
-	
+
 	public void drawString(Bitmap bitmap, String string, int x, int y, int color) {
 		drawString(bitmap, string, x, y, 1, 1.0f, color);
 	}
@@ -162,9 +161,10 @@ public enum Font {
 	public void drawString(Bitmap bitmap, String string, int x, int y, int size, float alpha, int color) {
 		for (int i = 0; i < string.length(); i++) {
 			char c = string.charAt(i);
-			if(c == ' ') {
+			if (c == ' ') {
 				x += spaceWidth * size;
-			} if (hasChar(c)) {
+			}
+			if (hasChar(c)) {
 				FontCharacter character = characters[getCharacterIndex(c)];
 				character.render(bitmap, x, y, size, ColorUtil.toARGBColor(Color.BLUE.getRGB()), alpha);
 				x += (characters[i].getWidth() + charSpaceWidth) * size;

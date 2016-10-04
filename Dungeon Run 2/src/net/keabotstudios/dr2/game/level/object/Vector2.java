@@ -81,7 +81,7 @@ public class Vector2 {
 	public double distance(Vector2 other) {
 		return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
 	}
-	
+
 	public Vector2 clone() {
 		return new Vector2(x, y);
 	}
