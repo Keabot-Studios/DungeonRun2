@@ -3,7 +3,6 @@ package net.keabotstudios.dr2.game.level;
 import java.awt.Color;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
-import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 
