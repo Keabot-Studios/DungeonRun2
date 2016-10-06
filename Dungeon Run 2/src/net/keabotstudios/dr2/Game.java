@@ -33,7 +33,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 	private static final long serialVersionUID = 1L;
 
 	public static final String TITLE = "Dungeon Run 2";
-	public static final String VERSION = "v0.00a";
+	public static final String VERSION = "v0.25";
 
 	private Thread thread;
 	private boolean running = false;
@@ -212,7 +212,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		}
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle(TITLE + (settings.debugMode ? " - Debug Mode" : ""));
+		frame.setTitle(TITLE);
 		frame.setIconImages(GameInfo.WINDOW_ICONS);
 
 		BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);

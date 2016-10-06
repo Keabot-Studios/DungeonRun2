@@ -55,16 +55,7 @@ public class LevelState extends GameState {
 	}
 
 	public void update() {
-		int guiX = -6;
-		int guiY = (int) (GameInfo.GAME_HEIGHT - (16.0 * 2.0) - 8.0 + this.level.getPlayer().getEyeHeight() * 3.0);
-		if (guiY > GameInfo.GAME_HEIGHT - 40) {
-			guiY = GameInfo.GAME_HEIGHT - 40;
-		}
-		health.setX(guiX);
-		health.setY(guiY);
 		health.setValue((int) Math.round(Math.sin(GameInfo.TIME / 10.0) * 10.0) + 10);
-		ammo.setX(guiX);
-		ammo.setY(guiY + 20);
 		ammo.setValue((int) -Math.round(Math.sin(GameInfo.TIME / 10.0) * 10.0) + 10);
 
 		if (gsm.game.getSettings().debugMode) {

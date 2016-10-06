@@ -13,6 +13,7 @@ import net.keabotstudios.dr2.game.level.object.entity.Player;
 public class Bitmap3D extends Bitmap {
 
 	private static final double CLIP_DISTANCE = 0.2;
+	private static final int MAX_DEPTH = 500;
 
 	private double[] zBuffer;
 	private double[] zBufferWall;
@@ -32,7 +33,9 @@ public class Bitmap3D extends Bitmap {
 	}
 
 	public void renderLevel(Level l) {
-			zBufferWall = new double[width];
+		for(int x = 0; x < width; x++) {
+			zBufferWall[x] = 0;
+		}
 
 		double cos = Math.cos(rotOff);
 		double sin = Math.sin(rotOff);
@@ -58,28 +61,28 @@ public class Bitmap3D extends Bitmap {
 					double texScaleY = l.getFloorTexture().height / 8.0;
 					int xPix = (int) ((xx + xOff) * texScaleX);
 					int yPix = (int) ((yy + zOff) * texScaleY);
-					pixels[x + y * width] = l.getFloorTexture().pixels[(xPix & (l.getFloorTexture().width - 1))
-							+ (yPix & (l.getFloorTexture().height - 1)) * l.getFloorTexture().width];
+					pixels[x + y * width] = l.getFloorTexture().pixels[(xPix & (l.getFloorTexture().width - 1)) + (yPix & (l.getFloorTexture().height - 1)) * l.getFloorTexture().width];
 				} else {
 					double texScaleX = l.getCeilTexture().width / 8.0;
 					double texScaleY = l.getCeilTexture().height / 8.0;
 					int xPix = (int) ((xx + xOff) * texScaleX);
 					int yPix = (int) ((yy + zOff) * texScaleY);
-					pixels[x + y * width] = l.getCeilTexture().pixels[(xPix & (l.getCeilTexture().width - 1))
-							+ (yPix & (l.getCeilTexture().height - 1)) * l.getCeilTexture().width];
+					pixels[x + y * width] = l.getCeilTexture().pixels[(xPix & (l.getCeilTexture().width - 1)) + (yPix & (l.getCeilTexture().height - 1)) * l.getCeilTexture().width];
 				}
 
-				if (z > 500) {
-					pixels[x + y * width] = 0;
+				if (z > MAX_DEPTH) {
+					pixels[x + y * width] = ColorUtil.toARGBColor(0);
 				}
 			}
 		}
-
+		int wallRenderDistance = 5;
 		int height = (int) Math.ceil((l.getCeilPos() + l.getFloorPos()) / 8);
-		for (int xBlock = Math.min(-1, (int) l.getPlayer().getPos().getX() - 25); xBlock <= Math.max(l.getWidth(),
-				(int) l.getPlayer().getPos().getX() + 25); xBlock++) {
-			for (int zBlock = Math.min(-1, (int) l.getPlayer().getPos().getZ() - 25); zBlock <= Math.max(l.getHeight(),
-					(int) l.getPlayer().getPos().getZ() + 25); zBlock++) {
+		int startX = Math.min(-1, (int) l.getPlayer().getPos().getX() - wallRenderDistance);
+		int lengthX = Math.max(l.getWidth(), (int) l.getPlayer().getPos().getX() + wallRenderDistance);
+		int startZ = Math.min(-1, (int) l.getPlayer().getPos().getZ() - wallRenderDistance);
+		int lengthZ = Math.max(l.getHeight(), (int) l.getPlayer().getPos().getZ() + wallRenderDistance);
+		for (int xBlock = startX; xBlock <= lengthX; xBlock++) {
+			for (int zBlock = startZ; zBlock <= lengthZ; zBlock++) {
 				Block block = l.getBlock(xBlock, zBlock);
 
 				Block north = l.getBlock(xBlock, zBlock - 1);
@@ -111,12 +114,11 @@ public class Bitmap3D extends Bitmap {
 		}
 
 		for (Entity e : l.getEntites()) {
-			renderSprite(e.getPos(), e.getTexture(), 1, 8);
+			renderSprite(e.getPos(), e.getTexture(), 1, l.getFloorPos());
 		}
 	}
 
-	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Bitmap texture,
-			double floorPos) {
+	public void renderWall(double xLeft, double zLeft, double xRight, double zRight, double wallHeight, Bitmap texture, double floorPos) {
 		if (texture == null)
 			return;
 		double cos = Math.cos(rotOff);
@@ -207,8 +209,7 @@ public class Bitmap3D extends Bitmap {
 			for (int y = yPixelTopInt; y < yPixelBottomInt; y++) {
 				double pixelRotationY = (y - yPixelTop) / (yPixelBottom - yPixelTop);
 				int yTex = (int) (texture.height * pixelRotationY);
-				pixels[x + y * width] = texture.pixels[(xTex & texture.width - 1)
-						+ (yTex & texture.height - 1) * texture.width];
+				pixels[x + y * width] = texture.pixels[(xTex & texture.width - 1) + (yTex & texture.height - 1) * texture.width];
 				zBuffer[x + y * width] = 1 / (tex0 + (tex1 - tex0) * pixelRotationX) * 8;
 			}
 		}

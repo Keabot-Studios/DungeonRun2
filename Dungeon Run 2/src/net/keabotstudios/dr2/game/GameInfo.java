@@ -15,10 +15,10 @@ public class GameInfo {
 	public static final String APPDATA_FOLDER_NAME = "dungeonrun2";
 
 	public static final float ASPECT_RATIO = 3.0f / 4.0f;
-	public static final int GAME_WIDTH = 640;
+	public static final int GAME_WIDTH = 600;
 	public static final int GAME_HEIGHT = (int) (GAME_WIDTH * ASPECT_RATIO);
 	public static final int[] WINDOW_WIDTHS = {
-			640,
+			GAME_WIDTH,
 			800,
 			1024,
 			1152,

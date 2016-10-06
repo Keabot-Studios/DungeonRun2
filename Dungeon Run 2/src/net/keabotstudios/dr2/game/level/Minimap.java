@@ -34,26 +34,19 @@ public class Minimap {
 				minimap.fillRect(x * scale + scale, (-y + level.getHeight()) * scale, scale, scale, level.getBlock(x, y).getMinimapColor());
 			}
 		}
-		
-		for (Entity e : level.getEntites()) {
-			double eWidth = e.getCollisionBox().getX() * scale;
-			double eHeight = e.getCollisionBox().getY() * scale;
-			double eX = e.getPos().getX() * scale;
-			double eY = (level.getHeight() * scale) - e.getPos().getZ() * scale;
-			minimap.fillRect((int) (eX - eWidth / 2.0), (int) (eY - eHeight / 2.0), (int) eWidth, (int) eHeight, e.getMinimapColor());
-		}
 	}
 
 	public void render(Bitmap bitmap) {
-		double pX = (level.getPlayer().getPos().getX() + 0.5) * scale;
-		double pZ = (level.getHeight() * scale) - (Math.round(level.getPlayer().getPos().getZ()) * scale);
+		double pX = (level.getPlayer().getPos().getX() + 1.5) * scale;
+		double pZ = (level.getHeight() * scale) - (Math.round(level.getPlayer().getPos().getZ() + 0.5) * scale);
 		double vW = Math.round((double) width / (double) zoom);
 		double vH = Math.round((double) width / (double) zoom);
 		double vX = pX - vW / 2.0;
 		double vY = (int) (pZ - vH / 2.0);
 		bitmap.fillRect(x, y, width, height, ColorUtil.toARGBColor(Color.BLACK));
-		bitmap.render(minimap.getSubBitmap((int) Math.round(vX), (int) Math.round(vY), (int)vW, (int) vH).rotate(-level.getPlayer().getRotation() + (2.0 * Math.PI)), x, y, zoom, transparency);
-		bitmap.render(Texture.playerArrow, x + width / 2 - Texture.playerArrow.getWidth() / 2, y + height / 2 - Texture.playerArrow.getHeight() / 2);
+		Bitmap output = minimap.getSubBitmap((int) Math.round(vX), (int) Math.round(vY), (int)vW, (int) vH).rotate(-level.getPlayer().getRotation() + (2.0 * Math.PI));
+		bitmap.render(output, x, y, zoom, transparency);
+		bitmap.render(Texture.playerArrow, x + width / 2 - Texture.playerArrow.getWidth(), y + height / 2 - Texture.playerArrow.getHeight() / 2);
 	}
 
 }
