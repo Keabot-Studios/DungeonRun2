@@ -104,20 +104,20 @@ public class LevelViewer extends Canvas {
 
 		Player p = level.getPlayer();
 		double pWidth = p.getCollisionBox().getX() * scale;
-		double pHeight = p.getCollisionBox().getY() * scale;
+		double pHeight = p.getCollisionBox().getZ() * scale;
 		double pX = p.getPos().getX() * scale + scale;
 		double pY = p.getPos().getZ() * scale + scale;
 
 		trans.setToIdentity();
-		trans.rotate(-p.getRotation() + Math.PI, pX, pY);
+		trans.rotate(-p.getRotation() + Math.PI *  0.25, pX, pY);
 		g.setTransform(trans);
-		g.drawImage(playerArrow, (int) (pX - pWidth / 2.0), (int) (pY - pHeight / 2.0), (int) pWidth, (int) pHeight, null);
+		g.drawLine((int) pX, (int) pY, (int) pX + 5, (int) pY + 5);
 		g.setTransform(oldtrans);
 
 		for (Entity e : level.getEntites()) {
 			g.setColor(new Color(e.getMinimapColor()));
 			double eWidth = e.getCollisionBox().getX() * scale;
-			double eHeight = e.getCollisionBox().getY() * scale;
+			double eHeight = e.getCollisionBox().getZ() * scale;
 			double eX = e.getPos().getX() * scale + scale;
 			double eY = e.getPos().getZ() * scale + scale;
 			g.fillRect((int) (eX - eWidth / 2.0), (int) (eY - eHeight / 2.0), (int) eWidth, (int) eHeight);

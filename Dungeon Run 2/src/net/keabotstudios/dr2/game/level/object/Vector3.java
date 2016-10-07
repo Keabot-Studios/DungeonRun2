@@ -38,7 +38,7 @@ public class Vector3 {
 		if (obj == null) {
 			return false;
 		}
-		if (!Vector3.class.isAssignableFrom(obj.getClass())) {
+		if (!Vector3.class.isAssignableFrom(obj.getClass()) || !(obj instanceof Vector3)) {
 			return false;
 		}
 		final Vector3 other = (Vector3) obj;

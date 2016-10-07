@@ -3,13 +3,14 @@ package net.keabotstudios.dr2.game.level;
 import java.awt.Color;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
+import net.keabotstudios.dr2.game.level.object.entity.PlayerMP;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 
 public class Minimap {
 
 	private int x, y, width, height, scale = 2;
-	private int zoom = 2;
+	private int zoom = 1;
 	private float transparency;
 	private Level level;
 	
@@ -36,16 +37,18 @@ public class Minimap {
 	}
 
 	public void render(Bitmap bitmap) {
-		double pX = (level.getPlayer().getPos().getX() + 1.5) * scale;
-		double pZ = (level.getHeight() * scale) - (Math.round(level.getPlayer().getPos().getZ() + 0.5) * scale);
-		double vW = Math.round((double) width / (double) zoom);
-		double vH = Math.round((double) width / (double) zoom);
-		double vX = pX - vW / 2.0;
-		double vY = (int) (pZ - vH / 2.0);
-		bitmap.fillRect(x, y, width, height, ColorUtil.toARGBColor(Color.BLACK));
-		Bitmap output = minimap.getSubBitmap((int) Math.round(vX), (int) Math.round(vY), (int)vW, (int) vH).rotate(-level.getPlayer().getRotation() + (2.0 * Math.PI));
+		int vX = (int) (level.getPlayer().getPos().getX() * scale) - (width / zoom) / 2;
+		int vY = (int) (level.getHeight() * scale - level.getPlayer().getPos().getZ() * scale) - (height / zoom) / 2;
+		Bitmap output = new Bitmap(width / zoom, height / zoom);
+		output.clear(Color.BLACK);
+		output.render(minimap.getSubBitmap(vX, vY, width / zoom, height / zoom), 0, 0);
+		for(PlayerMP pMP : level.getPlayerMPs()) {
+			int pMPX = (int) (pMP.getPos().getX() * scale) - vX;
+			int pMPY = (int) (level.getHeight() * scale - pMP.getPos().getZ() * scale) - vY;
+			output.render(Texture.playerArrow[1].rotate(pMP.getRotation()), pMPX - Texture.playerArrow[3].getWidth() / 2, pMPY - Texture.playerArrow[3].getHeight() / 2);
+		}
+		output.render(Texture.playerArrow[0].rotate(level.getPlayer().getRotation()), (width / 2) / zoom - Texture.playerArrow[0].getWidth() / 2, (height / 2) / zoom - Texture.playerArrow[0].getHeight() / 2);
 		bitmap.render(output, x, y, zoom, transparency);
-		bitmap.render(Texture.playerArrow, x + width / 2 - Texture.playerArrow.getWidth(), y + height / 2 - Texture.playerArrow.getHeight() / 2);
 	}
 
 }

@@ -9,8 +9,8 @@ import net.keabotstudios.dr2.game.level.object.block.EmptyBlock;
 import net.keabotstudios.dr2.game.level.object.block.SolidBlock;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
+import net.keabotstudios.dr2.game.level.object.entity.PlayerMP;
 import net.keabotstudios.dr2.game.level.object.entity.SpawnPointEntity;
-import net.keabotstudios.dr2.game.level.object.entity.TestEntity;
 import net.keabotstudios.dr2.game.level.randomgen.MapGenerator;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
@@ -24,7 +24,6 @@ public class Level {
 
 	private final int width, height;
 	private Block[] blocks;
-	private Player player;
 
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 
@@ -47,19 +46,10 @@ public class Level {
 		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX()+.5, 1, gen.getSpawnPoint().getY()+.5), "Spawn");
 		entities.add(spawnEntity);
 
-		player = new Player(spawnEntity.getPos(), 0, "Player", game);
-
-		/*
-		 * Arrays.fill(blocks, new EmptyBlock()); blocks[(width / 2 - 1) +
-		 * (height / 2 - 1) * width] = new AnimatedBlock(); player = new
-		 * Player(5, 5, 0, "Player", settings); Arrays.fill(blocks, new
-		 * EmptyBlock());
-		 * 
-		 * blocks[(width / 2 - 1) + (height / 2 - 1) * width] = new
-		 * AnimatedBlock();
-		 */
-
-		entities.add(new TestEntity(5, 1, 5, "Test"));
+		entities.add(new Player(spawnEntity.getPos(), 0, "Player", game));
+		entities.add(new PlayerMP(new Vector3(5, 0.9, 7), 0, "PlayerMP", "Richie!"));
+		
+		System.out.println();
 
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
@@ -72,24 +62,33 @@ public class Level {
 	}
 
 	public Player getPlayer() {
-		return player;
+		return (Player) getEntity("Player");
 	}
 
 	double lpx = 0, lpz = 0, lpr = 9;
 
 	public void update(Input input) {
-		player.update(input, this);
 		for (Entity e : entities) {
 			e.update(input, this);
 		}
 		if (viewer != null) {
-			if (lpx != player.getPos().getX() || lpz != player.getPos().getZ() || lpr != player.getRotation()) {
+			Player p = getPlayer();
+			if (lpx != p.getPos().getX() || lpz != p.getPos().getZ() || lpr != p.getRotation()) {
 				viewer.update();
-				lpx = player.getPos().getX();
-				lpz = player.getPos().getZ();
-				lpr = player.getRotation();
+				lpx = p.getPos().getX();
+				lpz = p.getPos().getZ();
+				lpr = p.getRotation();
 			}
 		}
+	}
+	
+	public PlayerMP[] getPlayerMPs() {
+		ArrayList<PlayerMP> playerMPs = new ArrayList<PlayerMP>();
+		for(Entity e : entities) {
+			if(e instanceof PlayerMP)
+				playerMPs.add((PlayerMP) e);
+		}
+		return playerMPs.toArray(new PlayerMP[playerMPs.size()]);
 	}
 
 	public void setBlock(int x, int y, Block block) {
@@ -127,6 +126,13 @@ public class Level {
 
 	public ArrayList<Entity> getEntites() {
 		return entities;
+	}
+	
+	public Entity getEntity(String name) {
+		for(Entity e : entities) {
+			if(e.getName().equals(name)) return e;
+		}
+		return null;
 	}
 
 	public int getWidth() {

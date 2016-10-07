@@ -18,7 +18,6 @@ public abstract class Entity {
 	protected int minimapColor;
 
 	protected Entity(Vector3 pos, CollisionBox colBox, double rot, String name, int minimapColor) {
-		super();
 		this.pos = pos;
 		this.collisionBox = colBox;
 		this.rot = rot;

@@ -167,7 +167,7 @@ public enum Font {
 			if (hasChar(c)) {
 				FontCharacter character = characters[getCharacterIndex(c)];
 				character.render(bitmap, x, y, size, ColorUtil.toARGBColor(Color.BLUE.getRGB()), alpha);
-				x += (characters[i].getWidth() + charSpaceWidth) * size;
+				x += (character.getWidth() + charSpaceWidth) * size;
 			}
 		}
 	}
@@ -176,6 +176,20 @@ public enum Font {
 		for (Font f : Font.values()) {
 			f.loadFont();
 		}
+	}
+
+	public int getStringWidth(String string, int size) {
+		int w = 0;
+		for (int i = 0; i < string.length(); i++) {
+			char c = string.charAt(i);
+			if (c == ' ') {
+				w += spaceWidth * size;
+			}
+			if (hasChar(c)) {
+				w += (characters[i].getWidth() + charSpaceWidth) * size;
+			}
+		}
+		return w;
 	}
 
 }

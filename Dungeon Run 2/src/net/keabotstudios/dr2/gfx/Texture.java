@@ -17,7 +17,8 @@ public class Texture {
 	public static AnimatedBitmap spawnPoint;
 	public static AnimatedBitmap animTest;
 	public static Bitmap guiBar;
-	public static Bitmap playerArrow;
+	public static Bitmap[] playerArrow;
+	public static Bitmap[] player;
 
 	public static void load(Game game) {
 		font_main = loadBitmap("/font/main.png", game.getLogger());
@@ -29,7 +30,8 @@ public class Texture {
 		animTest = new AnimatedBitmap(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 10);
 		spawnPoint = new AnimatedBitmap(loadBitmapSheet("/texture/spawnTexture.png", 16, 16, game.getLogger()), 10);
 		guiBar = loadBitmap("/texture/guiBar.png", game.getLogger());
-		playerArrow = loadBitmap("/texture/playerArrow.png", game.getLogger());
+		playerArrow = loadBitmapSheet("/texture/playerArrow.png", 8, 8, game.getLogger());
+		player = loadBitmapSheet("/texture/player.png", 32, 32, game.getLogger());
 	}
 
 	public static void update() {

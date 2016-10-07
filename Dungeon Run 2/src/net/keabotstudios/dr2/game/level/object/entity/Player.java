@@ -22,16 +22,27 @@ public class Player extends Entity {
 	public static final double CROUCH_SPEED = 0.5;
 	public static final double JUMP_HEIGHT = 1;
 	public static final double GRAVITY = 0.002;
+	
+	public static final int MAX_HEALTH = 20;
 
+	private int health = MAX_HEALTH;
 	private Game game;
 
 	public Player(Vector3 pos, double rot, String name, Game game) {
-		super(pos.clone(), new CollisionBox(0.8, 0.8, 1.5), rot, name, Color.GREEN.getRGB());
+		super(pos.clone(), new CollisionBox(0.8, 1.5, 0.8), rot, name, Color.GREEN.getRGB());
 		this.game = game;
 	}
 
 	private double newMX, oldMX, xa, za, moveSpeed, eyeHeight;
 	private boolean walking, running, crouching, jumping;
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
 
 	public void update(Input input, Level level) {
 		dx = 0;
@@ -146,7 +157,7 @@ public class Player extends Entity {
 		int x0 = (int) Math.floor(x + 0.5);
 		int x1 = (int) Math.floor(x + 0.5 - collisionBox.getX());
 		int z0 = (int) Math.floor(z + 0.5);
-		int z1 = (int) Math.floor(z + 0.5 - collisionBox.getY());
+		int z1 = (int) Math.floor(z + 0.5 - collisionBox.getZ());
 
 		if (level.getBlock(x0, z0).isSolid())
 			return false;

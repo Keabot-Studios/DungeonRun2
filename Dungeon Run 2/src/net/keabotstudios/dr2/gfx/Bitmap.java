@@ -22,7 +22,7 @@ public class Bitmap {
 	 */
 	public void clear(Color col) {
 		for (int i = 0; i < pixels.length; i++) {
-			pixels[i] = col.getRGB();
+			pixels[i] = ColorUtil.toARGBColor(col.getRGB());
 		}
 	}
 
@@ -30,7 +30,7 @@ public class Bitmap {
 	 * Sets the entire Bitmap to one color.
 	 * 
 	 * @param col
-	 *            the ARGB color to set this Bitmap to.
+	 *            The ARGB color to set this Bitmap to.
 	 */
 	public void clear(int col) {
 		for (int i = 0; i < pixels.length; i++) {
@@ -42,11 +42,11 @@ public class Bitmap {
 	 * Draws a Bitmap to this Bitmap object.
 	 * 
 	 * @param bitmap
-	 *            the Bitmap object to draw.
+	 *            The Bitmap object to draw.
 	 * @param xOffs
-	 *            the x offset to draw the Render at.
+	 *            The x offset to draw the Render at.
 	 * @param yOffs
-	 *            the y offset to draw the Render at.
+	 *            The y offset to draw the Render at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs) {
 		for (int y = 0; y < bitmap.height; y++) {
@@ -68,13 +68,13 @@ public class Bitmap {
 	 * Draws a Bitmap to this Bitmap object.
 	 * 
 	 * @param bitmap
-	 *            the Bitmap object to draw.
+	 *            The Bitmap object to draw.
 	 * @param xOffs
-	 *            the x offset to draw the Bitmap at.
+	 *            The x offset to draw the Bitmap at.
 	 * @param yOffs
-	 *            the y offset to draw the Bitmap at.
+	 *            The y offset to draw the Bitmap at.
 	 * @param scale
-	 *            the scale to draw the Bitmap at.
+	 *            The scale to draw the Bitmap at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale) {
 		if (scale < 1)
@@ -102,13 +102,13 @@ public class Bitmap {
 	 * Draws a Bitmap to this Bitmap object.
 	 * 
 	 * @param bitmap
-	 *            the Bitmap object to draw.
+	 *            The Bitmap object to draw.
 	 * @param xOffs
-	 *            the x offset to draw the Bitmap at.
+	 *            The x offset to draw the Bitmap at.
 	 * @param yOffs
-	 *            the y offset to draw the Bitmap at.
+	 *            The y offset to draw the Bitmap at.
 	 * @param alpha
-	 *            the alpha value to draw the Bitmap at.
+	 *            The alpha value to draw the Bitmap at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, float alpha) {
 		if (alpha >= 1.0f) {
@@ -135,15 +135,15 @@ public class Bitmap {
 	 * Draws a Bitmap to this Bitmap object.
 	 * 
 	 * @param bitmap
-	 *            the Bitmap object to draw.
+	 *            The Bitmap object to draw.
 	 * @param xOffs
-	 *            the x offset to draw the Bitmap at.
+	 *            The x offset to draw the Bitmap at.
 	 * @param yOffs
-	 *            the y offset to draw the Bitmap at.
+	 *            The y offset to draw the Bitmap at.
 	 * @param scale
-	 *            the scale to draw the Bitmap at.
+	 *            The scale to draw the Bitmap at.
 	 * @param alpha
-	 *            the alpha value to draw the Bitmap at.
+	 *            The alpha value to draw the Bitmap at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale, float alpha) {
 		if (scale < 1)
@@ -184,7 +184,7 @@ public class Bitmap {
 	 * @param height
 	 *            the height of the resulting Bitmap.
 	 * 
-	 * @return the Bitmap with the pixels of this Bitmap object.
+	 * @return The Bitmap with the pixels of this Bitmap object.
 	 */
 	public Bitmap getSubBitmap(int x, int y, int width, int height) {
 		Bitmap result = new Bitmap(width, height);
@@ -202,25 +202,27 @@ public class Bitmap {
 	/**
 	 * Gets the average color of all pixels on this Bitmap.
 	 * 
-	 * @return the average color of all pixels on this Bitmap.
+	 * @return The average color of all pixels on this Bitmap.
 	 */
 	public int getAverageColor() {
 		float redBucket = 0;
 		float greenBucket = 0;
 		float blueBucket = 0;
+		float alphaBucket = 0;
 		long pixelCount = 0;
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				int c = pixels[x + y * width];
 				pixelCount++;
+				alphaBucket += ColorUtil.alpha(c) / 255.0f; 
 				redBucket += ColorUtil.red(c) / 255.0f;
 				greenBucket += ColorUtil.green(c) / 255.0f;
 				blueBucket += ColorUtil.blue(c) / 255.0f;
 			}
 		}
 
-		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount, 1.0f).getRGB();
+		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount, alphaBucket / pixelCount).getRGB();
 	}
 
 	/**
@@ -239,9 +241,18 @@ public class Bitmap {
 			if (out.pixels[i] == targetColor)
 				out.pixels[i] = color;
 		}
+		System.out.println("----------");
 		return out;
 	}
 
+	/**
+	 * Creates a new Bitmap with a rotation of rot.
+	 * 
+	 * @param rot
+	 *            The radian to rotate the Bitmap by.
+	 * 
+	 * @return The rotated Bitmap.
+	 */
 	public Bitmap rotate(double rot) {
 		Bitmap out = new Bitmap(width, height);
 		if (rot == 0.0)
@@ -267,6 +278,14 @@ public class Bitmap {
 		return out;
 	}
 
+	/**
+	 * Draws a rectangle outline to this Bitmap.
+	 * @param x The x of the rectangle.
+	 * @param y The y of the rectangle.
+	 * @param width
+	 * @param height
+	 * @param color
+	 */
 	public void drawRect(int x, int y, int width, int height, int color) {
 		for (int yPix = 0; yPix < height; yPix++) {
 			if (yPix < 0 || yPix >= this.height)
@@ -318,7 +337,7 @@ public class Bitmap {
 		return pixels;
 	}
 
-	protected Bitmap clone() {
+	public Bitmap clone() {
 		Bitmap out = new Bitmap(width, height);
 		out.pixels = pixels.clone();
 		return out;
