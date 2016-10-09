@@ -3,7 +3,6 @@ package net.keabotstudios.dr2.game.gamestate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.gui.GuiRenderer;
