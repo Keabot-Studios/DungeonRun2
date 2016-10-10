@@ -1,9 +1,9 @@
 package net.keabotstudios.dr2.game.level.object.block;
 
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
-import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.gfx.Bitmap;
+import net.keabotstudios.dr2.math.Vector3;
 
 public abstract class Block {
 

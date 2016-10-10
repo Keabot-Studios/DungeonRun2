@@ -25,16 +25,18 @@ public class Minimap {
 		this.transparency = transparency;
 		minimap = new Bitmap((level.getWidth() + 1) * scale, (level.getHeight() + 1) * scale);
 		minimap.clear(ColorUtil.toARGBColor(Color.BLACK));
+		init();
 	}
 	
-	public void update() {
-		minimap.fillRect(x, y, width, height, ColorUtil.toARGBColor(Color.BLACK));
+	public void init() {
 		for (int x = -1; x <= level.getWidth() + 1; x++) {
 			for(int y = level.getHeight(); y >= -1; y--){
 				minimap.fillRect(x * scale + scale, (-y + level.getHeight()) * scale, scale, scale, level.getBlock(x, y).getMinimapColor());
 			}
 		}
 	}
+	
+	public void update() {}
 
 	public void render(Bitmap bitmap) {
 		int vX = (int) (level.getPlayer().getPos().getX() * scale) - (width / zoom) / 2;

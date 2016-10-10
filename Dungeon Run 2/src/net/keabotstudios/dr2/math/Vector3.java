@@ -1,4 +1,4 @@
-package net.keabotstudios.dr2.game.level.object;
+package net.keabotstudios.dr2.math;
 
 public class Vector3 {
 	private double x, y, z;

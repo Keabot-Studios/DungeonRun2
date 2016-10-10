@@ -6,16 +6,18 @@ import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.gui.font.Font;
 import net.keabotstudios.dr2.game.level.Level;
-import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.dr2.game.level.object.entity.PlayerMP;
+import net.keabotstudios.dr2.math.Vector2;
+import net.keabotstudios.dr2.math.Vector3;
 
 public class Bitmap3D extends Bitmap {
 
 	private static final double CLIP_DISTANCE = 0.2;
 	private static final int MAX_DEPTH = 500;
+	private static final int WALL_RENDER_DISTANCE = 25;
 
 	private double[] zBuffer;
 	private double[] zBufferWall;
@@ -35,7 +37,7 @@ public class Bitmap3D extends Bitmap {
 	}
 
 	public void renderLevel(Level l) {
-		for(int x = 0; x < width; x++) {
+		for (int x = 0; x < width; x++) {
 			zBufferWall[x] = 0;
 		}
 
@@ -77,14 +79,15 @@ public class Bitmap3D extends Bitmap {
 				}
 			}
 		}
-		int wallRenderDistance = 5;
+
 		int height = (int) Math.ceil((l.getCeilPos() + l.getFloorPos()) / 8);
-		int startX = Math.min(-1, (int) l.getPlayer().getPos().getX() - wallRenderDistance);
-		int lengthX = Math.max(l.getWidth(), (int) l.getPlayer().getPos().getX() + wallRenderDistance);
-		int startZ = Math.min(-1, (int) l.getPlayer().getPos().getZ() - wallRenderDistance);
-		int lengthZ = Math.max(l.getHeight(), (int) l.getPlayer().getPos().getZ() + wallRenderDistance);
-		for (int xBlock = startX; xBlock <= lengthX; xBlock++) {
-			for (int zBlock = startZ; zBlock <= lengthZ; zBlock++) {
+
+		Vector2 playerPos = new Vector2(l.getPlayer().getPos().getX(), l.getPlayer().getPos().getZ());
+		for (int xBlock = -1; xBlock <= l.getWidth(); xBlock++) {
+			for (int zBlock = -1; zBlock <= l.getHeight(); zBlock++) {
+				 Vector2 blockPos = new Vector2(xBlock, zBlock);
+				 if(playerPos.distance(blockPos) > WALL_RENDER_DISTANCE) continue;
+
 				Block block = l.getBlock(xBlock, zBlock);
 
 				Block north = l.getBlock(xBlock, zBlock - 1);
@@ -117,7 +120,7 @@ public class Bitmap3D extends Bitmap {
 
 		for (Entity e : l.getEntites()) {
 			renderSprite(e.getPos(), e.getTexture(), 1, l.getFloorPos());
-			if(e instanceof PlayerMP) {
+			if (e instanceof PlayerMP) {
 				String name = ((PlayerMP) e).getPlayerName();
 				Bitmap nametag = new TextBitmap(Font.SMALL, name, 1, ColorUtil.toARGBColor(Color.CYAN));
 				renderSprite(e.getPos().add(new Vector3(0, 1, 0)), nametag, 1, l.getFloorPos());

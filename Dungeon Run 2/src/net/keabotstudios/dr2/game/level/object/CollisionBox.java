@@ -1,5 +1,7 @@
 package net.keabotstudios.dr2.game.level.object;
 
+import net.keabotstudios.dr2.math.Vector3;
+
 public class CollisionBox extends Vector3 {
 
 	public CollisionBox(double x, double y, double z) {

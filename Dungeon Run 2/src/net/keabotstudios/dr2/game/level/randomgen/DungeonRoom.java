@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.keabotstudios.dr2.game.level.object.Vector2;
+import net.keabotstudios.dr2.math.Vector2;
 
 public class DungeonRoom {
 

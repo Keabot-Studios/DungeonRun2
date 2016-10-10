@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.keabotstudios.dr2.game.level.object.Vector2;
+import net.keabotstudios.dr2.math.Vector2;
 
 public class DungeonPathDigger {
 

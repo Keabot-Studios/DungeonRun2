@@ -7,10 +7,10 @@ import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
-import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.gfx.AnimatedBitmap;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
+import net.keabotstudios.dr2.math.Vector3;
 import net.keabotstudios.superin.Input;
 
 public class PlayerMP extends Entity {

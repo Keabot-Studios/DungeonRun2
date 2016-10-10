@@ -3,7 +3,6 @@ package net.keabotstudios.dr2.game.level;
 import java.util.ArrayList;
 
 import net.keabotstudios.dr2.Game;
-import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.block.EmptyBlock;
 import net.keabotstudios.dr2.game.level.object.block.SolidBlock;
@@ -14,13 +13,14 @@ import net.keabotstudios.dr2.game.level.object.entity.SpawnPointEntity;
 import net.keabotstudios.dr2.game.level.randomgen.MapGenerator;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
+import net.keabotstudios.dr2.math.Vector3;
 import net.keabotstudios.superin.Input;
 
 public class Level {
 
 	private double ceilPos;
 	private Bitmap floorTex, ceilTex;
-	private int renderDistance = 5000;
+	private int renderDistance = 6000;
 
 	private final int width, height;
 	private Block[] blocks;

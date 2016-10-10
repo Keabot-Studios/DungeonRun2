@@ -83,8 +83,10 @@ public enum Font {
 			int numCharsInRow = texture.getWidth() / widths[row];
 			for (int col = 0; col < numCharsInRow; col++) {
 				char c = lines[row].charAt(col);
-				if (c == ' ')
+				if (c == ' ') {
+					characterList.add(null);
 					continue;
+				}
 				Bitmap graphic = texture.getSubBitmap(col * widths[row], row * height, widths[row], height);
 				characterList.add(new FontCharacter(c, graphic));
 			}
@@ -105,6 +107,8 @@ public enum Font {
 	}
 
 	private int getCharacterIndex(char c) {
+		if (c == ' ')
+			return -1;
 		switch (type) {
 		default:
 		case NORMAL:
@@ -116,14 +120,11 @@ public enum Font {
 			c = new String("" + c).toLowerCase(Locale.ROOT).charAt(0);
 			break;
 		}
-		if (c == ' ')
-			return -1;
 		int index = 0;
 		for (int l = 0; l < lines.length; l++) {
 			for (int i = 0; i < lines[l].length(); i++) {
-				if (c == lines[l].charAt(i)) {
+				if (c == lines[l].charAt(i))
 					return index;
-				}
 				index++;
 			}
 		}

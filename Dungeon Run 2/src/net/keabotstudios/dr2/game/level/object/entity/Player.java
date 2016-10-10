@@ -6,8 +6,8 @@ import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
-import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.gfx.Bitmap;
+import net.keabotstudios.dr2.math.Vector3;
 import net.keabotstudios.superin.Input;
 
 public class Player extends Entity {
