@@ -26,10 +26,11 @@ public class PlayerMP extends Entity {
 	private int currentTexture = 0;
 
 	private String playerName;
+	private long playerID;
 	private int health = Player.MAX_HEALTH;
 	
-	public PlayerMP(Vector3 pos, double rot, String name, String playerName) {
-		super(pos, new CollisionBox(0.8, 1.5, 0.8), rot, name, ColorUtil.toARGBColor(Color.CYAN));
+	public PlayerMP(Vector3 pos, double rot, long playerID, String playerName) {
+		super(pos, new CollisionBox(0.8, 1.5, 0.8), rot, ColorUtil.toARGBColor(Color.CYAN));
 		int numTextures = 4 * 2;
 		textures = new AnimatedBitmap[numTextures];
 		for(int i = 0; i < numTextures; i++) {
@@ -40,6 +41,7 @@ public class PlayerMP extends Entity {
 			int delay = (i % 2 == 0 ? STANDING_DELAY : WALKING_DELAY);
 			textures[i] = new AnimatedBitmap(texture, delay);
 		}
+		this.playerID = playerID;
 		this.playerName = playerName;
 		dx = 0.02;
 	}
@@ -106,6 +108,10 @@ public class PlayerMP extends Entity {
 		if (level.getBlock(x1, z1).isSolid())
 			return false;
 		return true;
+	}
+	
+	public long getPlayerID() {
+		return playerID;
 	}
 
 }

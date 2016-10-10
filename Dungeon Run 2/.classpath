@@ -10,5 +10,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/SuperIn"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SuperLog"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SuperSerial"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Dungeon Run 2 Server"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

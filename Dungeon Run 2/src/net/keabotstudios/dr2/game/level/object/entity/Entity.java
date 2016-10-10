@@ -13,20 +13,14 @@ public abstract class Entity {
 	protected Vector3 pos;
 	protected CollisionBox collisionBox;
 
-	protected String name;
 	protected Bitmap texture;
 	protected int minimapColor;
 
-	protected Entity(Vector3 pos, CollisionBox colBox, double rot, String name, int minimapColor) {
+	protected Entity(Vector3 pos, CollisionBox colBox, double rot, int minimapColor) {
 		this.pos = pos;
 		this.collisionBox = colBox;
 		this.rot = rot;
-		this.name = name;
 		this.minimapColor = minimapColor;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public Vector3 getPos() {

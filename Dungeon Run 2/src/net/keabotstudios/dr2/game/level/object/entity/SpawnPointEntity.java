@@ -9,8 +9,8 @@ import net.keabotstudios.dr2.math.Vector3;
 
 public class SpawnPointEntity extends Entity {
 
-	public SpawnPointEntity(Vector3 pos, String name) {
-		super(pos, new CollisionBox(0.5, 0.5, 0.5), 0, name, Color.BLUE.getRGB());
+	public SpawnPointEntity(Vector3 pos) {
+		super(pos, new CollisionBox(0.5, 0.5, 0.5), 0, Color.BLUE.getRGB());
 	}
 
 	public Bitmap getTexture() {

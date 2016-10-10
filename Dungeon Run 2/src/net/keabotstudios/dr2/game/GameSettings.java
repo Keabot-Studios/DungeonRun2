@@ -11,7 +11,7 @@ import net.keabotstudios.superserial.containers.SSDatabase;
 import net.keabotstudios.superserial.containers.SSField;
 import net.keabotstudios.superserial.containers.SSObject;
 
-public class GameSettings {
+public class GameSettings extends Saveable {
 
 	public boolean debugMode, mouseTurning, fullscreen, enableBobbing, useXInput;
 	public InputAxis[] controls;
@@ -32,24 +32,11 @@ public class GameSettings {
 		windowWidth = GameInfo.WINDOW_WIDTHS[windowSizeIndex];
 		windowHeight = (int) (windowWidth * GameInfo.ASPECT_RATIO);
 	}
-
-	public void updateSettingsFromFile() {
-		if (!doSettingsExist())
-			writeSettings();
-		else
-			readSettings();
-	}
-
-	public static boolean doSettingsExist() {
-		String filePath = GameInfo.getAppdataFolderPath() + File.separator + "settings" + SSDatabase.FILE_EXTENTION;
-		File file = new File(filePath);
-		return file.exists();
-	}
-
-	public boolean writeSettings() {
+	
+	public boolean write() {
 		SSDatabase settings = new SSDatabase("settings");
 
-		SSObject gameSettings = new SSObject("game");
+		SSObject gameSettings = new SSObject("root");
 		gameSettings.addField(SSField.Boolean("mouseTurning", this.mouseTurning));
 		gameSettings.addField(SSField.Boolean("enableBobbing", this.enableBobbing));
 		gameSettings.addField(SSField.Boolean("fullscreen", this.fullscreen));
@@ -57,31 +44,28 @@ public class GameSettings {
 		gameSettings.addField(SSField.Integer("windowSizeIndex", this.windowSizeIndex));
 		settings.addObject(gameSettings);
 
-		String filePath = GameInfo.getAppdataFolderPath() + File.separator + "settings" + SSDatabase.FILE_EXTENTION;
-		File file = new File(filePath);
-		file.getParentFile().mkdirs();
+		getFile().getParentFile().mkdirs();
 		try {
 			byte[] data = new byte[settings.getSize()];
 			settings.writeBytes(data, 0);
-			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(filePath));
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(getFilePath()));
 			stream.write(data);
 			stream.close();
-			System.out.println("Wrote settings successfully to: " + filePath);
+			System.out.println("Wrote " + getFileName() + " successfully to: " + getFilePath());
 			return true;
-		} catch (IOException e) {
-			System.err.println("Can't write settings.ssd file to: " + filePath);
+		} catch (Exception e) {
+			System.err.println("Can't write " + getFileName() + ".ssd file to: " + getFilePath());
 			return false;
 		}
 	}
 
-	public boolean readSettings() {
-		String filePath = GameInfo.getAppdataFolderPath() + File.separator + "settings" + SSDatabase.FILE_EXTENTION;
-		File file = new File(filePath);
+	public boolean read() {
+		File file = getFile();
 		try {
 			byte[] data = Files.readAllBytes(file.toPath());
 			SSDatabase settings = SSDatabase.Deserialize(data);
 
-			SSObject gameSettings = settings.getObject("game");
+			SSObject gameSettings = settings.getObject("root");
 			this.mouseTurning = gameSettings.getField("mouseTurning").getBoolean();
 			this.enableBobbing = gameSettings.getField("enableBobbing").getBoolean();
 			this.fullscreen = gameSettings.getField("fullscreen").getBoolean();
@@ -89,10 +73,10 @@ public class GameSettings {
 			this.windowSizeIndex = gameSettings.getField("windowSizeIndex").getInteger();
 			this.updateWindowSize();
 
-			System.out.println("Loaded settings successfully from: " + filePath);
+			System.out.println("Loaded " + getFileName() + " successfully from: " + getFilePath());
 			return true;
-		} catch (IOException e) {
-			System.err.println("Can't read settings.ssd file from: " + filePath);
+		} catch (Exception e) {
+			System.err.println("Can't read " + getFileName() + ".ssd file from: " + getFilePath());
 			return false;
 		}
 	}
@@ -108,5 +92,9 @@ public class GameSettings {
 		copy.windowSizeIndex = windowSizeIndex;
 		copy.updateWindowSize();
 		return copy;
+	}
+
+	public String getFileName() {
+		return "settings";
 	}
 }

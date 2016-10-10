@@ -1,8 +1,13 @@
 package net.keabotstudios.dr2.game.level;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 import net.keabotstudios.dr2.Game;
+import net.keabotstudios.dr2.game.PlayerInfo;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.block.EmptyBlock;
 import net.keabotstudios.dr2.game.level.object.block.SolidBlock;
@@ -25,14 +30,17 @@ public class Level {
 	private final int width, height;
 	private Block[] blocks;
 
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private HashMap<String, Entity> entities = new HashMap<String, Entity>();
 
 	private LevelViewer viewer;
+	
+	private Game game;
 
 	public Level(int width, int height, Game game) {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[width * height];
+		this.game = game;
 
 		MapGenerator gen = new MapGenerator(width, height, 8, 8, 15);
 		gen.generateMap();
@@ -43,11 +51,12 @@ public class Level {
 			}
 		}
 
-		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX()+.5, 1, gen.getSpawnPoint().getY()+.5), "Spawn");
-		entities.add(spawnEntity);
+		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX()+.5, 1, gen.getSpawnPoint().getY()+.5));
+		entities.put("spawn", spawnEntity);
 
-		entities.add(new Player(spawnEntity.getPos(), 0, "Player", game));
-		entities.add(new PlayerMP(new Vector3(5, 0.9, 7), 0, "PlayerMP", "Richie!"));
+		entities.put(String.valueOf(game.getPlayerInfo().getPlayerID()), new Player(spawnEntity.getPos(), 0, game));
+		long mpPID = PlayerInfo.getRandomPlayerID();
+		entities.put(String.valueOf(mpPID), new PlayerMP(new Vector3(5, 0.9, 7), 0, mpPID, "Dat Boi"));
 		
 		System.out.println();
 
@@ -62,13 +71,13 @@ public class Level {
 	}
 
 	public Player getPlayer() {
-		return (Player) getEntity("Player");
+		return (Player) getEntity(String.valueOf(game.getPlayerInfo().getPlayerID()));
 	}
 
 	double lpx = 0, lpz = 0, lpr = 9;
 
 	public void update(Input input) {
-		for (Entity e : entities) {
+		for (Entity e : entities.values()) {
 			e.update(input, this);
 		}
 		if (viewer != null) {
@@ -84,7 +93,7 @@ public class Level {
 	
 	public PlayerMP[] getPlayerMPs() {
 		ArrayList<PlayerMP> playerMPs = new ArrayList<PlayerMP>();
-		for(Entity e : entities) {
+		for(Entity e : entities.values()) {
 			if(e instanceof PlayerMP)
 				playerMPs.add((PlayerMP) e);
 		}
@@ -124,14 +133,12 @@ public class Level {
 		return renderDistance;
 	}
 
-	public ArrayList<Entity> getEntites() {
-		return entities;
+	public List<Entity> getEntites() {
+		return Arrays.asList(entities.values().toArray(new Entity[entities.size()]));
 	}
 	
-	public Entity getEntity(String name) {
-		for(Entity e : entities) {
-			if(e.getName().equals(name)) return e;
-		}
+	public Entity getEntity(String eID) {
+		if(entities.containsKey(eID)) return entities.get(eID);
 		return null;
 	}
 

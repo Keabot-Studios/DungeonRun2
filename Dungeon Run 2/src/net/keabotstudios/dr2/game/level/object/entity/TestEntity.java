@@ -9,8 +9,8 @@ import net.keabotstudios.dr2.math.Vector3;
 
 public class TestEntity extends Entity {
 
-	public TestEntity(double x, double y, double z, String name) {
-		super(new Vector3(x, y, z), new CollisionBox(0.5, 0.5, 0.5), 0, name, Color.GRAY.getRGB());
+	public TestEntity(double x, double y, double z) {
+		super(new Vector3(x, y, z), new CollisionBox(0.5, 0.5, 0.5), 0, Color.GRAY.getRGB());
 	}
 
 	public Bitmap getTexture() {

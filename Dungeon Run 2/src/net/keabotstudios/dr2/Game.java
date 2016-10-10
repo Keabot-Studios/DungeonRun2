@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.GameSettings;
+import net.keabotstudios.dr2.game.PlayerInfo;
 import net.keabotstudios.dr2.game.gamestate.GameStateManager;
 import net.keabotstudios.dr2.game.gamestate.LevelState;
 import net.keabotstudios.dr2.game.gui.GuiRenderer;
@@ -25,6 +26,7 @@ import net.keabotstudios.dr2.game.gui.font.Font;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
+import net.keabotstudios.dr2.net.GameClient;
 import net.keabotstudios.superin.Controllable;
 import net.keabotstudios.superin.Input;
 import net.keabotstudios.superlog.Logger;
@@ -53,11 +55,15 @@ public class Game extends Canvas implements Runnable, Controllable {
 	private int fullScreenYOff = 0;
 
 	private GameStateManager gsm;
+	
+	private PlayerInfo playerInfo;
 
 	public Game(Logger logger, GameSettings settings, GraphicsDevice currentDisplay) {
 		GameInfo.init(logger);
 		this.logger = logger;
 		this.settings = settings;
+		this.playerInfo = new PlayerInfo();
+		playerInfo.updateFromFile();
 		Texture.load(this);
 		Font.load();
 		GuiRenderer.init(this);
@@ -128,6 +134,11 @@ public class Game extends Canvas implements Runnable, Controllable {
 			System.exit(-1);
 		}
 	}
+	
+	public void init() {
+		GameClient client = new GameClient("localhost:8192");
+		client.connect();
+	}
 
 	public void run() {
 		int frames = 0;
@@ -136,6 +147,8 @@ public class Game extends Canvas implements Runnable, Controllable {
 		double secsPerTick = 1.0 / (double) GameInfo.MAX_UPS;
 		int tickCount = 0;
 
+		init();
+		
 		while (running) {
 			long currTime = System.nanoTime();
 			long elapsedTime = currTime - prevTime;
@@ -240,5 +253,9 @@ public class Game extends Canvas implements Runnable, Controllable {
 		if (!settings.fullscreen)
 			return null;
 		return new Rectangle(fullScreenXOff, fullScreenYOff, fullScreenImageWidth, fullScreenImageHeight);
+	}
+
+	public PlayerInfo getPlayerInfo() {
+		return playerInfo;
 	}
 }

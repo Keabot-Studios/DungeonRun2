@@ -125,7 +125,7 @@ public class OptionsMenu extends JDialog {
 		buttonPanel.add(btnApply, gbc_btnApply);
 		btnApply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				editedSettings.writeSettings();
+				editedSettings.write();
 				dispose();
 			}
 		});

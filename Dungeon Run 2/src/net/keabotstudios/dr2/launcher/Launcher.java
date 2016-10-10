@@ -40,7 +40,7 @@ public class Launcher {
 		}
 		Logger l = new Logger();
 		GameSettings settings = new GameSettings();
-		settings.updateSettingsFromFile();
+		settings.updateFromFile();
 		Launcher launcher = new Launcher(l, settings);
 		if (args.length > 0) {
 			List<String> argsList = Arrays.asList(args);

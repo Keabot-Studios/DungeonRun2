@@ -28,8 +28,8 @@ public class Player extends Entity {
 	private int health = MAX_HEALTH;
 	private Game game;
 
-	public Player(Vector3 pos, double rot, String name, Game game) {
-		super(pos.clone(), new CollisionBox(0.8, 1.5, 0.8), rot, name, Color.GREEN.getRGB());
+	public Player(Vector3 pos, double rot, Game game) {
+		super(pos.clone(), new CollisionBox(0.8, 1.5, 0.8), rot, Color.GREEN.getRGB());
 		this.game = game;
 	}
 
