@@ -4,11 +4,13 @@ import java.awt.Color;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.Direction;
+import net.keabotstudios.dr2.game.gui.font.Font;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.Vector3;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
+import net.keabotstudios.dr2.game.level.object.entity.PlayerMP;
 
 public class Bitmap3D extends Bitmap {
 
@@ -115,6 +117,11 @@ public class Bitmap3D extends Bitmap {
 
 		for (Entity e : l.getEntites()) {
 			renderSprite(e.getPos(), e.getTexture(), 1, l.getFloorPos());
+			if(e instanceof PlayerMP) {
+				String name = ((PlayerMP) e).getPlayerName();
+				Bitmap nametag = new TextBitmap(Font.SMALL, name, 1, ColorUtil.toARGBColor(Color.CYAN));
+				renderSprite(e.getPos().add(new Vector3(0, 1, 0)), nametag, 1, l.getFloorPos());
+			}
 		}
 	}
 

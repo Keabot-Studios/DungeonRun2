@@ -15,10 +15,10 @@ public class Bitmap {
 	}
 
 	/**
-	 * Sets the entire Bitmap to one color.
+	 * Sets the entire {@code Bitmap} to one color.
 	 * 
 	 * @param col
-	 *            the color to set this Bitmap to.
+	 *            the color to set this {@code Bitmap} to.
 	 */
 	public void clear(Color col) {
 		for (int i = 0; i < pixels.length; i++) {
@@ -27,10 +27,10 @@ public class Bitmap {
 	}
 
 	/**
-	 * Sets the entire Bitmap to one color.
+	 * Sets the entire {@code Bitmap} to one color.
 	 * 
 	 * @param col
-	 *            The ARGB color to set this Bitmap to.
+	 *            The ARGB color to set this {@code Bitmap} to.
 	 */
 	public void clear(int col) {
 		for (int i = 0; i < pixels.length; i++) {
@@ -39,10 +39,10 @@ public class Bitmap {
 	}
 
 	/**
-	 * Draws a Bitmap to this Bitmap object.
+	 * Draws a Bitmap to this {@code Bitmap} object.
 	 * 
 	 * @param bitmap
-	 *            The Bitmap object to draw.
+	 *            The {@code Bitmap} object to draw.
 	 * @param xOffs
 	 *            The x offset to draw the Render at.
 	 * @param yOffs
@@ -65,16 +65,16 @@ public class Bitmap {
 	}
 
 	/**
-	 * Draws a Bitmap to this Bitmap object.
+	 * Draws a Bitmap to this {@code Bitmap} object.
 	 * 
 	 * @param bitmap
-	 *            The Bitmap object to draw.
+	 *            The {@code Bitmap} object to draw.
 	 * @param xOffs
-	 *            The x offset to draw the Bitmap at.
+	 *            The x offset to draw the {@code Bitmap} at.
 	 * @param yOffs
-	 *            The y offset to draw the Bitmap at.
+	 *            The y offset to draw the {@code Bitmap} at.
 	 * @param scale
-	 *            The scale to draw the Bitmap at.
+	 *            The scale to draw the {@code Bitmap} at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale) {
 		if (scale < 1)
@@ -99,16 +99,16 @@ public class Bitmap {
 	}
 
 	/**
-	 * Draws a Bitmap to this Bitmap object.
+	 * Draws a {@code Bitmap} to this {@code Bitmap} object.
 	 * 
 	 * @param bitmap
-	 *            The Bitmap object to draw.
+	 *            The {@code Bitmap} object to draw.
 	 * @param xOffs
-	 *            The x offset to draw the Bitmap at.
+	 *            The x offset to draw the {@code Bitmap} at.
 	 * @param yOffs
-	 *            The y offset to draw the Bitmap at.
+	 *            The y offset to draw the {@code Bitmap} at.
 	 * @param alpha
-	 *            The alpha value to draw the Bitmap at.
+	 *            The alpha value to draw the {@code Bitmap} at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, float alpha) {
 		if (alpha >= 1.0f) {
@@ -132,18 +132,18 @@ public class Bitmap {
 	}
 
 	/**
-	 * Draws a Bitmap to this Bitmap object.
+	 * Draws a Bitmap to this {@code Bitmap} object.
 	 * 
 	 * @param bitmap
-	 *            The Bitmap object to draw.
+	 *            The {@code Bitmap} object to draw.
 	 * @param xOffs
-	 *            The x offset to draw the Bitmap at.
+	 *            The x offset to draw the {@code Bitmap} at.
 	 * @param yOffs
-	 *            The y offset to draw the Bitmap at.
+	 *            The y offset to draw the {@code Bitmap} at.
 	 * @param scale
-	 *            The scale to draw the Bitmap at.
+	 *            The scale to draw the {@code Bitmap} at.
 	 * @param alpha
-	 *            The alpha value to draw the Bitmap at.
+	 *            The alpha value to draw the {@code Bitmap} at.
 	 */
 	public void render(Bitmap bitmap, int xOffs, int yOffs, int scale, float alpha) {
 		if (scale < 1)
@@ -173,18 +173,18 @@ public class Bitmap {
 	}
 
 	/**
-	 * Gets a Bitmap with the pixels of this Bitmap object.
+	 * Gets a {@code Bitmap} with the pixels of this {@code Bitmap} object.
 	 * 
 	 * @param x
-	 *            the x of the resulting Bitmap on this Bitmap.
+	 *            the x of the resulting {@code Bitmap} on this {@code Bitmap}.
 	 * @param y
-	 *            the y of the resulting Bitmap on this Bitmap.
+	 *            the y of the resulting {@code Bitmap} on this {@code Bitmap}.
 	 * @param width
-	 *            the width of the resulting Bitmap.
+	 *            the width of the resulting {@code Bitmap}.
 	 * @param height
-	 *            the height of the resulting Bitmap.
+	 *            the height of the resulting {@code Bitmap}.
 	 * 
-	 * @return The Bitmap with the pixels of this Bitmap object.
+	 * @return The {@code Bitmap} with the pixels of this {@code Bitmap} object.
 	 */
 	public Bitmap getSubBitmap(int x, int y, int width, int height) {
 		Bitmap result = new Bitmap(width, height);
@@ -200,9 +200,9 @@ public class Bitmap {
 	}
 
 	/**
-	 * Gets the average color of all pixels on this Bitmap.
+	 * Gets the average color of all pixels on this {@code Bitmap}.
 	 * 
-	 * @return The average color of all pixels on this Bitmap.
+	 * @return The average color of all pixels on this {@code Bitmap}.
 	 */
 	public int getAverageColor() {
 		float redBucket = 0;
@@ -215,7 +215,7 @@ public class Bitmap {
 			for (int x = 0; x < width; x++) {
 				int c = pixels[x + y * width];
 				pixelCount++;
-				alphaBucket += ColorUtil.alpha(c) / 255.0f; 
+				alphaBucket += ColorUtil.alpha(c) / 255.0f;
 				redBucket += ColorUtil.red(c) / 255.0f;
 				greenBucket += ColorUtil.green(c) / 255.0f;
 				blueBucket += ColorUtil.blue(c) / 255.0f;
@@ -226,14 +226,14 @@ public class Bitmap {
 	}
 
 	/**
-	 * Creates a new Bitmap with targetColor replaced by color.
+	 * Creates a new {@code Bitmap} with targetColor replaced by color.
 	 * 
 	 * @param targetColor
 	 *            The color to change.
 	 * @param color
 	 *            The color to change targetColor to.
 	 * 
-	 * @return The color replaced Bitmap.
+	 * @return The color replaced {@code Bitmap}.
 	 */
 	public Bitmap replaceColor(int targetColor, int color) {
 		Bitmap out = this.clone();
@@ -241,17 +241,16 @@ public class Bitmap {
 			if (out.pixels[i] == targetColor)
 				out.pixels[i] = color;
 		}
-		System.out.println("----------");
 		return out;
 	}
 
 	/**
-	 * Creates a new Bitmap with a rotation of rot.
+	 * Creates a new {@code Bitmap} with a rotation of rot.
 	 * 
 	 * @param rot
-	 *            The radian to rotate the Bitmap by.
+	 *            The radian to rotate the {@code Bitmap} by.
 	 * 
-	 * @return The rotated Bitmap.
+	 * @return The rotated {@code Bitmap}.
 	 */
 	public Bitmap rotate(double rot) {
 		Bitmap out = new Bitmap(width, height);
@@ -279,12 +278,18 @@ public class Bitmap {
 	}
 
 	/**
-	 * Draws a rectangle outline to this Bitmap.
-	 * @param x The x of the rectangle.
-	 * @param y The y of the rectangle.
+	 * Draws a rectangle outline to this {@code Bitmap}.
+	 * 
+	 * @param x
+	 *            The x of the rectangle.
+	 * @param y
+	 *            The y of the rectangle.
 	 * @param width
+	 *            The width of the rectangle.
 	 * @param height
+	 *            The height of the rectangle.
 	 * @param color
+	 *            The color of the rectangle.
 	 */
 	public void drawRect(int x, int y, int width, int height, int color) {
 		for (int yPix = 0; yPix < height; yPix++) {
@@ -300,6 +305,20 @@ public class Bitmap {
 		}
 	}
 
+	/**
+	 * Draws a rectangle to this {@code Bitmap}.
+	 * 
+	 * @param x
+	 *            The x of the rectangle.
+	 * @param y
+	 *            The y of the rectangle.
+	 * @param width
+	 *            The width of the rectangle.
+	 * @param height
+	 *            The height of the rectangle.
+	 * @param color
+	 *            The color of the rectangle.
+	 */
 	public void fillRect(int x, int y, int width, int height, int color) {
 		for (int yPix = y; yPix < y + height; yPix++) {
 			if (yPix < 0 || yPix >= this.height)
@@ -311,7 +330,23 @@ public class Bitmap {
 			}
 		}
 	}
-	
+
+	/**
+	 * Draws a rectangle to this {@code Bitmap}.
+	 * 
+	 * @param x
+	 *            The x of the rectangle.
+	 * @param y
+	 *            The y of the rectangle.
+	 * @param width
+	 *            The width of the rectangle.
+	 * @param height
+	 *            The height of the rectangle.
+	 * @param color
+	 *            The color of the rectangle.
+	 * @param alpha
+	 *            The alpha of the rectangle.
+	 */
 	public void fillRect(int x, int y, int width, int height, int color, float alpha) {
 		for (int yPix = y; yPix < y + height; yPix++) {
 			if (yPix < 0 || yPix >= this.height)

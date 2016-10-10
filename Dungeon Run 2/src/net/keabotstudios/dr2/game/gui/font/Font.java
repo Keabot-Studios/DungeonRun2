@@ -132,17 +132,6 @@ public enum Font {
 	}
 
 	public FontCharacter getCharacter(char c) {
-		switch (type) {
-		default:
-		case NORMAL:
-			break;
-		case ALL_CAPS:
-			c = new String("" + c).toUpperCase(Locale.ROOT).charAt(0);
-			break;
-		case NO_CAPS:
-			c = new String("" + c).toLowerCase(Locale.ROOT).charAt(0);
-			break;
-		}
 		return characters[getCharacterIndex(c)];
 	}
 
@@ -163,9 +152,8 @@ public enum Font {
 			char c = string.charAt(i);
 			if (c == ' ') {
 				x += spaceWidth * size;
-			}
-			if (hasChar(c)) {
-				FontCharacter character = characters[getCharacterIndex(c)];
+			} else if (hasChar(c)) {
+				FontCharacter character = getCharacter(c);
 				character.render(bitmap, x, y, size, ColorUtil.toARGBColor(Color.BLUE.getRGB()), alpha);
 				x += (character.getWidth() + charSpaceWidth) * size;
 			}
