@@ -39,7 +39,7 @@ public class MapGenerator {
 		vertices = new HashMap<Vector2, Map<Vector2, Integer>>();
 		PointsToChange = new ArrayList<Vector2>();
 
-		mapGenRandom = new Random(1234);
+		mapGenRandom = new Random();
 		System.out.println("Generating Rooms...");
 		generateRooms();
 
@@ -204,7 +204,9 @@ public class MapGenerator {
 		
 		int amount = (int)Math.floor(Math.log(chance)/Math.log(.75));
 		
-		conCount = dungeonRooms.size() * 2 + Math.max(0, Math.max(remaining, amount));
+		conCount = dungeonRooms.size() * 2 + Math.max(0, Math.min(remaining, amount));
+		
+		System.out.println("Setting connections to " + conCount + " / " + maxConnections() + " possible.");
 	}
 
 	public int maxConnections() {
