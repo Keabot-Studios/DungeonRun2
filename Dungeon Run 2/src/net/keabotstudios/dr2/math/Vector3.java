@@ -95,4 +95,17 @@ public class Vector3 {
 	public Vector3 clone() {
 		return new Vector3(x, y, z);
 	}
+
+	public double magnitude() {
+		return distance(Vector3.zero());
+	}
+
+	public Vector3 normalized() {
+		double mag = magnitude();
+		return new Vector3(this.x / mag, this.y / mag, this.z / mag);
+	}
+
+	public static Vector3 zero() {
+		return new Vector3(0, 0, 0);
+	}
 }

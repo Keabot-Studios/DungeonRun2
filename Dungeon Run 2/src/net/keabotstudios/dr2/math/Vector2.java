@@ -82,7 +82,20 @@ public class Vector2 {
 		return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
 	}
 
+	public double magnitude() {
+		return distance(Vector2.zero());
+	}
+
+	public Vector2 normalized() {
+		double mag = magnitude();
+		return new Vector2(this.x / mag, this.y / mag);
+	}
+
 	public Vector2 clone() {
 		return new Vector2(x, y);
+	}
+
+	public static Vector2 zero() {
+		return new Vector2(0, 0);
 	}
 }
