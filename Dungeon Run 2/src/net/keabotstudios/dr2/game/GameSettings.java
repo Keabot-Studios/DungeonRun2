@@ -3,7 +3,6 @@ package net.keabotstudios.dr2.game;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Files;
 
 import net.keabotstudios.superin.InputAxis;
@@ -34,15 +33,15 @@ public class GameSettings extends Saveable {
 	}
 	
 	public boolean write() {
-		SSDatabase settings = new SSDatabase("settings");
+		SSDatabase settings = new SSDatabase(getFileName());
 
-		SSObject gameSettings = new SSObject("root");
-		gameSettings.addField(SSField.Boolean("mouseTurning", this.mouseTurning));
-		gameSettings.addField(SSField.Boolean("enableBobbing", this.enableBobbing));
-		gameSettings.addField(SSField.Boolean("fullscreen", this.fullscreen));
-		gameSettings.addField(SSField.Boolean("useXInput", this.useXInput));
-		gameSettings.addField(SSField.Integer("windowSizeIndex", this.windowSizeIndex));
-		settings.addObject(gameSettings);
+		SSObject root = new SSObject("root");
+		root.addField(SSField.Boolean("mouseTurning", this.mouseTurning));
+		root.addField(SSField.Boolean("enableBobbing", this.enableBobbing));
+		root.addField(SSField.Boolean("fullscreen", this.fullscreen));
+		root.addField(SSField.Boolean("useXInput", this.useXInput));
+		root.addField(SSField.Integer("windowSizeIndex", this.windowSizeIndex));
+		settings.addObject(root);
 
 		getFile().getParentFile().mkdirs();
 		try {
@@ -65,12 +64,12 @@ public class GameSettings extends Saveable {
 			byte[] data = Files.readAllBytes(file.toPath());
 			SSDatabase settings = SSDatabase.Deserialize(data);
 
-			SSObject gameSettings = settings.getObject("root");
-			this.mouseTurning = gameSettings.getField("mouseTurning").getBoolean();
-			this.enableBobbing = gameSettings.getField("enableBobbing").getBoolean();
-			this.fullscreen = gameSettings.getField("fullscreen").getBoolean();
-			this.useXInput = gameSettings.getField("useXInput").getBoolean();
-			this.windowSizeIndex = gameSettings.getField("windowSizeIndex").getInteger();
+			SSObject root = settings.getObject("root");
+			this.mouseTurning = root.getField("mouseTurning").getBoolean();
+			this.enableBobbing = root.getField("enableBobbing").getBoolean();
+			this.fullscreen = root.getField("fullscreen").getBoolean();
+			this.useXInput = root.getField("useXInput").getBoolean();
+			this.windowSizeIndex = root.getField("windowSizeIndex").getInteger();
 			this.updateWindowSize();
 
 			System.out.println("Loaded " + getFileName() + " successfully from: " + getFilePath());

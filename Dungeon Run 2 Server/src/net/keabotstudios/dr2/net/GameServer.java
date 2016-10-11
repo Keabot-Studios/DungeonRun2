@@ -5,7 +5,13 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
 
+import net.keabotstudios.dr2.net.packets.ConnectPacket;
+import net.keabotstudios.dr2.net.packets.DisconnectPacket;
+import net.keabotstudios.dr2.net.packets.GamePacket;
+import net.keabotstudios.dr2.net.packets.PacketListener;
+import net.keabotstudios.dr2.net.packets.GamePacket.PacketType;
 import net.keabotstudios.superserial.containers.SSDatabase;
 
 public class GameServer {
@@ -18,6 +24,8 @@ public class GameServer {
 	private DatagramSocket socket;
 	private final int MAX_PACKET_SIZE = 1024;
 	private byte[] receiveDataBuffer = new byte[MAX_PACKET_SIZE * 16];
+	
+	private ArrayList<PacketListener> packetListeners = new ArrayList<PacketListener>();
 
 	public GameServer(int port) {
 		this.port = port;
@@ -59,24 +67,45 @@ public class GameServer {
 		}
 	}
 	
-	private void process(DatagramPacket packet) {
-		byte[] data = packet.getData();
-		InetAddress address = packet.getAddress();
-		int port = packet.getPort();
-		
+	private void process(DatagramPacket rawPacket) {
+		byte[] data = rawPacket.getData();
 		if(SSDatabase.isValidData(data)) {
 			SSDatabase database = SSDatabase.Deserialize(data);
-			process(database, address, port);
+			GamePacket packet = null;
+			switch (PacketType.getFromName(database.getName())) {
+			case CONNECT:
+				packet = new ConnectPacket(database);
+				break;
+			case DISCONNECT:
+				packet = new DisconnectPacket(database);
+				break;
+			case NULL:
+				break;
+			}
+			process(packet);
 		}
 	}
 	
-	private void process(SSDatabase database, InetAddress address, int port) {
-		System.out.println("---------");
-		System.out.println("DATA FROM: " + address.getHostAddress() + ":" + port);
-		System.out.println(database.toString());
+	private void process(GamePacket packet) {
+		if(packet == null) return;
+		for(PacketListener pl : packetListeners) {
+			pl.onPacketReceived(packet);
+		}
+	}
+	
+	public void addPacketListener(PacketListener listener) {
+		packetListeners.add(listener);
+	}
+	
+	public void removePacketListener(PacketListener listener) {
+		packetListeners.remove(listener);
 	}
 
-	public void send(byte[] data, InetAddress address, int port) {
+	public void send(GamePacket packet) {
+		send(packet.getData(), packet.getAddress(), packet.getPort());
+	}
+	
+	private void send(byte[] data, InetAddress address, int port) {
 		assert(socket.isConnected());
 		DatagramPacket packet = new DatagramPacket(data, data.length, address, port);
 		try {
