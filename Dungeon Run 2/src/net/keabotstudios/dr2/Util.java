@@ -18,7 +18,7 @@ public class Util {
 	public static BufferedImage loadImage(String string, Logger logger) {
 		try {
 			if (logger != null)
-				logger.info("Loading image '" + string + "'... ");
+				logger.infoLn("Loading image '" + string + "'... ");
 			BufferedImage out = ImageIO.read(Util.class.getResourceAsStream(string));
 			if (logger != null)
 				logger.infoLn("success!");

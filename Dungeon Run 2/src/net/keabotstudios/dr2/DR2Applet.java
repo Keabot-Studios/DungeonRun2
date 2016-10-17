@@ -4,7 +4,7 @@ import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.GraphicsEnvironment;
 
-import net.keabotstudios.dr2.game.GameSettings;
+import net.keabotstudios.dr2.game.save.GameSettings;
 import net.keabotstudios.superlog.Logger;
 
 public class DR2Applet extends Applet {

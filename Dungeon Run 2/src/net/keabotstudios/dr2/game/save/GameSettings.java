@@ -1,10 +1,12 @@
-package net.keabotstudios.dr2.game;
+package net.keabotstudios.dr2.game.save;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 
+import net.keabotstudios.dr2.game.GameDefaults;
+import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.superin.InputAxis;
 import net.keabotstudios.superserial.containers.SSDatabase;
 import net.keabotstudios.superserial.containers.SSField;

@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import net.keabotstudios.dr2.Game;
-import net.keabotstudios.dr2.game.GameSettings;
+import net.keabotstudios.dr2.game.save.GameSettings;
 import net.keabotstudios.superlog.Logger;
 import net.keabotstudios.superlog.Logger.LogLevel;
 

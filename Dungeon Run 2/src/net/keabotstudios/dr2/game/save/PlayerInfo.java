@@ -1,4 +1,4 @@
-package net.keabotstudios.dr2.game;
+package net.keabotstudios.dr2.game.save;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -16,8 +16,8 @@ public class PlayerInfo extends Saveable {
 	
 	// TODO STATS! (Kills, Total damage taken, points won, games won, KDR, etc.)
 	
-	private static final long MAX_PLAYER_IDS = 10000;
-	private long playerID;
+	private static final int MAX_PLAYER_IDS = Integer.MAX_VALUE;
+	private int playerID;
 	private String playerName;
 	
 	public PlayerInfo() {
@@ -29,11 +29,12 @@ public class PlayerInfo extends Saveable {
 		SSDatabase playerInfo = new SSDatabase(getFileName());
 
 		SSObject root = new SSObject("root");
-		playerInfo.addObject(root);
 		
-		root.addField(SSField.Long("playerID", playerID));
+		root.addField(SSField.Integer("playerID", playerID));
 		root.addString(new SSString("playerName", playerName));
 
+		playerInfo.addObject(root);
+		
 		getFile().getParentFile().mkdirs();
 		try {
 			byte[] data = new byte[playerInfo.getSize()];
@@ -56,7 +57,7 @@ public class PlayerInfo extends Saveable {
 			SSDatabase playerInfo = SSDatabase.Deserialize(data);
 			SSObject root = playerInfo.getObject("root");
 			
-			playerID = root.getField("playerID").getLong();
+			playerID = root.getField("playerID").getInteger();
 			playerName = root.getString("playerName").getString();
 			
 			System.out.println("Loaded " + getFileName() + " successfully from: " + getFilePath());
@@ -79,11 +80,8 @@ public class PlayerInfo extends Saveable {
 		return playerName;
 	}
 	
-	public static long getRandomPlayerID() {
-		long out = 0;
-		Random r = new Random();
-		while(out <= 0 || out >= MAX_PLAYER_IDS) out = r.nextLong();
-		return out;
+	public static int getRandomPlayerID() {
+		return new Random().nextInt(MAX_PLAYER_IDS);
 	}
 
 }

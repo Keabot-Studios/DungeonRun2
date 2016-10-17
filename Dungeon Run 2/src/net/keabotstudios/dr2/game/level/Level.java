@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.keabotstudios.dr2.Game;
-import net.keabotstudios.dr2.game.PlayerInfo;
 import net.keabotstudios.dr2.game.level.object.block.Block;
 import net.keabotstudios.dr2.game.level.object.block.EmptyBlock;
 import net.keabotstudios.dr2.game.level.object.block.SolidBlock;
@@ -15,6 +14,7 @@ import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.dr2.game.level.object.entity.PlayerMP;
 import net.keabotstudios.dr2.game.level.object.entity.SpawnPointEntity;
 import net.keabotstudios.dr2.game.level.randomgen.MapGenerator;
+import net.keabotstudios.dr2.game.save.PlayerInfo;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.dr2.math.Vector3;

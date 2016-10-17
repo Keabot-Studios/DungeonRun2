@@ -23,7 +23,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import net.keabotstudios.dr2.game.GameInfo;
-import net.keabotstudios.dr2.game.GameSettings;
+import net.keabotstudios.dr2.game.save.GameSettings;
 
 public class OptionsMenu extends JDialog {
 	private static final long serialVersionUID = 1L;

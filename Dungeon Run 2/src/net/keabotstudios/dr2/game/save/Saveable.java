@@ -1,7 +1,8 @@
-package net.keabotstudios.dr2.game;
+package net.keabotstudios.dr2.game.save;
 
 import java.io.File;
 
+import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.superserial.containers.SSDatabase;
 
 public abstract class Saveable {
