@@ -72,7 +72,7 @@ public class Util {
 		}
 
 		public static int toARGBColor(Color rgbCol) {
-			return new Color(rgbCol.getRGB(), false).getRGB();
+			return makeARGBColor(255, rgbCol.getRed(), rgbCol.getGreen(), rgbCol.getBlue());
 		}
 
 		public static int toARGBColor(int rgbCol) {

@@ -156,6 +156,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 			skippedSecs += elapsedTime / 1000000000.0;
 			while (skippedSecs > secsPerTick) {
 				update();
+				
 				skippedSecs -= secsPerTick;
 				tickCount++;
 				if (tickCount % 60 == 0) {
@@ -189,7 +190,6 @@ public class Game extends Canvas implements Runnable, Controllable {
 			createBufferStrategy(3);
 			return;
 		}
-
 		screen.clear(ColorUtil.toARGBColor(Color.BLACK));
 		gsm.render(screen);
 

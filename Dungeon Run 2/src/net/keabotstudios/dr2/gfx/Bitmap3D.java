@@ -80,7 +80,7 @@ public class Bitmap3D extends Bitmap {
 			}
 		}
 
-		int height = (int) Math.ceil((l.getCeilPos() + l.getFloorPos()) / 8);
+		int height = (int) Math.ceil((l.getCeilPos() + l.getFloorPos()) / 8.0);
 
 		Vector2 playerPos = new Vector2(l.getPlayer().getPos().getX(), l.getPlayer().getPos().getZ());
 		for (int xBlock = -1; xBlock <= l.getWidth(); xBlock++) {
@@ -122,7 +122,7 @@ public class Bitmap3D extends Bitmap {
 			renderSprite(e.getPos(), e.getTexture(), 1, l.getFloorPos());
 			if (e instanceof PlayerMP) {
 				String name = ((PlayerMP) e).getPlayerName();
-				Bitmap nametag = new TextBitmap(Font.SMALL, name, 1, ColorUtil.toARGBColor(Color.CYAN));
+				Bitmap nametag = new TextBitmap(Font.SMALL, name, 1, ColorUtil.toARGBColor(Color.BLUE));
 				renderSprite(e.getPos().add(new Vector3(0, 1, 0)), nametag, 1, l.getFloorPos());
 			}
 		}

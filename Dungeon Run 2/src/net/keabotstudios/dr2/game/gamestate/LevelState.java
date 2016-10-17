@@ -53,6 +53,7 @@ public class LevelState extends GameState {
 			dir.render(bitmap);
 		}
 		minimap.render(bitmap);
+		//Font.SMALL.drawString(bitmap, "Hi!", 100, 100, 4, ColorUtil.toARGBColor(Color.GREEN));
 	}
 	
 	int temp = 20;

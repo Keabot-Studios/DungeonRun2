@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.game.PlayerInfo;
@@ -51,12 +50,12 @@ public class Level {
 			}
 		}
 
-		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX()+.5, 1, gen.getSpawnPoint().getY()+.5));
+		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX()+.5, 0.9, gen.getSpawnPoint().getY()+.5));
 		entities.put("spawn", spawnEntity);
 
-		entities.put(String.valueOf(game.getPlayerInfo().getPlayerID()), new Player(spawnEntity.getPos(), 0, game));
+		entities.put(String.valueOf(game.getPlayerInfo().getPlayerID()), new Player(spawnEntity.getPos().clone(), 0, game));
 		long mpPID = PlayerInfo.getRandomPlayerID();
-		entities.put(String.valueOf(mpPID), new PlayerMP(new Vector3(5, 0.9, 7), 0, mpPID, "Dat Boi"));
+		entities.put(String.valueOf(mpPID), new PlayerMP(spawnEntity.getPos().clone(), 0, mpPID, "Dat Boi"));
 		
 		System.out.println();
 

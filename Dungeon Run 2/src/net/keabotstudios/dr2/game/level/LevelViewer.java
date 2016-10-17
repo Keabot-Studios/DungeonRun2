@@ -21,7 +21,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
-import net.keabotstudios.dr2.Util;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
@@ -33,7 +32,7 @@ public class LevelViewer extends Canvas {
 
 	private JFrame frame;
 	private Level level;
-	private BufferedImage image, playerArrow;
+	private BufferedImage image;
 
 	// ---------------------------------------------------
 	// TODO TESTING PURPOSES - REMOVE LATER
@@ -49,7 +48,6 @@ public class LevelViewer extends Canvas {
 		setMaximumSize(size);
 
 		image = new BufferedImage((int) size.getWidth() + scale, (int) size.getHeight() + scale, BufferedImage.TYPE_INT_RGB);
-		playerArrow = Util.loadImage("/texture/playerArrow.png", null);
 		frame = new JFrame("Level Viewer");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setIconImages(GameInfo.WINDOW_ICONS);
@@ -103,8 +101,6 @@ public class LevelViewer extends Canvas {
 		AffineTransform trans = new AffineTransform();
 
 		Player p = level.getPlayer();
-		double pWidth = p.getCollisionBox().getX() * scale;
-		double pHeight = p.getCollisionBox().getZ() * scale;
 		double pX = p.getPos().getX() * scale + scale;
 		double pY = p.getPos().getZ() * scale + scale;
 

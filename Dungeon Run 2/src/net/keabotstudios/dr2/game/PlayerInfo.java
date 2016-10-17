@@ -16,21 +16,23 @@ public class PlayerInfo extends Saveable {
 	
 	// TODO STATS! (Kills, Total damage taken, points won, games won, KDR, etc.)
 	
+	private static final long MAX_PLAYER_IDS = 10000;
 	private long playerID;
-	private String username;
+	private String playerName;
 	
 	public PlayerInfo() {
 		playerID = getRandomPlayerID();
-		username = "Player" + playerID;
+		playerName = "Player" + playerID;
 	}
 
 	public boolean write() {
 		SSDatabase playerInfo = new SSDatabase(getFileName());
 
 		SSObject root = new SSObject("root");
-		root.addField(SSField.Long("mouseTurning", this.playerID));
-		root.addString(new SSString("enableBobbing", this.username));
 		playerInfo.addObject(root);
+		
+		root.addField(SSField.Long("playerID", playerID));
+		root.addString(new SSString("playerName", playerName));
 
 		getFile().getParentFile().mkdirs();
 		try {
@@ -52,7 +54,11 @@ public class PlayerInfo extends Saveable {
 		try {
 			byte[] data = Files.readAllBytes(file.toPath());
 			SSDatabase playerInfo = SSDatabase.Deserialize(data);
-			playerInfo.getObject("playerID");
+			SSObject root = playerInfo.getObject("root");
+			
+			playerID = root.getField("playerID").getLong();
+			playerName = root.getString("playerName").getString();
+			
 			System.out.println("Loaded " + getFileName() + " successfully from: " + getFilePath());
 			return true;
 		} catch (IOException e) {
@@ -69,12 +75,15 @@ public class PlayerInfo extends Saveable {
 		return playerID;
 	}
 	
-	public String getUsername() {
-		return username;
+	public String getPlayerName() {
+		return playerName;
 	}
 	
 	public static long getRandomPlayerID() {
-		return new Random().nextInt(10000);
+		long out = 0;
+		Random r = new Random();
+		while(out <= 0 || out >= MAX_PLAYER_IDS) out = r.nextLong();
+		return out;
 	}
 
 }

@@ -29,7 +29,7 @@ public class Player extends Entity {
 	private Game game;
 
 	public Player(Vector3 pos, double rot, Game game) {
-		super(pos.clone(), new CollisionBox(0.8, 1.5, 0.8), rot, Color.GREEN.getRGB());
+		super(pos, new CollisionBox(0.8, 1.5, 0.8), rot, Color.GREEN.getRGB());
 		this.game = game;
 	}
 

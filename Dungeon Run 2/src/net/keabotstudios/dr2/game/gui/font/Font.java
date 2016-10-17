@@ -1,10 +1,7 @@
 package net.keabotstudios.dr2.game.gui.font;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Locale;
 
-import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 
@@ -57,6 +54,8 @@ public enum Font {
 	private int height, spaceWidth, charSpaceWidth;
 	private FontCharacter[] characters;
 	private int type;
+	
+	private static final int STATUS_OUTPUT_FREQ = 10;
 
 	private static final int NORMAL = 0;
 	private static final int ALL_CAPS = 1;
@@ -74,24 +73,35 @@ public enum Font {
 
 	public void loadFont() {
 		int numRows = texture.getHeight() / height;
-		if (lines.length != numRows || widths.length != numRows) {
-			System.err.println("Font sheet is wrong size or character list is wrong. Double check them!");
+		if (lines.length == numRows) {
+			int numCharsInFont = 0;
+			for (int row = 0; row < numRows; row++) {
+				numCharsInFont += lines[row].trim().length();
+			}
+			System.out.println("Loading font: " + name() + ", " + numCharsInFont + " characters");
+			characters = new FontCharacter[numCharsInFont];
+			int currentChar = 0;
+			for (int row = 0; row < numRows; row++) {
+				int numCharsInRow = texture.getWidth() / widths[row];
+				for (int col = 0; col < numCharsInRow; col++) {
+					char c = lines[row].charAt(col);
+					if (c == ' ') {
+						continue;
+					}
+					Bitmap graphic = texture.getSubBitmap(col * widths[row], row * height, widths[row], height);
+					characters[currentChar] = new FontCharacter(c, graphic);
+					currentChar++;
+					int percentDone = (int) Math.round(((double) currentChar / numCharsInFont) * 100.0);
+					if(percentDone % STATUS_OUTPUT_FREQ == 0) {
+						System.out.println("Loading font: " + name() + " " + percentDone + "%");
+					}
+				}
+			}
+			System.out.println("Font: " + name() + " has finished loading.");
+		} else {
+			System.err.println("Font sheet is wrong size or character list is wrong for font: " + name() + ". Double check them!");
 			System.exit(-1);
 		}
-		ArrayList<FontCharacter> characterList = new ArrayList<FontCharacter>();
-		for (int row = 0; row < numRows; row++) {
-			int numCharsInRow = texture.getWidth() / widths[row];
-			for (int col = 0; col < numCharsInRow; col++) {
-				char c = lines[row].charAt(col);
-				if (c == ' ') {
-					characterList.add(null);
-					continue;
-				}
-				Bitmap graphic = texture.getSubBitmap(col * widths[row], row * height, widths[row], height);
-				characterList.add(new FontCharacter(c, graphic));
-			}
-		}
-		this.characters = characterList.toArray(new FontCharacter[characterList.size()]);
 	}
 
 	public int getHeight() {
@@ -155,7 +165,7 @@ public enum Font {
 				x += spaceWidth * size;
 			} else if (hasChar(c)) {
 				FontCharacter character = getCharacter(c);
-				character.render(bitmap, x, y, size, ColorUtil.toARGBColor(Color.BLUE.getRGB()), alpha);
+				character.render(bitmap, x, y, size, color, alpha);
 				x += (character.getWidth() + charSpaceWidth) * size;
 			}
 		}
