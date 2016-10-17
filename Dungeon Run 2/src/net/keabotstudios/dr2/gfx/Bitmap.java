@@ -131,6 +131,10 @@ public class Bitmap {
 		}
 	}
 
+	public void renderBox(Bitmap bitmap, int xOffs, int yOffs, int width, int height, float alpha) {
+		render(bitmap, xOffs, yOffs, alpha);
+	}
+
 	/**
 	 * Draws a Bitmap to this {@code Bitmap} object.
 	 * 
@@ -222,7 +226,8 @@ public class Bitmap {
 			}
 		}
 
-		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount, alphaBucket / pixelCount).getRGB();
+		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount,
+				alphaBucket / pixelCount).getRGB();
 	}
 
 	/**

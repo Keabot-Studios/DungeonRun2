@@ -27,7 +27,7 @@ public class GameDefaults {
 			new InputAxis("MENU_DOWN", KeyEvent.VK_DOWN, Component.Identifier.Axis.Y, DEADZONE, InputAxis.EMPTY),
 			new InputAxis("MENU_LEFT", KeyEvent.VK_LEFT, Component.Identifier.Axis.X, -DEADZONE, InputAxis.EMPTY),
 			new InputAxis("MENU_RIGHT", KeyEvent.VK_RIGHT, Component.Identifier.Axis.X, DEADZONE, InputAxis.EMPTY),
-			new InputAxis("MENU_CONFIRM", KeyEvent.VK_ENTER, Component.Identifier.Button._0, 1.0f, InputAxis.EMPTY),
+			new InputAxis("MENU_CONFIRM", KeyEvent.VK_ENTER, Component.Identifier.Button._0, 1.0f, MouseEvent.BUTTON1),
 			new InputAxis("ESCAPE", KeyEvent.VK_ESCAPE),
 			new InputAxis("F1", KeyEvent.VK_F1),
 			new InputAxis("F2", KeyEvent.VK_F2),

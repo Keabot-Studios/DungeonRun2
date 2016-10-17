@@ -4,21 +4,21 @@ import java.awt.Rectangle;
 
 import net.keabotstudios.dr2.gfx.Bitmap;
 
-public class GuiTextButton extends GuiButton implements GuiAction {
+public class GuiTextButton extends GuiButton {
 
 	String text;
 
-	protected GuiTextButton(Rectangle rect, int size, Bitmap texture, String text) {
-		super(rect, size, texture);
+	public GuiTextButton(Rectangle rect, int size, Bitmap texture, String text, boolean renderAsBox) {
+		super(rect, size, texture, renderAsBox);
 		this.text = text;
 	}
 
-	protected GuiTextButton(int x, int y, int width, int height, int size, Bitmap texture, String text) {
-		this(new Rectangle(x, y, width, height), size, texture, text);
+	public GuiTextButton(int x, int y, int width, int height, int size, Bitmap texture, String text, boolean renderAsBox) {
+		this(new Rectangle(x, y, width, height), size, texture, text, renderAsBox);
 	}
 
 	@Override
 	public void render(Bitmap bitmap) {
-		super.render(bitmap);
+		super.render(bitmap);		
 	}
 }
