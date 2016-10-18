@@ -13,13 +13,13 @@ public enum Font {
 			"cdghkmno",
 			"pquvwxyz",
 			"02356789",
-			"*-<>~   ",
+			"*-<>~",
 			"EFLefjrst",
-			"4^?      ",
-			"_-\"        ",
-			"I1\\/          ",
-			"il!()             ",
-			":;'.,                       "
+			"4^?",
+			"_-\"",
+			"I1\\/",
+			"il!()",
+			":;'.,"
 	}, new int[] {
 			7,
 			7,
@@ -37,9 +37,9 @@ public enum Font {
 	}, 11, 7, 2, 0), SMALL(Texture.font_small, new String[] {
 			"ABCDEFGHIJKLMNOP",
 			"QRSTUVWXYZ012345",
-			"6789?_~@#$      ",
-			"=+-/\\{}<>\"%^*        ",
-			"!()|[]`'.,                      "
+			"6789?_~@#$",
+			"=+-/\\{}<>\"%^*",
+			"!()|[]`'.,"
 	}, new int[] {
 			4,
 			4,
@@ -76,18 +76,14 @@ public enum Font {
 		if (lines.length == numRows) {
 			int numCharsInFont = 0;
 			for (int row = 0; row < numRows; row++) {
-				numCharsInFont += lines[row].trim().length();
+				numCharsInFont += lines[row].length();
 			}
 			System.out.println("Loading font: " + name() + ", " + numCharsInFont + " characters");
 			characters = new FontCharacter[numCharsInFont];
 			int currentChar = 0;
 			for (int row = 0; row < numRows; row++) {
-				int numCharsInRow = texture.getWidth() / widths[row];
-				for (int col = 0; col < numCharsInRow; col++) {
+				for (int col = 0; col < lines[row].length(); col++) {
 					char c = lines[row].charAt(col);
-					if (c == ' ') {
-						continue;
-					}
 					Bitmap graphic = texture.getSubBitmap(col * widths[row], row * height, widths[row], height);
 					characters[currentChar] = new FontCharacter(c, graphic);
 					currentChar++;
@@ -132,8 +128,8 @@ public enum Font {
 		}
 		int index = 0;
 		for (int l = 0; l < lines.length; l++) {
-			for (int i = 0; i < lines[l].trim().length(); i++) {
-				if (c == lines[l].trim().charAt(i))
+			for (int i = 0; i < lines[l].length(); i++) {
+				if (c == lines[l].charAt(i))
 					return index;
 				index++;
 			}
