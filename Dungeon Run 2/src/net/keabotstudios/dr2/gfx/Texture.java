@@ -20,7 +20,6 @@ public class Texture {
 	public static Bitmap[] guiBox;
 	public static Bitmap[] playerArrow;
 	public static Bitmap[] player;
-	public static BoxBitmap button;
 
 	public static void load(Game game) {
 		font_main = loadBitmap("/font/main.png", game.getLogger());
@@ -35,7 +34,6 @@ public class Texture {
 		guiBox = loadBitmapSheet("/texture/guiBox.png", 8, 8, game.getLogger());
 		playerArrow = loadBitmapSheet("/texture/playerArrow.png", 8, 8, game.getLogger());
 		player = loadBitmapSheet("/texture/player.png", 32, 32, game.getLogger());
-		button = (BoxBitmap) loadBitmap("/texture/button.png", game.getLogger());
 	}
 
 	public static void update() {

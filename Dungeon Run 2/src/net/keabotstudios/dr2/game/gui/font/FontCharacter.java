@@ -24,10 +24,10 @@ public class FontCharacter {
 	}
 
 	public void render(Bitmap bitmap, int x, int y, int size, int color, float alpha) {
-		for(int px = 0; px < getWidth(); px++) {
-			for(int py = 0; py < getHeight(); py++) {
-				if(graphic[px + py * getWidth()]) {
-					bitmap.drawRect(px * size + x, py * size + y, size, size, color);
+		for(int px = 0; px < getWidth() * size; px++) {
+			for(int py = 0; py < getHeight() * size; py++) {
+				if(graphic[(px / size) + (py / size) * getWidth()]) {
+					bitmap.setPixel(x, y, color);
 				}
 			}
 		}

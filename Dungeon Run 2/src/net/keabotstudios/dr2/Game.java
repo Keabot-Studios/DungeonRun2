@@ -249,9 +249,9 @@ public class Game extends Canvas implements Runnable, Controllable {
 		return input;
 	}
 
-	public Rectangle getFullscreenRect() {
+	public Rectangle getScreenRect() {
 		if (!settings.fullscreen)
-			return null;
+			return new Rectangle(0, 0, this.getWidth(), this.getHeight());
 		return new Rectangle(fullScreenXOff, fullScreenYOff, fullScreenImageWidth, fullScreenImageHeight);
 	}
 

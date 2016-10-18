@@ -382,4 +382,9 @@ public class Bitmap {
 		out.pixels = pixels.clone();
 		return out;
 	}
+
+	public void setPixel(int x, int y, int color) {
+		if(x > width || x < 0 || y > height || y < 0) return;
+		pixels[x + y * width] = color;
+	}
 }

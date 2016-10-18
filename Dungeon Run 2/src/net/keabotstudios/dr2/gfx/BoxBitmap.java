@@ -16,7 +16,6 @@ public class BoxBitmap extends Bitmap {
 	}
 
 	public void renderBox(Bitmap bitmap, int xOffs, int yOffs, int width, int height, float alpha) {
-
 		if (width > this.width || height > this.height) {
 			super.render(bitmap, xOffs, yOffs, alpha);
 			return;

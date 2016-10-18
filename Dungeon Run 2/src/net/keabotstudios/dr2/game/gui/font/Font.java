@@ -54,7 +54,7 @@ public enum Font {
 	private int height, spaceWidth, charSpaceWidth;
 	private FontCharacter[] characters;
 	private int type;
-	
+
 	private static final int STATUS_OUTPUT_FREQ = 10;
 
 	private static final int NORMAL = 0;
@@ -92,7 +92,7 @@ public enum Font {
 					characters[currentChar] = new FontCharacter(c, graphic);
 					currentChar++;
 					int percentDone = (int) Math.round(((double) currentChar / numCharsInFont) * 100.0);
-					if(percentDone % STATUS_OUTPUT_FREQ == 0) {
+					if (percentDone % STATUS_OUTPUT_FREQ == 0) {
 						System.out.println("Loading font: " + name() + " " + percentDone + "%");
 					}
 				}
@@ -132,8 +132,8 @@ public enum Font {
 		}
 		int index = 0;
 		for (int l = 0; l < lines.length; l++) {
-			for (int i = 0; i < lines[l].length(); i++) {
-				if (c == lines[l].charAt(i))
+			for (int i = 0; i < lines[l].trim().length(); i++) {
+				if (c == lines[l].trim().charAt(i))
 					return index;
 				index++;
 			}

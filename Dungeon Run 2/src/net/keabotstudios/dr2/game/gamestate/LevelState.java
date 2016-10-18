@@ -1,8 +1,10 @@
 package net.keabotstudios.dr2.game.gamestate;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.gui.GuiAction;
@@ -11,6 +13,7 @@ import net.keabotstudios.dr2.game.gui.GuiRenderer;
 import net.keabotstudios.dr2.game.gui.GuiRenderer.GuiBarColor;
 import net.keabotstudios.dr2.game.gui.GuiStatBar;
 import net.keabotstudios.dr2.game.gui.GuiStatText;
+import net.keabotstudios.dr2.game.gui.font.Font;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.Minimap;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
@@ -49,8 +52,8 @@ public class LevelState extends GameState {
 		dir = new GuiStatText(guiX, 6 + 60, 1, GuiRenderer.DIR_CHAR,
 				Direction.UNKNOWN.getId() + "," + Direction.UNKNOWN.name(), GuiBarColor.GRAY, GuiBarColor.BLUE,
 				GuiBarColor.BLUE);
-
-		button = new GuiButton(guiX, 6 + 150, 40, 30, 1, Texture.button, true);
+		
+		button = new GuiButton(guiX, 6 + 150, 40, 30, 1, Texture.brick1, true);
 		button.setAction(new GuiAction() {
 			public void onAction() {
 				System.out.println("HI!");
@@ -70,8 +73,9 @@ public class LevelState extends GameState {
 			rot.render(bitmap);
 			dir.render(bitmap);
 		}
+		
 		minimap.render(bitmap);
-		//Font.SMALL.drawString(bitmap, "Hi!", 100, 100, 4, ColorUtil.toARGBColor(Color.GREEN));
+		Font.SMALL.drawString(bitmap, "Hi!", 100, 100, 4, ColorUtil.toARGBColor(Color.GREEN));
 	}
 
 	int temp = 20;

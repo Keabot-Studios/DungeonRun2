@@ -1,6 +1,5 @@
 package net.keabotstudios.dr2.game.gui;
 
-public class GuiAction {
-	public void onAction() {
-	};
+public interface GuiAction {
+	public void onAction();
 }
