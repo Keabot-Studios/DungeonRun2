@@ -4,13 +4,18 @@ import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.gfx.Bitmap;
 
 public class FontCharacter {
-
+	
 	final char character;
-	final int width, height;
-	final boolean[] graphic;
+	private int width, height;
+	private boolean[] graphic;
 
 	public FontCharacter(char character, Bitmap graphic) {
 		this.character = character;
+		setGraphic(graphic);
+	}
+	
+	public void setGraphic(Bitmap graphic) {
+		if(graphic == null) return;
 		this.graphic = new boolean[graphic.getPixels().length];
 		this.width = graphic.getWidth();
 		this.height = graphic.getHeight();
@@ -27,7 +32,7 @@ public class FontCharacter {
 		for(int px = 0; px < getWidth() * size; px++) {
 			for(int py = 0; py < getHeight() * size; py++) {
 				if(graphic[(px / size) + (py / size) * getWidth()]) {
-					bitmap.setPixel(x, y, color);
+					bitmap.setPixel(x + px, y + py, color);
 				}
 			}
 		}

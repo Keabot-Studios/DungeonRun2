@@ -53,7 +53,7 @@ public class LevelState extends GameState {
 				Direction.UNKNOWN.getId() + "," + Direction.UNKNOWN.name(), GuiBarColor.GRAY, GuiBarColor.BLUE,
 				GuiBarColor.BLUE);
 		
-		button = new GuiButton(guiX, 6 + 150, 40, 30, 1, Texture.brick1, true);
+		button = new GuiButton(50, 100, 100, 50, 1, ColorUtil.toARGBColor(Color.BLUE), Texture.brick1, true);
 		button.setAction(new GuiAction() {
 			public void onAction() {
 				System.out.println("HI!");
@@ -74,8 +74,11 @@ public class LevelState extends GameState {
 			dir.render(bitmap);
 		}
 		
+		button.render(bitmap);
+		
+		int scale = level.getPlayer().getHealth() / 2;
+		Font.MAIN.drawString(bitmap, "Nice Meme!•", GameInfo.GAME_WIDTH / 2 - Font.MAIN.getStringWidth("Nice Meme!", scale) / 2, 120, scale, ColorUtil.toARGBColor(Color.GREEN));
 		minimap.render(bitmap);
-		Font.SMALL.drawString(bitmap, "Hi!", 100, 100, 4, ColorUtil.toARGBColor(Color.GREEN));
 	}
 
 	int temp = 20;
@@ -109,6 +112,7 @@ public class LevelState extends GameState {
 			Direction pdir = Direction.getFromRad(level.getPlayer().getRotation());
 			dir.setText(pdir.getId() + "," + pdir.name());
 		}
+		button.update(gsm.game.getInput());
 		level.update(gsm.game.getInput());
 		minimap.update();
 		bitmap3d.setOffsets(level.getPlayer());

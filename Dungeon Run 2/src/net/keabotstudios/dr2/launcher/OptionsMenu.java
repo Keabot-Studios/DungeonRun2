@@ -35,6 +35,7 @@ public class OptionsMenu extends JDialog {
 	private JComboBox<String> cBoxResolution;
 	private JCheckBox chckbxBobbing;
 	private JCheckBox chckbxFullscreen;
+	private JCheckBox chckbxMouseTurning;
 
 	public OptionsMenu(JFrame parent, GameSettings settings) {
 		super(parent);
@@ -225,10 +226,23 @@ public class OptionsMenu extends JDialog {
 	private void addControlsTab(JTabbedPane optionsPane) {
 		JPanel controlsPanel = new JPanel();
 		optionsPane.addTab("Controls", null, controlsPanel, null);
-		controlsPanel.setLayout(new BorderLayout(0, 0));
-
-		JPanel inputAxisPane = new JPanel();
-		controlsPanel.add(inputAxisPane, BorderLayout.EAST);
+		GridBagLayout gbl_controlsPanel = new GridBagLayout();
+		gbl_controlsPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_controlsPanel.rowHeights = new int[]{0, 0, 0};
+		gbl_controlsPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_controlsPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		controlsPanel.setLayout(gbl_controlsPanel);
+		
+		chckbxMouseTurning = new JCheckBox("Mouse Turning");
+		GridBagConstraints gbc_chckbxMouseTurning = new GridBagConstraints();
+		gbc_chckbxMouseTurning.gridx = 1;
+		gbc_chckbxMouseTurning.gridy = 1;
+		controlsPanel.add(chckbxMouseTurning, gbc_chckbxMouseTurning);
+		chckbxMouseTurning.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				editedSettings.mouseTurning = chckbxMouseTurning.isSelected();
+			}
+		});
 	}
 
 	public static GameSettings showOptions(JFrame parent, GameSettings settings) {
@@ -243,6 +257,7 @@ public class OptionsMenu extends JDialog {
 		chckbxBobbing.setSelected(editedSettings.enableBobbing);
 		chckbxFullscreen.setSelected(editedSettings.fullscreen);
 		cBoxResolution.setSelectedIndex(editedSettings.windowSizeIndex);
+		chckbxMouseTurning.setSelected(editedSettings.mouseTurning);
 	}
 
 }

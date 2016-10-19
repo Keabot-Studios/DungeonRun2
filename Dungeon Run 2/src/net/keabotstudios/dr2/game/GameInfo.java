@@ -53,12 +53,4 @@ public class GameInfo {
 			return System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support" + File.separator + APPDATA_FOLDER_NAME;
 		}
 	}
-
-	public static float getResScale(Game game) {
-		if (GameDefaults.FULLSCREEN) {
-			return Util.getScaleOfRectangeInArea(game.getScreenRect().width, game.getScreenRect().height, WINDOW_WIDTHS[0], (int) ((float) WINDOW_WIDTHS[0] * ASPECT_RATIO));
-		}
-		return Util.getScaleOfRectangeInArea(GAME_WIDTH, GAME_HEIGHT, WINDOW_WIDTHS[0], (int) ((float) WINDOW_WIDTHS[0] * ASPECT_RATIO));
-	}
-
 }

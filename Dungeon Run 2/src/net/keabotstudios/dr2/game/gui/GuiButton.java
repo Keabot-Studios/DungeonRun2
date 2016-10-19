@@ -1,59 +1,95 @@
 package net.keabotstudios.dr2.game.gui;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 
+import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.superin.Input;
 
 public class GuiButton extends GuiComponent {
 
-	Rectangle rectangle;
-
-	boolean renderBox;
-
-	Bitmap bitmapTexture;
-
+	private boolean renderBox;
+	private Bitmap bitmapTexture;
 	private GuiAction action;
+	private int width, height;
+	private int color;
 
-	public GuiButton(Rectangle rect, int size, Bitmap texture, boolean renderAsBox) {
-		super(rect.x, rect.y, size);
-		rectangle = rect;
-		bitmapTexture = texture;
-		renderBox = renderAsBox;
+	public GuiButton(Rectangle rect, int size, int color, Bitmap texture, boolean renderAsBox) {
+		this(rect.x, rect.y, rect.width, rect.height, size, color, texture, renderAsBox);
 	}
 
-	public GuiButton(int x, int y, int width, int height, int size, Bitmap texture, boolean renderAsBox) {
-		this(new Rectangle(x, y, width, height), size, texture, renderAsBox);
+	public GuiButton(int x, int y, int width, int height, int size, int color, Bitmap texture, boolean renderAsBox) {
+		super(x, y, size);
+		this.width = width;
+		this.height = height;
+		this.color = color;
+		this.bitmapTexture = texture;
+		this.renderBox = renderAsBox;
 	}
 
 	public void setAction(GuiAction guiAction) {
-		action = guiAction;
+		this.action = guiAction;
 	}
 
-	@Override
-	public void render(Bitmap bitmap) {
+	public int getWidth() {
+		return width;
+	}
 
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getColor() {
+		return color;
+	}
+
+	public void setColor(int color) {
+		this.color = color;
+	}
+
+	public void setRenderBox(boolean renderBox) {
+		this.renderBox = renderBox;
+	}
+
+	public void setBitmapTexture(Bitmap bitmapTexture) {
+		this.bitmapTexture = bitmapTexture;
+	}
+
+	public void render(Bitmap bitmap) {
 		if (bitmapTexture != null) {
 			if (renderBox)
-				bitmap.renderBox(bitmap, rectangle.x, rectangle.y, rectangle.width, rectangle.height, 1);
+				bitmap.drawRect(x, y, width, height, color);
 			else
-				bitmap.render(bitmapTexture, rectangle.x, rectangle.y);
+				bitmap.render(bitmapTexture, x, y);
 		}
-
 	}
 
 	@Override
 	public void update(Input input) {
-		if (input.getInputTapped("MENU_CONFIRM") && action != null) {
+		if (input.getInputTapped("MENU_CONFIRM") && action != null && isMouseOver(input)) {
 			action.onAction();
 		}
 	}
 
-	public boolean isSelected(Input input) {
-		return input.getMouseX() * GameInfo.getResScale(GuiRenderer.game) > rectangle.getX()
-				&& input.getMouseX() * GameInfo.getResScale(GuiRenderer.game) < rectangle.getMaxX()
-				&& input.getMouseY() * GameInfo.getResScale(GuiRenderer.game) > rectangle.getY();
-
+	public boolean isMouseOver(Input input) {
+		Rectangle screen = GuiRenderer.game.getScreenRect();
+		int scaledMouseX = (int) Math.round(input.getMouseX() / GuiRenderer.game.getScreenScale() + screen.getX());
+		int scaledMouseY = (int) Math.round(input.getMouseY() / GuiRenderer.game.getScreenScale() + screen.getY());
+		if(scaledMouseX >= x && scaledMouseX < x + width) {
+			if(scaledMouseY >= y && scaledMouseY < y + height) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

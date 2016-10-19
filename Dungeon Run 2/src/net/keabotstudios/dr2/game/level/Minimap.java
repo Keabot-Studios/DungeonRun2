@@ -10,7 +10,7 @@ import net.keabotstudios.dr2.gfx.Texture;
 
 public class Minimap {
 
-	private int x, y, width, height, scale = 4;
+	private int x, y, width, height, scale = 2;
 	private int zoom = 1;
 	private float transparency;
 	private Level level;
@@ -24,7 +24,7 @@ public class Minimap {
 		this.width = width;
 		this.height = height;
 		this.transparency = transparency;
-		minimap = new Bitmap((level.getWidth() + 1) * scale, (level.getHeight() + 1) * scale);
+		minimap = new Bitmap((level.getWidth() + 2) * scale, (level.getHeight() + 2) * scale);
 		minimap.clear(ColorUtil.toARGBColor(Color.BLACK));
 		init();
 	}
@@ -48,14 +48,14 @@ public class Minimap {
 		for(PlayerMP pMP : level.getPlayerMPs()) {
 			int pMPX = (int) (pMP.getPos().getX() * scale) - vX;
 			int pMPY = (int) (level.getHeight() * scale - pMP.getPos().getZ() * scale) - vY;
-			output.render(Texture.playerArrow[1].rotate(pMP.getRotation()), pMPX - Texture.playerArrow[3].getWidth() / 2, pMPY - Texture.playerArrow[3].getHeight() / 2, scale / 2);
+			output.render(Texture.playerArrow[1].scale(2).rotate(pMP.getRotation()), pMPX - Texture.playerArrow[3].getWidth() / 2, pMPY - Texture.playerArrow[3].getHeight() / 2, scale / 2);
 		}
 		SpawnPointEntity spawn = (SpawnPointEntity) level.getEntity("spawn");
 		int sX = (int) (spawn.getPos().getX() * scale) - vX;
 		int sY = (int) (level.getHeight() * scale - spawn.getPos().getZ() * scale) - vY;
 		output.render(spawn.getTexture(), sX - spawn.getTexture().getWidth() / 2, sY - spawn.getTexture().getHeight() / 2 - spawn.getTexture().getHeight() / scale, scale / 4);
-		output.render(Texture.playerArrow[0].rotate(level.getPlayer().getRotation()), (width / 2) / zoom - Texture.playerArrow[0].getWidth() / 2, (height / 2) / zoom - Texture.playerArrow[0].getHeight() / 2, scale / 2);
-		bitmap.render(output, x, y, zoom, transparency);
+		output.render(Texture.playerArrow[0].scale(2).rotate(level.getPlayer().getRotation()), (width / 2) / zoom - Texture.playerArrow[0].getWidth() / 2, (height / 2) / zoom - Texture.playerArrow[0].getHeight() / 2, scale / 2);
+		bitmap.render(output.transparentize((int) (transparency * 255)), x, y, zoom);
 	}
 
 }

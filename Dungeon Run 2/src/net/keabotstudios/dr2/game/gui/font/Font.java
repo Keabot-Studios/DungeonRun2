@@ -2,6 +2,7 @@ package net.keabotstudios.dr2.game.gui.font;
 
 import java.util.Locale;
 
+import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 
@@ -60,6 +61,8 @@ public enum Font {
 	private static final int NORMAL = 0;
 	private static final int ALL_CAPS = 1;
 	private static final int NO_CAPS = 2;
+
+	public static final FontCharacter NULL_CHAR = new FontCharacter('•', new Bitmap(6, 9));
 
 	private Font(Bitmap texture, String[] lines, int[] widths, int height, int spaceWidth, int charSpaceWidth, int type) {
 		this.texture = texture;
@@ -134,16 +137,14 @@ public enum Font {
 				index++;
 			}
 		}
-		System.err.println("Font \"" + name() + "\" does not contain character: " + c);
 		return -1;
 	}
 
 	public FontCharacter getCharacter(char c) {
+		int index = getCharacterIndex(c);
+		if (index < 0)
+			return NULL_CHAR;
 		return characters[getCharacterIndex(c)];
-	}
-
-	public boolean hasChar(char c) {
-		return getCharacterIndex(c) >= 0;
 	}
 
 	public void drawString(Bitmap bitmap, String string, int x, int y, int color) {
@@ -159,7 +160,7 @@ public enum Font {
 			char c = string.charAt(i);
 			if (c == ' ') {
 				x += spaceWidth * size;
-			} else if (hasChar(c)) {
+			} else {
 				FontCharacter character = getCharacter(c);
 				character.render(bitmap, x, y, size, color, alpha);
 				x += (character.getWidth() + charSpaceWidth) * size;
@@ -168,6 +169,9 @@ public enum Font {
 	}
 
 	public static void load() {
+		Bitmap nullChar = new Bitmap(6, 9);
+		nullChar.drawRect(0, 0, 6, 9, ColorUtil.makeARGBColor(255, 255, 255, 255));
+		NULL_CHAR.setGraphic(nullChar);
 		for (Font f : Font.values()) {
 			f.loadFont();
 		}
@@ -179,8 +183,7 @@ public enum Font {
 			char c = string.charAt(i);
 			if (c == ' ') {
 				w += spaceWidth * size;
-			}
-			if (hasChar(c)) {
+			} else {
 				w += (characters[i].getWidth() + charSpaceWidth) * size;
 			}
 		}

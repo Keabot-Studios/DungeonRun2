@@ -60,11 +60,12 @@ public class Util {
 	}
 
 	public static class ColorUtil {
-		public static int overlayAlpha(int topColor, int bottomColor, float topAlpha) {
-			int oRed = (int) ((ColorUtil.red(topColor) * topAlpha) + (ColorUtil.red(bottomColor) * (1.0f - topAlpha)));
-			int oGreen = (int) ((ColorUtil.green(topColor) * topAlpha) + (ColorUtil.green(bottomColor) * (1.0f - topAlpha)));
-			int oBlue = (int) ((ColorUtil.blue(topColor) * topAlpha) + (ColorUtil.blue(bottomColor) * (1.0f - topAlpha)));
-			return makeARGBColor(0xFF, oRed, oGreen, oBlue);
+		public static int mix(int colorA, int colorB) {
+			int a = ColorUtil.alpha(colorA) + (ColorUtil.alpha(colorB) * (255 - ColorUtil.alpha(colorA)) / 255);
+			int r = (ColorUtil.red(colorA) * ColorUtil.alpha(colorA) / 255) + (ColorUtil.red(colorB) * ColorUtil.alpha(colorB) * (255 - ColorUtil.alpha(colorA)) / (255 * 255));
+			int g = (ColorUtil.green(colorA) * ColorUtil.alpha(colorA) / 255) + (ColorUtil.green(colorB) * ColorUtil.alpha(colorB) * (255 - ColorUtil.alpha(colorA)) / (255 * 255));
+			int b = (ColorUtil.blue(colorA) * ColorUtil.alpha(colorA) / 255) + (ColorUtil.blue(colorB) * ColorUtil.alpha(colorB) * (255 - ColorUtil.alpha(colorA)) / (255 * 255));
+			return makeARGBColor(a, r, g, b);
 		}
 
 		public static int makeARGBColor(int alpha, int red, int green, int blue) {

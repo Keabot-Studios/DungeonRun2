@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
+import net.keabotstudios.dr2.game.GameDefaults;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.gamestate.GameStateManager;
 import net.keabotstudios.dr2.game.gamestate.LevelState;
@@ -49,13 +50,14 @@ public class Game extends Canvas implements Runnable, Controllable {
 	private Bitmap screen;
 	private BufferedImage img;
 	private int[] pixels;
+	private float screenImageScale = 1f;
 	private int fullScreenImageWidth = 0;
 	private int fullScreenImageHeight = 0;
 	private int fullScreenXOff = 0;
 	private int fullScreenYOff = 0;
 
 	private GameStateManager gsm;
-	
+
 	private PlayerInfo playerInfo;
 
 	public Game(Logger logger, GameSettings settings, GraphicsDevice currentDisplay) {
@@ -64,10 +66,11 @@ public class Game extends Canvas implements Runnable, Controllable {
 		this.settings = settings;
 		this.playerInfo = new PlayerInfo();
 		playerInfo.updateFromFile();
-	
+
 		Texture.load(this);
 		Font.load();
 		GuiRenderer.init(this);
+
 		screen = new Bitmap(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		pixels = Util.convertToPixels(img);
@@ -86,6 +89,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 
 		createJFrame(currentDisplay);
 
+		screenImageScale = Util.getScaleOfRectangeInArea(settings.windowWidth, settings.windowHeight, GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		if (settings.fullscreen) {
 			calculateFullscreenBounds(currentDisplay);
 		}
@@ -103,9 +107,9 @@ public class Game extends Canvas implements Runnable, Controllable {
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
-		float fullScreenImageScale = Util.getScaleOfRectangeInArea(screenWidth, screenHeight, GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
-		fullScreenImageWidth = (int) (GameInfo.GAME_WIDTH * fullScreenImageScale);
-		fullScreenImageHeight = (int) (GameInfo.GAME_HEIGHT * fullScreenImageScale);
+		screenImageScale = Util.getScaleOfRectangeInArea(screenWidth, screenHeight, GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
+		fullScreenImageWidth = (int) (GameInfo.GAME_WIDTH * screenImageScale);
+		fullScreenImageHeight = (int) (GameInfo.GAME_HEIGHT * screenImageScale);
 		fullScreenXOff = (int) ((screenWidth - fullScreenImageWidth) / 2.0f);
 		fullScreenYOff = (int) ((screenHeight - fullScreenImageHeight) / 2.0f);
 	}
@@ -134,7 +138,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 			System.exit(-1);
 		}
 	}
-	
+
 	public void init() {
 		GameClient client = new GameClient("localhost:8192");
 		client.connect();
@@ -148,7 +152,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		int tickCount = 0;
 
 		init();
-		
+
 		while (running) {
 			long currTime = System.nanoTime();
 			long elapsedTime = currTime - prevTime;
@@ -156,7 +160,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 			skippedSecs += elapsedTime / 1000000000.0;
 			while (skippedSecs > secsPerTick) {
 				update();
-				
+
 				skippedSecs -= secsPerTick;
 				tickCount++;
 				if (tickCount % 60 == 0) {
@@ -228,9 +232,11 @@ public class Game extends Canvas implements Runnable, Controllable {
 		frame.setTitle(TITLE);
 		frame.setIconImages(GameInfo.WINDOW_ICONS);
 
-		BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
-		frame.getContentPane().setCursor(blank);
+		if (settings.mouseTurning) {
+			BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "blank");
+			frame.getContentPane().setCursor(blank);
+		}
 	}
 
 	public Logger getLogger() {
@@ -253,6 +259,10 @@ public class Game extends Canvas implements Runnable, Controllable {
 		if (!settings.fullscreen)
 			return new Rectangle(0, 0, this.getWidth(), this.getHeight());
 		return new Rectangle(fullScreenXOff, fullScreenYOff, fullScreenImageWidth, fullScreenImageHeight);
+	}
+
+	public float getScreenScale() {
+		return screenImageScale;
 	}
 
 	public PlayerInfo getPlayerInfo() {
