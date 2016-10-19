@@ -77,7 +77,8 @@ public class GameSettings extends Saveable {
 			System.out.println("Loaded " + getFileName() + " successfully from: " + getFilePath());
 			return true;
 		} catch (Exception e) {
-			System.err.println("Can't read " + getFileName() + ".ssd file from: " + getFilePath());
+			System.err.println("Can't read " + getFileName() +".ssd file from: " + getFilePath() + ", rewriting file.");
+			write();
 			return false;
 		}
 	}
