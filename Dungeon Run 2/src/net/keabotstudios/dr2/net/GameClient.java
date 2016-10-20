@@ -7,8 +7,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import net.keabotstudios.dr2.net.packets.ConnectPacket;
-import net.keabotstudios.dr2.net.packets.GamePacket;
+import net.keabotstudios.dr2.net.packet.ConnectPacket;
+import net.keabotstudios.dr2.net.packet.GamePacket;
 
 public class GameClient {
 
@@ -43,7 +43,6 @@ public class GameClient {
 	}
 
 	/**
-	 * 
 	 * 
 	 * @param host Eg. {@code 192.168.1.1}
 	 * @param port Eg. {@code 5000}

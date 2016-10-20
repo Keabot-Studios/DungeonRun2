@@ -1,4 +1,4 @@
-package net.keabotstudios.dr2.net.packets;
+package net.keabotstudios.dr2.net.packet;
 
 import java.net.InetAddress;
 
@@ -6,19 +6,21 @@ import net.keabotstudios.superserial.BinaryWriter;
 import net.keabotstudios.superserial.SSSerialization;
 import net.keabotstudios.superserial.SSType.SSDataType;
 
-public class ConnectPacket extends GamePacket {
+public class DisconnectPacket extends GamePacket {
 
-	private int playerID;
+	private long playerID;
 
-	public ConnectPacket(InetAddress address, int port, int playerID) {
+	public DisconnectPacket(InetAddress address, int port, long playerID) {
 		super(PacketType.CONNECT, address, port);
 		this.playerID = playerID;
 	}
 	
-	public ConnectPacket(byte[] data, InetAddress address, int port) {
+	public DisconnectPacket(byte[] data, InetAddress address, int port) {
 		super(PacketType.CONNECT, address, port);
 		int pointer = SSDataType.BYTE.getSize() * (PACKET_HEADER.length + 1);
-		playerID = SSSerialization.readInteger(data, pointer);
+		port = SSSerialization.readInteger(data, pointer);
+		pointer += SSDataType.INTEGER.getSize();
+		playerID = SSSerialization.readLong(data, pointer);
 	}
 
 	public byte[] getData() {

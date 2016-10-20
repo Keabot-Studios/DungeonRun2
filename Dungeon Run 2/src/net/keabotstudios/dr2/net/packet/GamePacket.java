@@ -1,4 +1,4 @@
-package net.keabotstudios.dr2.net.packets;
+package net.keabotstudios.dr2.net.packet;
 
 import java.net.InetAddress;
 

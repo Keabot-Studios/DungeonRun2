@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.keabotstudios.dr2.net.packets.ConnectPacket;
-import net.keabotstudios.dr2.net.packets.DisconnectPacket;
-import net.keabotstudios.dr2.net.packets.GamePacket;
-import net.keabotstudios.dr2.net.packets.GamePacket.PacketType;
+import net.keabotstudios.dr2.net.packet.ConnectPacket;
+import net.keabotstudios.dr2.net.packet.DisconnectPacket;
+import net.keabotstudios.dr2.net.packet.GamePacket;
+import net.keabotstudios.dr2.net.packet.GamePacket.PacketType;
 import net.keabotstudios.superserial.SSSerialization;
 import net.keabotstudios.superserial.SSType.SSDataType;
 
