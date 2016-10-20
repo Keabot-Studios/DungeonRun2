@@ -17,7 +17,7 @@ public class Texture {
 	public static AnimatedBitmap spawnPoint;
 	public static AnimatedBitmap animTest;
 	public static Bitmap guiBar;
-	public static Bitmap[] guiBox;
+	public static BoxBitmap[] guiBox;
 	public static Bitmap[] playerArrow;
 	public static Bitmap[] player;
 
@@ -31,7 +31,7 @@ public class Texture {
 		animTest = new AnimatedBitmap(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 10);
 		spawnPoint = new AnimatedBitmap(loadBitmapSheet("/texture/spawnTexture.png", 16, 16, game.getLogger()), 10);
 		guiBar = loadBitmap("/texture/guiBar.png", game.getLogger());
-		guiBox = loadBitmapSheet("/texture/guiBox.png", 8, 8, game.getLogger());
+		guiBox = loadBoxBitmapSheet("/texture/guiBox.png", 24, 24, 8, 8, 8, 8, game.getLogger());
 		playerArrow = loadBitmapSheet("/texture/playerArrow.png", 8, 8, game.getLogger());
 		player = loadBitmapSheet("/texture/player.png", 32, 32, game.getLogger());
 	}
@@ -64,4 +64,18 @@ public class Texture {
 		return result;
 	}
 
+
+	public static BoxBitmap[] loadBoxBitmapSheet(String file, int width, int height, int offLeft, int offRight, int offTop, int offBottom, Logger logger) {
+		BufferedImage image = Util.loadImage(file, logger);
+		int numX = image.getWidth() / width;
+		int numY = image.getHeight() / height;
+		BoxBitmap[] result = new BoxBitmap[numX * numY];
+		for (int x = 0; x < numX; x++) {
+			for (int y = 0; y < numY; y++) {
+				result[x + y * numX] = new BoxBitmap(width, height, offLeft, offRight, offTop, offBottom);
+				image.getRGB(x * width, y * height, width, height, result[x + y * numX].pixels, 0, width);
+			}
+		}
+		return result;
+	}
 }

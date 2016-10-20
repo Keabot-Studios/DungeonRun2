@@ -3,6 +3,7 @@ package net.keabotstudios.dr2.game.gui;
 import java.awt.Rectangle;
 
 import net.keabotstudios.dr2.gfx.Bitmap;
+import net.keabotstudios.dr2.gfx.BoxBitmap;
 import net.keabotstudios.superin.Input;
 
 public class GuiButton extends GuiComponent {
@@ -65,7 +66,7 @@ public class GuiButton extends GuiComponent {
 	public void render(Bitmap bitmap) {
 		if (bitmapTexture != null) {
 			if (renderBox)
-				bitmap.drawRect(x, y, width, height, color);
+				bitmap.renderBox((BoxBitmap)bitmapTexture, x, y, width, height);
 			else
 				bitmap.render(bitmapTexture, x, y);
 		}

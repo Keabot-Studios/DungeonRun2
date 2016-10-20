@@ -1,10 +1,14 @@
 package net.keabotstudios.dr2.game.gamestate;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
+import net.keabotstudios.dr2.game.gui.GuiAction;
+import net.keabotstudios.dr2.game.gui.GuiButton;
 import net.keabotstudios.dr2.game.gui.GuiRenderer;
 import net.keabotstudios.dr2.game.gui.GuiRenderer.GuiBarColor;
 import net.keabotstudios.dr2.game.gui.GuiStatBar;
@@ -13,6 +17,7 @@ import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Bitmap3D;
+import net.keabotstudios.dr2.gfx.Texture;
 
 public class LevelState extends GameState {
 
@@ -21,6 +26,7 @@ public class LevelState extends GameState {
 
 	private GuiStatBar health, ammo;
 	private GuiStatText fps, pos, rot, dir;
+	private GuiButton button;
 
 	public LevelState(GameStateManager gsm, Level level) {
 		super(gsm);
@@ -42,6 +48,13 @@ public class LevelState extends GameState {
 		dir = new GuiStatText(guiX, 6 + 60, 1, GuiRenderer.DIR_CHAR,
 				Direction.UNKNOWN.getId() + "," + Direction.UNKNOWN.name(), GuiBarColor.GRAY, GuiBarColor.BLUE,
 				GuiBarColor.BLUE);
+		
+		button = new GuiButton(50, 100, 100, 100, 1, ColorUtil.toARGBColor(Color.BLUE), Texture.guiBox[0], true);
+				button.setAction(new GuiAction() {
+					public void onAction() {
+						System.out.println("HI!");
+					}
+				});
 	}
 
 	public void render(Bitmap bitmap) {
@@ -50,6 +63,7 @@ public class LevelState extends GameState {
 		bitmap.render(bitmap3d, 0, 0);
 		health.render(bitmap);
 		ammo.render(bitmap);
+		button.render(bitmap);
 		if (gsm.game.getSettings().debugMode) {
 			fps.render(bitmap);
 			pos.render(bitmap);
@@ -89,6 +103,7 @@ public class LevelState extends GameState {
 			Direction pdir = Direction.getFromRad(level.getPlayer().getRotation());
 			dir.setText(pdir.getId() + "," + pdir.name());
 		}
+		button.update(gsm.game.getInput());
 		level.update(gsm.game.getInput());
 		bitmap3d.setOffsets(level.getPlayer());
 	}
