@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 
-import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.Util;
 import net.keabotstudios.superlog.Logger;
 

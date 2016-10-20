@@ -3,7 +3,6 @@ package net.keabotstudios.dr2.game.save;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Random;
 
@@ -62,8 +61,10 @@ public class PlayerInfo extends Saveable {
 			
 			System.out.println("Loaded " + getFileName() + " successfully from: " + getFilePath());
 			return true;
-		} catch (IOException e) {
-			System.err.println("Can't read " + getFileName() +".ssd file from: " + getFilePath());
+		} catch (Exception e) {
+			System.err.println("Can't read " + getFileName() +".ssd file from: " + getFilePath() + ", rewriting file.");
+			write();
+			read();
 			return false;
 		}
 	}
@@ -72,7 +73,7 @@ public class PlayerInfo extends Saveable {
 		return "playerInfo";
 	}
 
-	public long getPlayerID() {
+	public int getPlayerID() {
 		return playerID;
 	}
 	

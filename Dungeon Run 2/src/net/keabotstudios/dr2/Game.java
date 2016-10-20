@@ -16,7 +16,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
-import net.keabotstudios.dr2.game.GameDefaults;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.gamestate.GameStateManager;
 import net.keabotstudios.dr2.game.gamestate.LevelState;
@@ -140,8 +139,13 @@ public class Game extends Canvas implements Runnable, Controllable {
 	}
 
 	public void init() {
-		GameClient client = new GameClient("localhost:8192");
-		client.connect();
+		GameClient client = new GameClient("localhost:8192", playerInfo.getPlayerID());
+		logger.infoLn("Trying to connect to server...");
+		if(client.connect()) {
+			logger.infoLn("Connected to server: " + client.getServerAddress().getHostName() + ":" + client.getPort());
+		} else {
+			logger.infoLn("Could not connect to server: " + client.getServerAddress().getHostName() + ":" + client.getPort());
+		}
 	}
 
 	public void run() {

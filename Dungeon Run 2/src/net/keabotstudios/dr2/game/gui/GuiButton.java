@@ -1,10 +1,7 @@
 package net.keabotstudios.dr2.game.gui;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 
-import net.keabotstudios.dr2.Util.ColorUtil;
-import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.superin.Input;
 

@@ -1,40 +1,30 @@
 package net.keabotstudios.dr2.game.gamestate;
 
-import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.game.Direction;
 import net.keabotstudios.dr2.game.GameInfo;
-import net.keabotstudios.dr2.game.gui.GuiAction;
-import net.keabotstudios.dr2.game.gui.GuiButton;
 import net.keabotstudios.dr2.game.gui.GuiRenderer;
 import net.keabotstudios.dr2.game.gui.GuiRenderer.GuiBarColor;
 import net.keabotstudios.dr2.game.gui.GuiStatBar;
 import net.keabotstudios.dr2.game.gui.GuiStatText;
-import net.keabotstudios.dr2.game.gui.font.Font;
 import net.keabotstudios.dr2.game.level.Level;
-import net.keabotstudios.dr2.game.level.Minimap;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Bitmap3D;
-import net.keabotstudios.dr2.gfx.Texture;
 
 public class LevelState extends GameState {
 
 	private Level level;
-	private Minimap minimap;
 	private Bitmap3D bitmap3d;
 
 	private GuiStatBar health, ammo;
 	private GuiStatText fps, pos, rot, dir;
-	private GuiButton button;
 
 	public LevelState(GameStateManager gsm, Level level) {
 		super(gsm);
 		this.level = level;
-		this.minimap = new Minimap(level, GameInfo.GAME_WIDTH - 110, 10, 100, 100, 0.5f);
 		bitmap3d = new Bitmap3D(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		int guiX = -6;
 		int guiY = (int) (GameInfo.GAME_HEIGHT - (16.0 * 2.0) - 8.0);
@@ -52,13 +42,6 @@ public class LevelState extends GameState {
 		dir = new GuiStatText(guiX, 6 + 60, 1, GuiRenderer.DIR_CHAR,
 				Direction.UNKNOWN.getId() + "," + Direction.UNKNOWN.name(), GuiBarColor.GRAY, GuiBarColor.BLUE,
 				GuiBarColor.BLUE);
-		
-		button = new GuiButton(50, 100, 100, 50, 1, ColorUtil.toARGBColor(Color.BLUE), Texture.brick1, true);
-		button.setAction(new GuiAction() {
-			public void onAction() {
-				System.out.println("HI!");
-			}
-		});
 	}
 
 	public void render(Bitmap bitmap) {
@@ -73,12 +56,6 @@ public class LevelState extends GameState {
 			rot.render(bitmap);
 			dir.render(bitmap);
 		}
-		
-		button.render(bitmap);
-		
-		int scale = level.getPlayer().getHealth() / 2;
-		Font.MAIN.drawString(bitmap, "Nice Meme!•", GameInfo.GAME_WIDTH / 2 - Font.MAIN.getStringWidth("Nice Meme!", scale) / 2, 120, scale, ColorUtil.toARGBColor(Color.GREEN));
-		minimap.render(bitmap);
 	}
 
 	int temp = 20;
@@ -112,9 +89,7 @@ public class LevelState extends GameState {
 			Direction pdir = Direction.getFromRad(level.getPlayer().getRotation());
 			dir.setText(pdir.getId() + "," + pdir.name());
 		}
-		button.update(gsm.game.getInput());
 		level.update(gsm.game.getInput());
-		minimap.update();
 		bitmap3d.setOffsets(level.getPlayer());
 	}
 
