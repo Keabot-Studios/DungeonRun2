@@ -2,31 +2,28 @@ package net.keabotstudios.dr2.net.packets;
 
 import java.net.InetAddress;
 
-import net.keabotstudios.superserial.containers.SSDatabase;
-import net.keabotstudios.superserial.containers.SSField;
-import net.keabotstudios.superserial.containers.SSObject;
-import net.keabotstudios.superserial.containers.SSString;
-
 public abstract class GamePacket {
 	
+	public final static byte[] PACKET_HEADER = new byte[] {0x12, 0x33};
+
 	public enum PacketType {
-		NULL("null"), CONNECT("connect"), DISCONNECT("disconnect");
+		NULL((byte) 0x00), CONNECT((byte) 0x01), DISCONNECT((byte) 0x02);
 		
-		private String name;
-		private PacketType(String name) {
-			this.name = name;
+		private byte id;
+		private PacketType(byte id) {
+			this.id = id;
 		}
 		
-		public String getName() {
-			return name;
-		}
-		
-		public static PacketType getFromName(String name) {
-			if(name.equals(NULL.name)) return NULL;
+		public static PacketType getFromId(byte id) {
+			if(id == NULL.id) return NULL;
 			for(PacketType t : values()) {
-				if(t.name.equals(name)) return t;
+				if(t.id == id) return t;
 			}
 			return NULL;
+		}
+		
+		public byte getId() {
+			return id;
 		}
 	}
 	
@@ -52,15 +49,6 @@ public abstract class GamePacket {
 		return port;
 	}
 	
-	protected SSDatabase getBaseDatabase() {
-		SSDatabase packet = new SSDatabase(type.getName());
-		SSObject root = new SSObject("root");
-		root.addString(new SSString("address", this.address.getHostAddress()));
-		root.addField(SSField.Integer("port", this.port));
-		packet.addObject(root);
-		return packet;
-	}
-
 	public abstract byte[] getData();
 
 }

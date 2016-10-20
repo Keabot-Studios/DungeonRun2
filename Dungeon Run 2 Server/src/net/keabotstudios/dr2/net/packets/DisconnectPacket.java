@@ -1,42 +1,34 @@
 package net.keabotstudios.dr2.net.packets;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
-import net.keabotstudios.superserial.containers.SSDatabase;
-import net.keabotstudios.superserial.containers.SSField;
-import net.keabotstudios.superserial.containers.SSObject;
-import net.keabotstudios.superserial.containers.SSString;
+import net.keabotstudios.superserial.BinaryWriter;
+import net.keabotstudios.superserial.SSSerialization;
+import net.keabotstudios.superserial.SSType.SSDataType;
 
 public class DisconnectPacket extends GamePacket {
 
 	private long playerID;
 
 	public DisconnectPacket(InetAddress address, int port, long playerID) {
-		super(PacketType.DISCONNECT, address, port);
+		super(PacketType.CONNECT, address, port);
 		this.playerID = playerID;
 	}
 	
-	public DisconnectPacket(SSDatabase data) {
-		super(PacketType.DISCONNECT, null, -1);
-		SSObject root = data.getObject("root");
-		try {
-			address = InetAddress.getByName(root.getString("address").getString());
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		port = root.getField("port").getInteger();
-		playerID = root.getField("playerID").getLong();
+	public DisconnectPacket(byte[] data, InetAddress address, int port) {
+		super(PacketType.CONNECT, address, port);
+		int pointer = SSDataType.BYTE.getSize() * (PACKET_HEADER.length + 1);
+		port = SSSerialization.readInteger(data, pointer);
+		pointer += SSDataType.INTEGER.getSize();
+		playerID = SSSerialization.readLong(data, pointer);
 	}
 
 	public byte[] getData() {
-		SSDatabase connectPacket = getBaseDatabase();
-		SSObject root = connectPacket.getObject("root");
-		root.addField(SSField.Long("playerID", this.playerID));
-		connectPacket.addObject(root);
-		byte[] data = new byte[connectPacket.getSize()];
-		connectPacket.writeBytes(data, 0);
-		return data;
+		BinaryWriter data = new BinaryWriter();
+		data.write(PACKET_HEADER);
+		data.write(type.getId());
+		data.write(playerID);
+		return data.getBuffer();
 	}
 
 	public long getPlayerID() {

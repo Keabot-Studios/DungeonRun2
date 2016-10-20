@@ -7,8 +7,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import net.keabotstudios.superserial.containers.SSDatabase;
-import net.keabotstudios.superserial.containers.SSObject;
+import net.keabotstudios.dr2.net.packets.ConnectPacket;
+import net.keabotstudios.dr2.net.packets.GamePacket;
 
 public class GameClient {
 
@@ -18,11 +18,12 @@ public class GameClient {
 		NONE, INVALID_HOST, SOCKET_EXCEPTION
 	}
 
-	private String ipAddress;
+	private String stringAddress;
 	private int port;
+	private int playerID;
+	private InetAddress serverAddress;
 	private ConnectionError errorCode = ConnectionError.NONE;
 
-	private InetAddress serverAddress;
 	private DatagramSocket socket;
 
 	/**
@@ -30,14 +31,15 @@ public class GameClient {
 	 * @param host
 	 *            Eg. {@code 192.168.1.1:5000}
 	 */
-	public GameClient(String host) {
+	public GameClient(String host, int playerID) {
 		String[] parts = host.split(":");
 		if(parts.length != 2) {
 			errorCode = ConnectionError.INVALID_HOST;
 			return;
 		}
-		this.ipAddress = parts[0];
+		this.stringAddress = parts[0];
 		this.port = Integer.parseInt(parts[1]);
+		this.playerID = playerID;
 	}
 
 	/**
@@ -46,14 +48,15 @@ public class GameClient {
 	 * @param host Eg. {@code 192.168.1.1}
 	 * @param port Eg. {@code 5000}
 	 */
-	public GameClient(String host, int port) {
-		this.ipAddress = host;
+	public GameClient(String host, int port, int playerID) {
+		this.stringAddress = host;
 		this.port = port;
+		this.playerID = playerID;
 	}
 
 	public boolean connect() {
 		try {
-			serverAddress = InetAddress.getByName(ipAddress);
+			serverAddress = InetAddress.getByName(stringAddress);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			errorCode = ConnectionError.INVALID_HOST;
@@ -66,17 +69,12 @@ public class GameClient {
 			errorCode = ConnectionError.SOCKET_EXCEPTION;
 			return false;
 		}
-		sendConnectionPacket();
+		send(new ConnectPacket(serverAddress, port, playerID));
 		return true;
 	}
-
-	private void sendConnectionPacket() {
-		SSDatabase database = new SSDatabase("serverMessage");
-		SSObject root = new SSObject("root");
-		database.addObject(root);
-		byte[] data = new byte[database.getSize()];
-		database.writeBytes(data, 0);
-		send(data);
+	
+	public void send(GamePacket packet) {
+		send(packet.getData());
 	}
 
 	public void send(byte[] data) {
@@ -86,6 +84,24 @@ public class GameClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @return The IP of the server this client wants to connect to, as a {@code String}
+	 */
+	public String getServerAddressAsString() {
+		return stringAddress;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	/**
+	 * @return The IP of the server this client wants to connect to, as an {@code InetAddress}
+	 */
+	public InetAddress getServerAddress() {
+		return serverAddress;
 	}
 
 	public ConnectionError getErrorCode() {
