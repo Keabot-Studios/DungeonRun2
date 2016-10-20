@@ -10,21 +10,31 @@ public class GuiButton extends GuiComponent {
 
 	private boolean renderBox;
 	private Bitmap bitmapTexture;
+	private Bitmap hoverTexture;
+	private Bitmap clickedTexture;
 	private GuiAction action;
 	private int width, height;
 	private int color;
+	private int curState;
+	private boolean tapType;
 
-	public GuiButton(Rectangle rect, int size, int color, Bitmap texture, boolean renderAsBox) {
-		this(rect.x, rect.y, rect.width, rect.height, size, color, texture, renderAsBox);
+	public GuiButton(Rectangle rect, int size, int color, Bitmap texture, Bitmap hoveringTexture, Bitmap clickTexture,
+			boolean renderAsBox, boolean tapToActivate) {
+		this(rect.x, rect.y, rect.width, rect.height, size, color, texture, hoveringTexture, clickTexture, renderAsBox,
+				tapToActivate);
 	}
 
-	public GuiButton(int x, int y, int width, int height, int size, int color, Bitmap texture, boolean renderAsBox) {
+	public GuiButton(int x, int y, int width, int height, int size, int color, Bitmap texture, Bitmap hoveringTexture,
+			Bitmap clickTexture, boolean renderAsBox, boolean tapToActivate) {
 		super(x, y, size);
 		this.width = width;
 		this.height = height;
 		this.color = color;
 		this.bitmapTexture = texture;
+		this.hoverTexture = hoveringTexture;
+		this.clickedTexture = clickTexture;
 		this.renderBox = renderAsBox;
+		this.tapType = tapToActivate;
 	}
 
 	public void setAction(GuiAction guiAction) {
@@ -63,28 +73,53 @@ public class GuiButton extends GuiComponent {
 		this.bitmapTexture = bitmapTexture;
 	}
 
+	public void setHoverTexture(Bitmap hoverTexture) {
+		this.hoverTexture = hoverTexture;
+	}
+
+	public void setClickTexture(Bitmap clickedTexture) {
+		this.clickedTexture = clickedTexture;
+	}
+
 	public void render(Bitmap bitmap) {
-		if (bitmapTexture != null) {
+		Bitmap texture = getCurTexture();
+		if (texture != null) {
 			if (renderBox)
-				bitmap.renderBox((BoxBitmap)bitmapTexture, x, y, width, height);
+				bitmap.renderBox((BoxBitmap) texture, x, y, width, height);
 			else
-				bitmap.render(bitmapTexture, x, y);
+				bitmap.render(texture, x, y);
+		}
+	}
+
+	public Bitmap getCurTexture() {
+		switch (curState) {
+		default:
+			return this.bitmapTexture;
+		case 1:
+			return this.hoverTexture;
+		case 2:
+			return this.clickedTexture;
 		}
 	}
 
 	@Override
 	public void update(Input input) {
-		if (input.getInputTapped("MENU_CONFIRM") && action != null && isMouseOver(input)) {
-			action.onAction();
-		}
+		if (input.getInput("MENU_CONFIRM") && action != null && isMouseOver(input)) {
+			curState = 2;
+			if (tapType ? input.getInputTapped("MENU_CONFIRM") : input.getInput("MENU_CONFIRM"))
+				action.onAction();
+		} else if (isMouseOver(input)) {
+			curState = 1;
+		} else
+			curState = 0;
 	}
 
 	public boolean isMouseOver(Input input) {
 		Rectangle screen = GuiRenderer.game.getScreenRect();
 		int scaledMouseX = (int) Math.round(input.getMouseX() / GuiRenderer.game.getScreenScale() + screen.getX());
 		int scaledMouseY = (int) Math.round(input.getMouseY() / GuiRenderer.game.getScreenScale() + screen.getY());
-		if(scaledMouseX >= x && scaledMouseX < x + width) {
-			if(scaledMouseY >= y && scaledMouseY < y + height) {
+		if (scaledMouseX >= x && scaledMouseX < x + width) {
+			if (scaledMouseY >= y && scaledMouseY < y + height) {
 				return true;
 			}
 		}

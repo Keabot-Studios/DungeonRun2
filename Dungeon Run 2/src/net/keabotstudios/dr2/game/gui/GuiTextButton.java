@@ -8,13 +8,13 @@ public class GuiTextButton extends GuiButton {
 
 	String text;
 
-	public GuiTextButton(Rectangle rect, int size, int color, Bitmap texture, String text, boolean renderAsBox) {
-		super(rect, size, color, texture, renderAsBox);
+	public GuiTextButton(Rectangle rect, int size, int color, Bitmap texture, Bitmap hoveringTexture, Bitmap clickTexture, String text, boolean renderAsBox, boolean tapToActivate) {
+		super(rect, size, color, texture, hoveringTexture, clickTexture, renderAsBox, tapToActivate);
 		this.text = text;
 	}
 
-	public GuiTextButton(int x, int y, int width, int height, int size, int color, Bitmap texture, String text, boolean renderAsBox) {
-		this(new Rectangle(x, y, width, height), size, color, texture, text, renderAsBox);
+	public GuiTextButton(int x, int y, int width, int height, int size, int color, Bitmap texture, Bitmap hoveringTexture, Bitmap clickTexture, String text, boolean renderAsBox, boolean tapToActivate) {
+		this(new Rectangle(x, y, width, height), size, color, texture, hoveringTexture, clickTexture, text, renderAsBox, tapToActivate);
 	}
 
 	@Override
