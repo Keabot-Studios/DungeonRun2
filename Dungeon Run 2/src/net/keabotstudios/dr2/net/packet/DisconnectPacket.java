@@ -27,7 +27,7 @@ public class DisconnectPacket extends GamePacket {
 		BinaryWriter data = new BinaryWriter();
 		data.write(PACKET_HEADER);
 		data.write(type.getId());
-		data.write(playerID);
+		//data.write(playerID);
 		return data.getBuffer();
 	}
 
