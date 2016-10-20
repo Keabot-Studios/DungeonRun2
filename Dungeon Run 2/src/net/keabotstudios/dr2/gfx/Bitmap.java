@@ -3,6 +3,7 @@ package net.keabotstudios.dr2.gfx;
 import java.awt.Color;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
+import net.keabotstudios.dr2.math.Vector2;
 
 public class Bitmap {
 	protected int width, height;
@@ -93,12 +94,36 @@ public class Bitmap {
 			}
 		}
 	}
-	
+
+	public void renderBox(Bitmap bitmap, int xOffs, int yOffs, int width, int height) {
+		if (width > this.width || height > this.height) {
+			render(bitmap, xOffs, yOffs);
+			return;
+		}
+		for (int y = 0; y < height; y++) {
+			int yPix = y + yOffs;
+			if (yPix < 0 || yPix >= this.height)
+				continue;
+			for (int x = 0; x < width; x++) {
+				int xPix = x + xOffs;
+				if (xPix < 0 || xPix >= this.width)
+					continue;
+
+				Vector2 pos = bitmap.getBitmapPosFromBox(width, height, x, y);
+				int color = bitmap.pixels[(int)pos.getX() + (int)pos.getY() * bitmap.width];
+				if (ColorUtil.alpha(color) > 0)
+					pixels[xPix + yPix * this.width] = color;
+			}
+		}
+	}
+
 	public Bitmap transparentize(int alpha) {
 		Bitmap out = new Bitmap(width, height);
-		if(alpha == 0) return out;
-		for(int i = 0; i < pixels.length; i++) {
-			out.setPixel(i % width, i / width, ColorUtil.makeARGBColor(alpha, ColorUtil.red(pixels[i]), ColorUtil.green(pixels[i]), ColorUtil.blue(pixels[i])));
+		if (alpha == 0)
+			return out;
+		for (int i = 0; i < pixels.length; i++) {
+			out.setPixel(i % width, i / width, ColorUtil.makeARGBColor(alpha, ColorUtil.red(pixels[i]),
+					ColorUtil.green(pixels[i]), ColorUtil.blue(pixels[i])));
 		}
 		return out;
 	}
@@ -126,6 +151,10 @@ public class Bitmap {
 		}
 		return result;
 	}
+	public Vector2 getBitmapPosFromBox(int width, int height, int curX, int curY) {
+		
+		return new Vector2(curX, curY);
+	}
 
 	/**
 	 * Gets the average color of all pixels on this {@code Bitmap}.
@@ -150,7 +179,8 @@ public class Bitmap {
 			}
 		}
 
-		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount, alphaBucket / pixelCount).getRGB();
+		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount,
+				alphaBucket / pixelCount).getRGB();
 	}
 
 	/**
@@ -323,7 +353,7 @@ public class Bitmap {
 		}
 		pixels[x + y * width] = color;
 	}
-	
+
 	public int getPixel(int x, int y) {
 		if (x >= width || x < 0 || y >= height || y < 0)
 			return 0;

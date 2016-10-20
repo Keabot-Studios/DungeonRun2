@@ -1,6 +1,5 @@
 package net.keabotstudios.dr2.gfx;
 
-import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.math.Vector2;
 
 public class BoxBitmap extends Bitmap {
@@ -15,42 +14,24 @@ public class BoxBitmap extends Bitmap {
 		offB = offBottom;
 	}
 
-	public void renderBox(Bitmap bitmap, int xOffs, int yOffs, int width, int height, float alpha) {
-		if (width > this.width || height > this.height) {
-			super.render(bitmap, xOffs, yOffs, alpha);
-			return;
-		}
-		for (int y = 0; y < bitmap.height; y++) {
-			int yPix = y + yOffs;
-			if (yPix < 0 || yPix >= height)
-				continue;
-			for (int x = 0; x < bitmap.width; x++) {
-				int xPix = x + xOffs;
-				if (xPix < 0 || xPix >= width)
-					continue;
-
-				Vector2 pos = getBitmapPosFromBox(width, height, x, y);
-				int color = bitmap.pixels[(int)pos.getX() + (int)pos.getY() * bitmap.width];
-				if (ColorUtil.alpha(color) > 0)
-					pixels[xPix + yPix * width] = color;
-			}
-		}
-	}
-
 	public Vector2 getBitmapPosFromBox(int width, int height, int curX, int curY) {
 		Vector2 pos = Vector2.zero();
 		if (curX < offL)
 			pos.setX(curX);
-		else if (curX >= offL && curX < width - offR)
-			pos.setX((int) ((float) curX / (float) width * this.width));
-		else if (curX >= width - offR) {
+		else if (curX >= offL && curX < width - offR) {
+			float p = (float) (curX - offL) / (float) (width - offR);
+			int w = (int) ((float) (this.width - offR - offL) * p);
+			pos.setX(offL + w);
+		} else if (curX >= width - offR) {
 			pos.setX(this.width - (width - curX));
 		}
 		if (curY < offT)
 			pos.setY(curY);
-		else if (curY >= offT && curY < height - offB)
-			pos.setY((int) ((float) curY / (float) height * this.height));
-		else if (curY >= height - offB) {
+		else if (curY >= offT && curY < height - offB) {
+			float p = (float) (curY - offT) / (float) (height - offB);
+			int h = (int) ((float) (this.height - offB - offT) * p);
+			pos.setY(offT + h);
+		} else if (curY >= height - offB) {
 			pos.setY(this.height - (height - curY));
 		}
 		return pos;
