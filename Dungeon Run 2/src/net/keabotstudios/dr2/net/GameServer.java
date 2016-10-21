@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.net.packet.ConnectPacket;
 import net.keabotstudios.dr2.net.packet.DisconnectPacket;
 import net.keabotstudios.dr2.net.packet.GamePacket;
@@ -21,26 +22,32 @@ public class GameServer {
 	// UDP Protocol!
 	
 	private int port;
-	private Thread listenThread;
-	private boolean listening = false;
+	private Thread listenThread, gameThread;
+	private boolean listening = false, running = false;;
 	private DatagramSocket socket;
 	private final int MAX_PACKET_SIZE = 1024;
 	private byte[] receiveDataBuffer = new byte[MAX_PACKET_SIZE * 16];
 	
 	private Set<ServerClient> clients = new HashSet<ServerClient>();
+	
+	private Level level;
 
 	public GameServer(int port) {
 		this.port = port;
+		level = new Level(100, 100, null);
 	}
 	
 	public void start() {
-		if(listening) return;
+		if(listening && running) return;
 		try {
 			socket = new DatagramSocket(port);
 		} catch (SocketException e) {
 			e.printStackTrace();
 			return;
 		}
+		running = true;
+		gameThread = new Thread(() -> update(), "Dungeon Run 2 Server Game Thread");
+		gameThread.start();
 		listening = true;
 		listenThread = new Thread(() -> listen(), "Dungeon Run 2 Server Listen Thread");
 		listenThread.start();
@@ -68,6 +75,10 @@ public class GameServer {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private void update() {
+		
 	}
 	
 	private void process(DatagramPacket rawPacket) {

@@ -52,7 +52,7 @@ public class Level {
 
 		entities.put(String.valueOf(game.getPlayerInfo().getPlayerID()), new Player(spawnEntity.getPos().clone(), 0, game));
 		long mpPID = PlayerInfo.getRandomPlayerID();
-		entities.put(String.valueOf(mpPID), new PlayerMP(spawnEntity.getPos().clone(), 0, mpPID, "Dat Boi"));
+		entities.put("player" + String.valueOf(mpPID), new PlayerMP(spawnEntity.getPos().clone(), 0, mpPID, "Dat Boi"));
 
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
