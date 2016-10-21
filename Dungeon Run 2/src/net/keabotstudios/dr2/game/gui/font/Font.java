@@ -148,21 +148,17 @@ public enum Font {
 	}
 
 	public void drawString(Bitmap bitmap, String string, int x, int y, int color) {
-		drawString(bitmap, string, x, y, 1, 1.0f, color);
+		drawString(bitmap, string, x, y, 1, color);
 	}
 
 	public void drawString(Bitmap bitmap, String string, int x, int y, int size, int color) {
-		drawString(bitmap, string, x, y, size, 1.0f, color);
-	}
-
-	public void drawString(Bitmap bitmap, String string, int x, int y, int size, float alpha, int color) {
 		for (int i = 0; i < string.length(); i++) {
 			char c = string.charAt(i);
 			if (c == ' ') {
 				x += spaceWidth * size;
 			} else {
 				FontCharacter character = getCharacter(c);
-				character.render(bitmap, x, y, size, color, alpha);
+				character.render(bitmap, x, y, size, color);
 				x += (character.getWidth() + charSpaceWidth) * size;
 			}
 		}

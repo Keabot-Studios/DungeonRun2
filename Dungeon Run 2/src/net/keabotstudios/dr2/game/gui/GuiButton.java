@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Rectangle;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
+import net.keabotstudios.dr2.game.GameInfo;
+import net.keabotstudios.dr2.game.gui.font.Font;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.BoxBitmap;
 import net.keabotstudios.superin.Input;
@@ -88,7 +90,12 @@ public class GuiButton extends GuiComponent {
 			else
 				bitmap.render(texture, x, y);
 		}
-		bitmap.fillRect(scaledMouseX - 1, scaledMouseY - 1, 2, 2, ColorUtil.toARGBColor(Color.GREEN));
+		int color = ColorUtil.toARGBColor(Color.GREEN);
+		int mSize = 2;
+		if((GameInfo.TIME % GameInfo.MAX_UPS) < GameInfo.MAX_UPS / 2) color = ColorUtil.toARGBColor(Color.RED); 
+		bitmap.fillRect(scaledMouseX - mSize / 2, scaledMouseY - mSize / 2, mSize, mSize, color);
+		Font.SMALL.drawString(bitmap, "<Mouse Position", scaledMouseX + mSize / 2 + 2, scaledMouseY - (Font.SMALL.getHeight() * 2) / 2, 2, color);
+		Font.SMALL.drawString(bitmap, "(Scaled)", scaledMouseX + mSize / 2 + 20, scaledMouseY + (Font.SMALL.getHeight() * 2) / 2 + Font.SMALL.getHeight() * size, 2, color);
 	}
 
 	public Bitmap getCurTexture() {

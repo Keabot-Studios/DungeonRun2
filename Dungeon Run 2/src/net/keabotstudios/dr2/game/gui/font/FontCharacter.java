@@ -29,7 +29,7 @@ public class FontCharacter {
 		return character;
 	}
 
-	public void render(Bitmap bitmap, int x, int y, int size, int color, float alpha) {
+	public void render(Bitmap bitmap, int x, int y, int size, int color) {
 		for (int px = 0; px < getWidth() * size; px++) {
 			for (int py = 0; py < getHeight() * size; py++) {
 				if (graphic[(px / size) + (py / size) * getWidth()]) {
