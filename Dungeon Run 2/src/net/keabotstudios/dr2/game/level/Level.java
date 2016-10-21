@@ -7,8 +7,6 @@ import java.util.List;
 
 import net.keabotstudios.dr2.Game;
 import net.keabotstudios.dr2.game.level.object.block.Block;
-import net.keabotstudios.dr2.game.level.object.block.EmptyBlock;
-import net.keabotstudios.dr2.game.level.object.block.SolidBlock;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.dr2.game.level.object.entity.PlayerMP;
@@ -30,8 +28,6 @@ public class Level {
 	private Block[] blocks;
 
 	private HashMap<String, Entity> entities = new HashMap<String, Entity>();
-
-	private LevelViewer viewer;
 	
 	private Game game;
 
@@ -40,13 +36,14 @@ public class Level {
 		this.height = height;
 		this.blocks = new Block[width * height];
 		this.game = game;
+		Arrays.fill(blocks, Block.emptyBlock);
 
 		MapGenerator gen = new MapGenerator(width, height, 8, 8, 15);
-		gen.generateMap();
+		gen.generateMap("oh boi!".hashCode());
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? new SolidBlock(Texture.brick1) : new EmptyBlock());
+				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? Block.animBlock : Block.emptyBlock);
 			}
 		}
 
@@ -60,31 +57,26 @@ public class Level {
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
 		ceilPos = 8;
-
-		if (game.getSettings().debugMode) {
-			viewer = new LevelViewer(this, 5);
-			viewer.update();
-		}
+	}
+	
+	public Level(int width, int height, Block[] blocks, HashMap<String, Entity> entities) {
+		this.width = width;
+		this.height = height;
+		this.blocks = new Block[width * height];
+		this.entities = entities;
+		
+		floorTex = Texture.brick1Floor;
+		ceilTex = Texture.brick1;
+		ceilPos = 8;
 	}
 
 	public Player getPlayer() {
 		return (Player) getEntity(String.valueOf(game.getPlayerInfo().getPlayerID()));
 	}
-
-	double lpx = 0, lpz = 0, lpr = 9;
-
+	
 	public void update(Input input) {
 		for (Entity e : entities.values()) {
 			e.update(input, this);
-		}
-		if (viewer != null) {
-			Player p = getPlayer();
-			if (lpx != p.getPos().getX() || lpz != p.getPos().getZ() || lpr != p.getRotation()) {
-				viewer.update();
-				lpx = p.getPos().getX();
-				lpz = p.getPos().getZ();
-				lpr = p.getRotation();
-			}
 		}
 	}
 	
@@ -99,14 +91,14 @@ public class Level {
 
 	public void setBlock(int x, int y, Block block) {
 		if (x < 0 || y < 0 || x < width || y > height)
-			blocks[x + y * width] = new SolidBlock(Texture.brick1);
+			blocks[x + y * width] = Block.wallBlock;
 		else
 			blocks[x + y * width] = block;
 	}
 
 	public Block getBlock(int x, int y) {
 		if (x < 0 || y < 0 || x >= width || y >= height)
-			return new SolidBlock(Texture.brick1);
+			return Block.wallBlock;
 		return blocks[x + y * width];
 	}
 

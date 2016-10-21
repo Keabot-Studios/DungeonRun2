@@ -110,9 +110,8 @@ public class Bitmap {
 					continue;
 
 				Vector2 pos = bitmap.getBitmapPosFromBox(width, height, x, y);
-				int color = bitmap.pixels[(int)pos.getX() + (int)pos.getY() * bitmap.width];
-				if (ColorUtil.alpha(color) > 0)
-					pixels[xPix + yPix * this.width] = color;
+				int color = bitmap.getPixel((int) pos.getX(), (int) pos.getY());
+				setPixel(xPix, yPix, color);
 			}
 		}
 	}
@@ -122,8 +121,7 @@ public class Bitmap {
 		if (alpha == 0)
 			return out;
 		for (int i = 0; i < pixels.length; i++) {
-			out.setPixel(i % width, i / width, ColorUtil.makeARGBColor(alpha, ColorUtil.red(pixels[i]),
-					ColorUtil.green(pixels[i]), ColorUtil.blue(pixels[i])));
+			out.setPixel(i % width, i / width, ColorUtil.makeARGBColor(alpha, ColorUtil.red(pixels[i]), ColorUtil.green(pixels[i]), ColorUtil.blue(pixels[i])));
 		}
 		return out;
 	}
@@ -151,8 +149,8 @@ public class Bitmap {
 		}
 		return result;
 	}
+
 	public Vector2 getBitmapPosFromBox(int width, int height, int curX, int curY) {
-		
 		return new Vector2(curX, curY);
 	}
 
@@ -179,8 +177,7 @@ public class Bitmap {
 			}
 		}
 
-		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount,
-				alphaBucket / pixelCount).getRGB();
+		return new Color(redBucket / pixelCount, greenBucket / pixelCount, blueBucket / pixelCount, alphaBucket / pixelCount).getRGB();
 	}
 
 	/**
@@ -320,6 +317,39 @@ public class Bitmap {
 	 */
 	public Bitmap scale(float scale) {
 		return scale(scale, scale);
+	}
+
+	/**
+	 * Stretches or shrinks a bitmap into a desired size.
+	 * 
+	 * @param width
+	 *            The width to change to.
+	 * @param height
+	 *            The height to change to.
+	 * @return
+	 */
+	public Bitmap fit(int width, int height) {
+		return scale((float) width / this.width, (float) width / (float) this.width);
+	}
+	
+	public Bitmap flipVert() {
+		Bitmap out = new Bitmap(this.width, this.height);
+		for (int x = 0; x < out.getWidth(); x++) {
+			for (int y = 0; y < out.getHeight(); y++) {
+				out.setPixel(x, y, getPixel(x, out.getHeight() - y));
+			}
+		}
+		return out;
+	}
+	
+	public Bitmap flipHoriz() {
+		Bitmap out = new Bitmap(this.width, this.height);
+		for (int x = 0; x < out.getWidth(); x++) {
+			for (int y = 0; y < out.getHeight(); y++) {
+				out.setPixel(x, y, getPixel(out.getWidth() - x, y));
+			}
+		}
+		return out;
 	}
 
 	public int getWidth() {

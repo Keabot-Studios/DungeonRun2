@@ -49,7 +49,7 @@ public class LevelState extends GameState {
 				Direction.UNKNOWN.getId() + "," + Direction.UNKNOWN.name(), GuiBarColor.GRAY, GuiBarColor.BLUE,
 				GuiBarColor.BLUE);
 		
-		button = new GuiButton(50, 100, 100, 100, 1, ColorUtil.toARGBColor(Color.BLUE), Texture.guiBox[0], true);
+		button = new GuiButton(GameInfo.GAME_WIDTH / 2 - (50 * 4), GameInfo.GAME_HEIGHT / 2 - (25 * 4), 100, 50, 4, ColorUtil.toARGBColor(Color.BLUE), Texture.guiBox[0], Texture.guiBox[5], true);
 				button.setAction(new GuiAction() {
 					public void onAction() {
 						System.out.println("HI!");

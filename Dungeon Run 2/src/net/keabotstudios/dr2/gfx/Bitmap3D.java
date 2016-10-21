@@ -83,8 +83,9 @@ public class Bitmap3D extends Bitmap {
 		Vector2 playerPos = new Vector2(l.getPlayer().getPos().getX(), l.getPlayer().getPos().getZ());
 		for (int xBlock = -1; xBlock <= l.getWidth(); xBlock++) {
 			for (int zBlock = -1; zBlock <= l.getHeight(); zBlock++) {
-				 Vector2 blockPos = new Vector2(xBlock, zBlock);
-				 if(playerPos.distance(blockPos) > WALL_RENDER_DISTANCE) continue;
+				Vector2 blockPos = new Vector2(xBlock, zBlock);
+				if (playerPos.distance(blockPos) > WALL_RENDER_DISTANCE)
+					continue;
 
 				Block block = l.getBlock(xBlock, zBlock);
 
@@ -93,35 +94,31 @@ public class Bitmap3D extends Bitmap {
 				Block south = l.getBlock(xBlock, zBlock + 1);
 				Block west = l.getBlock(xBlock - 1, zBlock);
 
-				if (block.isOpaque()) {
-					for (int y = 0; y < height; y++) {
-						if (!north.isOpaque()) {
-							Bitmap texture = block.getTexture((int) Direction.NORTH.getId(), height);
-							renderWall(xBlock, zBlock, xBlock + 1, zBlock, y / 2.0, texture, l.getFloorPos());
-						}
-						if (!east.isOpaque()) {
-							Bitmap texture = block.getTexture((int) Direction.EAST.getId(), height);
-							renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, y / 2.0, texture, l.getFloorPos());
-						}
-						if (!south.isOpaque()) {
-							Bitmap texture = block.getTexture((int) Direction.SOUTH.getId(), height);
-							renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, y / 2.0, texture, 8);
-						}
-						if (!west.isOpaque()) {
-							Bitmap texture = block.getTexture((int) Direction.WEST.getId(), height);
-							renderWall(xBlock, zBlock + 1, xBlock, zBlock, y / 2.0, texture, 8);
-						}
+				for (int y = 0; y < height; y++) {
+					if (!north.isOpaque()) {
+						Bitmap texture = block.getTexture((int) Direction.NORTH.getId(), height);
+						renderWall(xBlock, zBlock, xBlock + 1, zBlock, y / 2.0, texture, l.getFloorPos());
+					}
+					if (!east.isOpaque()) {
+						Bitmap texture = block.getTexture((int) Direction.EAST.getId(), height);
+						renderWall(xBlock + 1, zBlock, xBlock + 1, zBlock + 1, y / 2.0, texture, l.getFloorPos());
+					}
+					if (!south.isOpaque()) {
+						Bitmap texture = block.getTexture((int) Direction.SOUTH.getId(), height);
+						renderWall(xBlock + 1, zBlock + 1, xBlock, zBlock + 1, y / 2.0, texture, 8);
+					}
+					if (!west.isOpaque()) {
+						Bitmap texture = block.getTexture((int) Direction.WEST.getId(), height);
+						renderWall(xBlock, zBlock + 1, xBlock, zBlock, y / 2.0, texture, 8);
 					}
 				}
 			}
 		}
 		for (Entity e : l.getEntites()) {
 			renderSprite(e.getPos(), e.getTexture(), 1, l.getFloorPos());
-			/*if (e instanceof PlayerMP) { // NAMETAG RENDERING
-				String name = ((PlayerMP) e).getPlayerName();
-				Bitmap nametag = new TextBitmap(Font.SMALL, name, 1, ColorUtil.toARGBColor(Color.BLUE));
-				renderSprite(e.getPos().add(new Vector3(0, 0.7, 0)), nametag, 1, l.getFloorPos());
-			}*/
+			/*
+			 * if (e instanceof PlayerMP) { // NAMETAG RENDERING String name = ((PlayerMP) e).getPlayerName(); Bitmap nametag = new TextBitmap(Font.SMALL, name, 1, ColorUtil.toARGBColor(Color.BLUE)); renderSprite(e.getPos().add(new Vector3(0, 0.7, 0)), nametag, 1, l.getFloorPos()); }
+			 */
 		}
 	}
 

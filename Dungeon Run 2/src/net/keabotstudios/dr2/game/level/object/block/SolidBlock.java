@@ -6,8 +6,8 @@ public class SolidBlock extends Block {
 
 	private final Bitmap texture;
 
-	public SolidBlock(Bitmap texture) {
-		super(1, true, true, texture.getAverageColor());
+	public SolidBlock(int id, Bitmap texture) {
+		super(id, true, true, texture.getAverageColor());
 		this.texture = texture;
 	}
 

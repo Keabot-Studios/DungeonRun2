@@ -100,9 +100,9 @@ public class GameServer {
 			System.out.println("Client connected with playerID: " + connectPacket.getPlayerID());
 			clients.add(new ServerClient(connectPacket.getAddress(), connectPacket.getPort(), connectPacket.getPlayerID()));
 		} else if(packet instanceof DisconnectPacket) {
-			ConnectPacket connectPacket = (ConnectPacket) packet;
-			System.out.println("Client with playerID: " + connectPacket.getPlayerID() + " has disconnected.");
-			clients.remove(new ServerClient(connectPacket.getAddress(), connectPacket.getPort(), connectPacket.getPlayerID()));
+			DisconnectPacket disconnectPacket = (DisconnectPacket) packet;
+			System.out.println("Client with playerID: " + disconnectPacket.getPlayerID() + " has disconnected.");
+			clients.remove(new ServerClient(disconnectPacket.getAddress(), disconnectPacket.getPort(), disconnectPacket.getPlayerID()));
 		}
 	}
 

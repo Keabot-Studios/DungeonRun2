@@ -32,14 +32,14 @@ public class MapGenerator {
 		this.maxRoomSize = maxRoomSize;
 	}
 
-	public void generateMap() {
+	public void generateMap(int seed) {
 		tileMap = new int[mapWidth][mapHeight];
 		dungeonTileMap = new DungeonTile[mapWidth][mapHeight];
 		dungeonRooms = new ArrayList<DungeonRoom>();
 		vertices = new HashMap<Vector2, Map<Vector2, Integer>>();
 		PointsToChange = new ArrayList<Vector2>();
 
-		mapGenRandom = new Random();
+		mapGenRandom = new Random(seed);
 		System.out.println("Generating Rooms...");
 		generateRooms();
 

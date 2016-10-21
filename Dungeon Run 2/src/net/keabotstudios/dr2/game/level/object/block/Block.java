@@ -3,6 +3,7 @@ package net.keabotstudios.dr2.game.level.object.block;
 import net.keabotstudios.dr2.game.level.object.CollisionBox;
 import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.gfx.Bitmap;
+import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.dr2.math.Vector3;
 
 public abstract class Block {
@@ -12,22 +13,37 @@ public abstract class Block {
 	protected double colOffsetX, colOffsetZ;
 
 	protected CollisionBox collisionBox;
+	
+	public static Block[] blocks = new Block[4];
+	
+	public static final Block emptyBlock = new EmptyBlock(0, false);
+	public static final Block barrierBlock = new EmptyBlock(1, false);
+	public static final Block wallBlock = new SolidBlock(2, Texture.brick1);
+	public static final Block animBlock = new SolidBlock(3, Texture.animTest);
 
 	protected Block(int id, boolean solid, boolean opaque, int minimapColor) {
+		this(id, solid, opaque, minimapColor, new CollisionBox(1, 1, Double.MAX_VALUE), 0.0, 0.0);
+	}
+
+	protected Block(int id, boolean solid, boolean opaque, int minimapColor, CollisionBox colBox, double colOffsetX, double colOffsetZ) {
 		this.id = id;
 		this.solid = solid;
 		this.opaque = opaque;
 		this.minimapColor = minimapColor;
-		this.colOffsetX = 0;
-		this.colOffsetZ = 0;
-		this.collisionBox = new CollisionBox(1, 1, Double.MAX_VALUE);
-	}
-
-	protected Block(int id, boolean solid, boolean opaque, int minimapColor, CollisionBox colBox, double colOffsetX, double colOffsetZ) {
-		this(id, solid, opaque, minimapColor);
 		this.colOffsetX = colOffsetX;
 		this.colOffsetZ = colOffsetZ;
 		this.collisionBox = colBox;
+		if(id < blocks.length || id >= 0) {
+			if(blocks[id] == null) {
+				blocks[id] = this;
+			} else {
+				System.err.println("Block already exists: " + id);
+				System.exit(-1);
+			}
+		} else {
+			System.err.println("Block id is not in range: " + id);
+			System.exit(-1);
+		}
 	}
 
 	public int getId() {

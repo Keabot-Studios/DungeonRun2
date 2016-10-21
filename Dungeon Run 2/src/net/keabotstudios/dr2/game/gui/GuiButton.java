@@ -1,7 +1,9 @@
 package net.keabotstudios.dr2.game.gui;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 
+import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.BoxBitmap;
 import net.keabotstudios.superin.Input;
@@ -9,21 +11,23 @@ import net.keabotstudios.superin.Input;
 public class GuiButton extends GuiComponent {
 
 	private boolean renderBox;
-	private Bitmap bitmapTexture;
+	private Bitmap bitmapTexture, activeTexture;
 	private GuiAction action;
 	private int width, height;
 	private int color;
+	private boolean pressed = false;
 
-	public GuiButton(Rectangle rect, int size, int color, Bitmap texture, boolean renderAsBox) {
-		this(rect.x, rect.y, rect.width, rect.height, size, color, texture, renderAsBox);
+	public GuiButton(Rectangle rect, int size, int color, Bitmap texture, Bitmap activeTexture, boolean renderAsBox) {
+		this(rect.x, rect.y, rect.width, rect.height, size, color, texture, activeTexture, renderAsBox);
 	}
 
-	public GuiButton(int x, int y, int width, int height, int size, int color, Bitmap texture, boolean renderAsBox) {
+	public GuiButton(int x, int y, int width, int height, int size, int color, Bitmap texture, Bitmap activeTexture, boolean renderAsBox) {
 		super(x, y, size);
 		this.width = width;
 		this.height = height;
 		this.color = color;
 		this.bitmapTexture = texture;
+		this.activeTexture = activeTexture;
 		this.renderBox = renderAsBox;
 	}
 
@@ -66,25 +70,41 @@ public class GuiButton extends GuiComponent {
 	public void render(Bitmap bitmap) {
 		if (bitmapTexture != null) {
 			if (renderBox)
-				bitmap.renderBox((BoxBitmap)bitmapTexture, x, y, width, height);
+				if(pressed)
+					bitmap.renderBox(((BoxBitmap) activeTexture), x, y, width * size, height * size);
+				else
+					bitmap.renderBox(((BoxBitmap) bitmapTexture), x, y, width * size, height * size);
 			else
 				bitmap.render(bitmapTexture, x, y);
 		}
+		bitmap.fillRect(scaledMouseX - 1, scaledMouseY - 1, 2, 2, ColorUtil.toARGBColor(Color.GREEN));
 	}
+	
+	int scaledMouseX = 0;
+	int scaledMouseY = 0;
 
 	@Override
 	public void update(Input input) {
-		if (input.getInputTapped("MENU_CONFIRM") && action != null && isMouseOver(input)) {
-			action.onAction();
+		Rectangle screen = GuiRenderer.game.getScreenRect();
+		scaledMouseX = (int) ((double) input.getMouseX() / GuiRenderer.game.getScreenScale() + (double) screen.getX());
+		scaledMouseY = (int)((double) input.getMouseY() / GuiRenderer.game.getScreenScale() + (double) screen.getY());
+		if (action != null && isMouseOver()) {
+			if(input.getInputTapped("MENU_CONFIRM")) {
+				action.onAction();
+				pressed = true;
+			} else if(input.getInput("MENU_CONFIRM")) {
+				pressed = true;
+			} else {
+				pressed = false;
+			}
+		} else {
+			pressed = false;
 		}
 	}
 
-	public boolean isMouseOver(Input input) {
-		Rectangle screen = GuiRenderer.game.getScreenRect();
-		int scaledMouseX = (int) Math.round(input.getMouseX() / GuiRenderer.game.getScreenScale() + screen.getX());
-		int scaledMouseY = (int) Math.round(input.getMouseY() / GuiRenderer.game.getScreenScale() + screen.getY());
-		if(scaledMouseX >= x && scaledMouseX < x + width) {
-			if(scaledMouseY >= y && scaledMouseY < y + height) {
+	public boolean isMouseOver() {
+		if(scaledMouseX >= x && scaledMouseX < x + (width * size)) {
+			if(scaledMouseY >= y && scaledMouseY < y + (height * size)) {
 				return true;
 			}
 		}

@@ -7,8 +7,8 @@ import net.keabotstudios.dr2.gfx.Bitmap;
 
 public class EmptyBlock extends Block {
 
-	public EmptyBlock() {
-		super(0, false, false, new Color(0, 0, 0, 0).getRGB(), new CollisionBox(0, 0, 0), 0, 0);
+	public EmptyBlock(int id, boolean solid) {
+		super(id, solid, false, new Color(0, 0, 0, 0).getRGB(), new CollisionBox(0, 0, 0), 0, 0);
 	}
 
 	public Bitmap getTexture(int side, int y) {
