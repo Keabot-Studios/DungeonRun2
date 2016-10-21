@@ -14,7 +14,7 @@ public class ConnectPacket extends GamePacket {
 		super(PacketType.CONNECT, address, port);
 		this.playerID = playerID;
 	}
-	
+
 	public ConnectPacket(byte[] data, InetAddress address, int port) {
 		super(PacketType.CONNECT, address, port);
 		int pointer = SSDataType.BYTE.getSize() * (PACKET_HEADER.length + 1);

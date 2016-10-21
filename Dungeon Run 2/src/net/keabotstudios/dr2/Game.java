@@ -141,7 +141,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 	public void init() {
 		GameClient client = new GameClient("localhost:8192", playerInfo.getPlayerID());
 		logger.infoLn("Trying to connect to server...");
-		if(client.connect()) {
+		if (client.connect()) {
 			logger.infoLn("Connected to server: " + client.getServerAddress().getHostName() + ":" + client.getPort());
 		} else {
 			logger.infoLn("Could not connect to server: " + client.getServerAddress().getHostName() + ":" + client.getPort());

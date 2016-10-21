@@ -45,7 +45,7 @@ public class MapGenerator {
 
 		System.out.println("Filling Empty Tiles...");
 		fillEmptyTiles();
-		
+
 		setConnectionCount();
 
 		System.out.println("Generating Paths...");
@@ -198,14 +198,14 @@ public class MapGenerator {
 	}
 
 	private void setConnectionCount() {
-		int remaining = maxConnections() - dungeonRooms.size() * 2;		
-		
+		int remaining = maxConnections() - dungeonRooms.size() * 2;
+
 		float chance = mapGenRandom.nextFloat();
-		
-		int amount = (int)Math.floor(Math.log(chance)/Math.log(.75));
-		
+
+		int amount = (int) Math.floor(Math.log(chance) / Math.log(.75));
+
 		conCount = dungeonRooms.size() * 2 + Math.max(0, Math.min(remaining, amount));
-		
+
 		System.out.println("Setting connections to " + conCount + " / " + maxConnections() + " possible.");
 	}
 

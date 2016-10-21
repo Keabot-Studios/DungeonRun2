@@ -11,24 +11,29 @@ import net.keabotstudios.superin.Input;
 public class GuiButton extends GuiComponent {
 
 	private boolean renderBox;
-	private Bitmap bitmapTexture, activeTexture;
+	private Bitmap bitmapTexture;
+	private Bitmap hoverTexture;
+	private Bitmap clickedTexture;
 	private GuiAction action;
 	private int width, height;
 	private int color;
-	private boolean pressed = false;
+	private int curState;
+	private boolean tapType;
 
-	public GuiButton(Rectangle rect, int size, int color, Bitmap texture, Bitmap activeTexture, boolean renderAsBox) {
-		this(rect.x, rect.y, rect.width, rect.height, size, color, texture, activeTexture, renderAsBox);
+	public GuiButton(Rectangle rect, int size, int color, Bitmap texture, Bitmap hoveringTexture, Bitmap clickTexture, boolean renderAsBox, boolean tapToActivate) {
+		this(rect.x, rect.y, rect.width, rect.height, size, color, texture, hoveringTexture, clickTexture, renderAsBox, tapToActivate);
 	}
 
-	public GuiButton(int x, int y, int width, int height, int size, int color, Bitmap texture, Bitmap activeTexture, boolean renderAsBox) {
+	public GuiButton(int x, int y, int width, int height, int size, int color, Bitmap texture, Bitmap hoveringTexture, Bitmap clickTexture, boolean renderAsBox, boolean tapToActivate) {
 		super(x, y, size);
 		this.width = width;
 		this.height = height;
 		this.color = color;
 		this.bitmapTexture = texture;
-		this.activeTexture = activeTexture;
+		this.hoverTexture = hoveringTexture;
+		this.clickedTexture = clickTexture;
 		this.renderBox = renderAsBox;
+		this.tapType = tapToActivate;
 	}
 
 	public void setAction(GuiAction guiAction) {
@@ -67,19 +72,37 @@ public class GuiButton extends GuiComponent {
 		this.bitmapTexture = bitmapTexture;
 	}
 
+	public void setHoverTexture(Bitmap hoverTexture) {
+		this.hoverTexture = hoverTexture;
+	}
+
+	public void setClickTexture(Bitmap clickedTexture) {
+		this.clickedTexture = clickedTexture;
+	}
+
 	public void render(Bitmap bitmap) {
-		if (bitmapTexture != null) {
+		Bitmap texture = getCurTexture();
+		if (texture != null) {
 			if (renderBox)
-				if(pressed)
-					bitmap.renderBox(((BoxBitmap) activeTexture), x, y, width * size, height * size);
-				else
-					bitmap.renderBox(((BoxBitmap) bitmapTexture), x, y, width * size, height * size);
+				bitmap.renderBox((BoxBitmap) texture, x, y, width, height);
 			else
-				bitmap.render(bitmapTexture, x, y);
+				bitmap.render(texture, x, y);
 		}
 		bitmap.fillRect(scaledMouseX - 1, scaledMouseY - 1, 2, 2, ColorUtil.toARGBColor(Color.GREEN));
 	}
-	
+
+	public Bitmap getCurTexture() {
+		switch (curState) {
+		default:
+			return this.bitmapTexture;
+		case 1:
+			return this.hoverTexture;
+		case 2:
+			return this.clickedTexture;
+		}
+
+	}
+
 	int scaledMouseX = 0;
 	int scaledMouseY = 0;
 
@@ -87,24 +110,19 @@ public class GuiButton extends GuiComponent {
 	public void update(Input input) {
 		Rectangle screen = GuiRenderer.game.getScreenRect();
 		scaledMouseX = (int) ((double) input.getMouseX() / GuiRenderer.game.getScreenScale() + (double) screen.getX());
-		scaledMouseY = (int)((double) input.getMouseY() / GuiRenderer.game.getScreenScale() + (double) screen.getY());
-		if (action != null && isMouseOver()) {
-			if(input.getInputTapped("MENU_CONFIRM")) {
+		scaledMouseY = (int) ((double) input.getMouseY() / GuiRenderer.game.getScreenScale() + (double) screen.getY());
+		if (input.getInput("MENU_CONFIRM") && action != null && isMouseOver()) {
+			if (tapType ? input.getInputTapped("MENU_CONFIRM") : input.getInput("MENU_CONFIRM"))
 				action.onAction();
-				pressed = true;
-			} else if(input.getInput("MENU_CONFIRM")) {
-				pressed = true;
-			} else {
-				pressed = false;
-			}
-		} else {
-			pressed = false;
-		}
+		} else if (isMouseOver()) {
+			curState = 1;
+		} else
+			curState = 0;
 	}
 
 	public boolean isMouseOver() {
-		if(scaledMouseX >= x && scaledMouseX < x + (width * size)) {
-			if(scaledMouseY >= y && scaledMouseY < y + (height * size)) {
+		if (scaledMouseX >= x && scaledMouseX < x + (width * size)) {
+			if (scaledMouseY >= y && scaledMouseY < y + (height * size)) {
 				return true;
 			}
 		}

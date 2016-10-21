@@ -33,7 +33,7 @@ public class GameClient {
 	 */
 	public GameClient(String host, int playerID) {
 		String[] parts = host.split(":");
-		if(parts.length != 2) {
+		if (parts.length != 2) {
 			errorCode = ConnectionError.INVALID_HOST;
 			return;
 		}
@@ -44,8 +44,10 @@ public class GameClient {
 
 	/**
 	 * 
-	 * @param host Eg. {@code 192.168.1.1}
-	 * @param port Eg. {@code 5000}
+	 * @param host
+	 *            Eg. {@code 192.168.1.1}
+	 * @param port
+	 *            Eg. {@code 5000}
 	 */
 	public GameClient(String host, int port, int playerID) {
 		this.stringAddress = host;
@@ -71,7 +73,7 @@ public class GameClient {
 		send(new ConnectPacket(serverAddress, port, playerID));
 		return true;
 	}
-	
+
 	public void send(GamePacket packet) {
 		send(packet.getData());
 	}

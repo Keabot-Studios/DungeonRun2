@@ -331,7 +331,7 @@ public class Bitmap {
 	public Bitmap fit(int width, int height) {
 		return scale((float) width / this.width, (float) width / (float) this.width);
 	}
-	
+
 	public Bitmap flipVert() {
 		Bitmap out = new Bitmap(this.width, this.height);
 		for (int x = 0; x < out.getWidth(); x++) {
@@ -341,7 +341,7 @@ public class Bitmap {
 		}
 		return out;
 	}
-	
+
 	public Bitmap flipHoriz() {
 		Bitmap out = new Bitmap(this.width, this.height);
 		for (int x = 0; x < out.getWidth(); x++) {

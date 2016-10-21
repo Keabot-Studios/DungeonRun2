@@ -64,7 +64,6 @@ public class Texture {
 		return result;
 	}
 
-
 	public static BoxBitmap[] loadBoxBitmapSheet(String file, int width, int height, int offLeft, int offRight, int offTop, int offBottom, Logger logger) {
 		BufferedImage image = Util.loadImage(file, logger);
 		int numX = image.getWidth() / width;

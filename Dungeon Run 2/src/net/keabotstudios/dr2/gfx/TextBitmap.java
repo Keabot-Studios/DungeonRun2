@@ -3,11 +3,11 @@ package net.keabotstudios.dr2.gfx;
 import net.keabotstudios.dr2.game.gui.font.Font;
 
 public class TextBitmap extends Bitmap {
-	
+
 	private Font font;
 	private String text;
 	private int size, color;
-	
+
 	public TextBitmap(Font font, String text, int size, int color) {
 		super(font.getStringWidth(text, size), font.getHeight() * size);
 		this.font = font;
@@ -22,7 +22,8 @@ public class TextBitmap extends Bitmap {
 	}
 
 	public void setFont(Font font) {
-		if(font == this.font) return;
+		if (font == this.font)
+			return;
 		this.font = font;
 		update();
 	}
@@ -32,7 +33,8 @@ public class TextBitmap extends Bitmap {
 	}
 
 	public void setText(String text) {
-		if(text.equals(this.text)) return;
+		if (text.equals(this.text))
+			return;
 		this.text = text;
 		update();
 	}
@@ -42,7 +44,8 @@ public class TextBitmap extends Bitmap {
 	}
 
 	public void setSize(int size) {
-		if(size == this.size) return;
+		if (size == this.size)
+			return;
 		this.size = size;
 		update();
 	}
@@ -52,20 +55,17 @@ public class TextBitmap extends Bitmap {
 	}
 
 	public void setColor(int color) {
-		if(color == this.color) return;
+		if (color == this.color)
+			return;
 		this.color = color;
 		update();
 	}
-	
+
 	private void update() {
 		this.width = font.getStringWidth(text, size);
 		this.height = font.getHeight() * size;
 		this.pixels = new int[width * height];
 		font.drawString(this, text, 0, 0, color, size);
 	}
-	
-	
-
-	
 
 }

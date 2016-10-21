@@ -12,13 +12,13 @@ import net.keabotstudios.superserial.containers.SSObject;
 import net.keabotstudios.superserial.containers.SSString;
 
 public class PlayerInfo extends Saveable {
-	
+
 	// TODO STATS! (Kills, Total damage taken, points won, games won, KDR, etc.)
-	
+
 	private static final int MAX_PLAYER_IDS = Integer.MAX_VALUE;
 	private int playerID;
 	private String playerName;
-	
+
 	public PlayerInfo() {
 		playerID = getRandomPlayerID();
 		playerName = "Player" + playerID;
@@ -28,12 +28,12 @@ public class PlayerInfo extends Saveable {
 		SSDatabase playerInfo = new SSDatabase(getFileName());
 
 		SSObject root = new SSObject("root");
-		
+
 		root.addField(SSField.Integer("playerID", playerID));
 		root.addString(new SSString("playerName", playerName));
 
 		playerInfo.addObject(root);
-		
+
 		getFile().getParentFile().mkdirs();
 		try {
 			byte[] data = new byte[playerInfo.getSize()];
@@ -55,14 +55,14 @@ public class PlayerInfo extends Saveable {
 			byte[] data = Files.readAllBytes(file.toPath());
 			SSDatabase playerInfo = SSDatabase.Deserialize(data);
 			SSObject root = playerInfo.getObject("root");
-			
+
 			playerID = root.getField("playerID").getInteger();
 			playerName = root.getString("playerName").getString();
-			
+
 			System.out.println("Loaded " + getFileName() + " successfully from: " + getFilePath());
 			return true;
 		} catch (Exception e) {
-			System.err.println("Can't read " + getFileName() +".ssd file from: " + getFilePath() + ", rewriting file.");
+			System.err.println("Can't read " + getFileName() + ".ssd file from: " + getFilePath() + ", rewriting file.");
 			write();
 			read();
 			return false;
@@ -76,11 +76,11 @@ public class PlayerInfo extends Saveable {
 	public int getPlayerID() {
 		return playerID;
 	}
-	
+
 	public String getPlayerName() {
 		return playerName;
 	}
-	
+
 	public static int getRandomPlayerID() {
 		return new Random().nextInt(MAX_PLAYER_IDS);
 	}

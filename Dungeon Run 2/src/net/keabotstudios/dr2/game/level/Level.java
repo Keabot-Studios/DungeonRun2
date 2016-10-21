@@ -28,7 +28,7 @@ public class Level {
 	private Block[] blocks;
 
 	private HashMap<String, Entity> entities = new HashMap<String, Entity>();
-	
+
 	private Game game;
 
 	public Level(int width, int height, Game game) {
@@ -47,7 +47,7 @@ public class Level {
 			}
 		}
 
-		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX()+.5, 0.9, gen.getSpawnPoint().getY()+.5));
+		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX() + .5, 0.9, gen.getSpawnPoint().getY() + .5));
 		entities.put("spawn", spawnEntity);
 
 		entities.put(String.valueOf(game.getPlayerInfo().getPlayerID()), new Player(spawnEntity.getPos().clone(), 0, game));
@@ -58,13 +58,13 @@ public class Level {
 		ceilTex = Texture.brick1;
 		ceilPos = 8;
 	}
-	
+
 	public Level(int width, int height, Block[] blocks, HashMap<String, Entity> entities) {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[width * height];
 		this.entities = entities;
-		
+
 		floorTex = Texture.brick1Floor;
 		ceilTex = Texture.brick1;
 		ceilPos = 8;
@@ -73,17 +73,17 @@ public class Level {
 	public Player getPlayer() {
 		return (Player) getEntity(String.valueOf(game.getPlayerInfo().getPlayerID()));
 	}
-	
+
 	public void update(Input input) {
 		for (Entity e : entities.values()) {
 			e.update(input, this);
 		}
 	}
-	
+
 	public PlayerMP[] getPlayerMPs() {
 		ArrayList<PlayerMP> playerMPs = new ArrayList<PlayerMP>();
-		for(Entity e : entities.values()) {
-			if(e instanceof PlayerMP)
+		for (Entity e : entities.values()) {
+			if (e instanceof PlayerMP)
 				playerMPs.add((PlayerMP) e);
 		}
 		return playerMPs.toArray(new PlayerMP[playerMPs.size()]);
@@ -125,9 +125,10 @@ public class Level {
 	public List<Entity> getEntites() {
 		return Arrays.asList(entities.values().toArray(new Entity[entities.size()]));
 	}
-	
+
 	public Entity getEntity(String eID) {
-		if(entities.containsKey(eID)) return entities.get(eID);
+		if (entities.containsKey(eID))
+			return entities.get(eID);
 		return null;
 	}
 

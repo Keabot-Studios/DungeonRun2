@@ -4,7 +4,7 @@ import net.keabotstudios.dr2.Util.ColorUtil;
 import net.keabotstudios.dr2.gfx.Bitmap;
 
 public class FontCharacter {
-	
+
 	final char character;
 	private int width, height;
 	private boolean[] graphic;
@@ -13,13 +13,14 @@ public class FontCharacter {
 		this.character = character;
 		setGraphic(graphic);
 	}
-	
+
 	public void setGraphic(Bitmap graphic) {
-		if(graphic == null) return;
+		if (graphic == null)
+			return;
 		this.graphic = new boolean[graphic.getPixels().length];
 		this.width = graphic.getWidth();
 		this.height = graphic.getHeight();
-		for(int i = 0; i < this.graphic.length; i++) {
+		for (int i = 0; i < this.graphic.length; i++) {
 			this.graphic[i] = (ColorUtil.alpha(graphic.getPixels()[i]) > 0);
 		}
 	}
@@ -29,9 +30,9 @@ public class FontCharacter {
 	}
 
 	public void render(Bitmap bitmap, int x, int y, int size, int color, float alpha) {
-		for(int px = 0; px < getWidth() * size; px++) {
-			for(int py = 0; py < getHeight() * size; py++) {
-				if(graphic[(px / size) + (py / size) * getWidth()]) {
+		for (int px = 0; px < getWidth() * size; px++) {
+			for (int py = 0; py < getHeight() * size; py++) {
+				if (graphic[(px / size) + (py / size) * getWidth()]) {
 					bitmap.setPixel(x + px, y + py, color);
 				}
 			}

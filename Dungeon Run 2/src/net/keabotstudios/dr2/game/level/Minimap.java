@@ -14,9 +14,9 @@ public class Minimap {
 	private int zoom = 1;
 	private float transparency;
 	private Level level;
-	
+
 	private Bitmap minimap;
-	
+
 	public Minimap(Level level, int x, int y, int width, int height, float transparency) {
 		this.level = level;
 		this.x = x;
@@ -28,15 +28,15 @@ public class Minimap {
 		minimap.clear(ColorUtil.toARGBColor(Color.BLACK));
 		init();
 	}
-	
+
 	public void init() {
 		for (int x = -1; x <= level.getWidth() + 1; x++) {
-			for(int y = level.getHeight() + 1; y >= -1; y--){
+			for (int y = level.getHeight() + 1; y >= -1; y--) {
 				minimap.fillRect(x * scale + scale, (-y + level.getHeight()) * scale, scale, scale, level.getBlock(x, y).getMinimapColor());
 			}
 		}
 	}
-	
+
 	public void update() {}
 
 	public void render(Bitmap bitmap) {
@@ -45,7 +45,7 @@ public class Minimap {
 		Bitmap output = new Bitmap(width / zoom, height / zoom);
 		output.clear(Color.BLACK);
 		output.render(minimap.getSubBitmap(vX, vY, width / zoom, height / zoom), 0, 0);
-		for(PlayerMP pMP : level.getPlayerMPs()) {
+		for (PlayerMP pMP : level.getPlayerMPs()) {
 			int pMPX = (int) (pMP.getPos().getX() * scale) - vX;
 			int pMPY = (int) (level.getHeight() * scale - pMP.getPos().getZ() * scale) - vY;
 			output.render(Texture.playerArrow[1].scale(2).rotate(pMP.getRotation()), pMPX - Texture.playerArrow[3].getWidth() / 2, pMPY - Texture.playerArrow[3].getHeight() / 2, scale / 2);

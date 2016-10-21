@@ -22,7 +22,7 @@ public class Player extends Entity {
 	public static final double CROUCH_SPEED = 0.5;
 	public static final double JUMP_HEIGHT = 1;
 	public static final double GRAVITY = 0.002;
-	
+
 	public static final int MAX_HEALTH = 20;
 
 	private int health = MAX_HEALTH;

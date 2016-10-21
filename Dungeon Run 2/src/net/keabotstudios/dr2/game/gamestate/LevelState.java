@@ -34,27 +34,20 @@ public class LevelState extends GameState {
 		bitmap3d = new Bitmap3D(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		int guiX = -6;
 		int guiY = (int) (GameInfo.GAME_HEIGHT - (16.0 * 2.0) - 8.0);
-		health = new GuiStatBar(guiX, guiY, 1, GuiRenderer.HEALTH_CHAR, level.getPlayer().getHealth(),
-				Player.MAX_HEALTH, GuiBarColor.ORANGE, GuiBarColor.RED, GuiBarColor.RED);
-		ammo = new GuiStatBar(guiX, guiY + 20, 1, GuiRenderer.AMMO_CHAR, 20, 20, GuiBarColor.ORANGE, GuiBarColor.GREEN,
-				GuiBarColor.GREEN);
+		health = new GuiStatBar(guiX, guiY, 1, GuiRenderer.HEALTH_CHAR, level.getPlayer().getHealth(), Player.MAX_HEALTH, GuiBarColor.ORANGE, GuiBarColor.RED, GuiBarColor.RED);
+		ammo = new GuiStatBar(guiX, guiY + 20, 1, GuiRenderer.AMMO_CHAR, 20, 20, GuiBarColor.ORANGE, GuiBarColor.GREEN, GuiBarColor.GREEN);
 
-		fps = new GuiStatText(guiX, 6, 1, GuiRenderer.FPS_CHAR, "" + GameInfo.FPS, GuiBarColor.GRAY, GuiBarColor.BLUE,
-				GuiBarColor.BLUE);
-		pos = new GuiStatText(guiX, 6 + 20, 1, GuiRenderer.POS_CHAR, "0.0,0.0,0.0", GuiBarColor.GRAY, GuiBarColor.BLUE,
-				GuiBarColor.BLUE);
-		rot = new GuiStatText(guiX, 6 + 40, 1, GuiRenderer.ROT_CHAR, "0.0", GuiBarColor.GRAY, GuiBarColor.BLUE,
-				GuiBarColor.BLUE);
-		dir = new GuiStatText(guiX, 6 + 60, 1, GuiRenderer.DIR_CHAR,
-				Direction.UNKNOWN.getId() + "," + Direction.UNKNOWN.name(), GuiBarColor.GRAY, GuiBarColor.BLUE,
-				GuiBarColor.BLUE);
-		
-		button = new GuiButton(GameInfo.GAME_WIDTH / 2 - (50 * 4), GameInfo.GAME_HEIGHT / 2 - (25 * 4), 100, 50, 4, ColorUtil.toARGBColor(Color.BLUE), Texture.guiBox[0], Texture.guiBox[5], true);
-				button.setAction(new GuiAction() {
-					public void onAction() {
-						System.out.println("HI!");
-					}
-				});
+		fps = new GuiStatText(guiX, 6, 1, GuiRenderer.FPS_CHAR, "" + GameInfo.FPS, GuiBarColor.GRAY, GuiBarColor.BLUE, GuiBarColor.BLUE);
+		pos = new GuiStatText(guiX, 6 + 20, 1, GuiRenderer.POS_CHAR, "0.0,0.0,0.0", GuiBarColor.GRAY, GuiBarColor.BLUE, GuiBarColor.BLUE);
+		rot = new GuiStatText(guiX, 6 + 40, 1, GuiRenderer.ROT_CHAR, "0.0", GuiBarColor.GRAY, GuiBarColor.BLUE, GuiBarColor.BLUE);
+		dir = new GuiStatText(guiX, 6 + 60, 1, GuiRenderer.DIR_CHAR, Direction.UNKNOWN.getId() + "," + Direction.UNKNOWN.name(), GuiBarColor.GRAY, GuiBarColor.BLUE, GuiBarColor.BLUE);
+
+		button = new GuiButton(50, 100, 100, 100, 1, ColorUtil.toARGBColor(Color.BLUE), Texture.guiBox[0], Texture.guiBox[1], Texture.guiBox[3], true, false);
+		button.setAction(new GuiAction() {
+			public void onAction() {
+				System.out.println("HI!");
+			}
+		});
 	}
 
 	public void render(Bitmap bitmap) {

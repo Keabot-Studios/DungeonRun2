@@ -105,7 +105,7 @@ public class LevelViewer extends Canvas {
 		double pY = p.getPos().getZ() * scale + scale;
 
 		trans.setToIdentity();
-		trans.rotate(-p.getRotation() + Math.PI *  0.25, pX, pY);
+		trans.rotate(-p.getRotation() + Math.PI * 0.25, pX, pY);
 		g.setTransform(trans);
 		g.drawLine((int) pX, (int) pY, (int) pX + 5, (int) pY + 5);
 		g.setTransform(oldtrans);

@@ -227,12 +227,28 @@ public class OptionsMenu extends JDialog {
 		JPanel controlsPanel = new JPanel();
 		optionsPane.addTab("Controls", null, controlsPanel, null);
 		GridBagLayout gbl_controlsPanel = new GridBagLayout();
-		gbl_controlsPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_controlsPanel.rowHeights = new int[]{0, 0, 0};
-		gbl_controlsPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_controlsPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_controlsPanel.columnWidths = new int[] {
+				0,
+				0,
+				0
+		};
+		gbl_controlsPanel.rowHeights = new int[] {
+				0,
+				0,
+				0
+		};
+		gbl_controlsPanel.columnWeights = new double[] {
+				0.0,
+				0.0,
+				Double.MIN_VALUE
+		};
+		gbl_controlsPanel.rowWeights = new double[] {
+				0.0,
+				0.0,
+				Double.MIN_VALUE
+		};
 		controlsPanel.setLayout(gbl_controlsPanel);
-		
+
 		chckbxMouseTurning = new JCheckBox("Mouse Turning");
 		GridBagConstraints gbc_chckbxMouseTurning = new GridBagConstraints();
 		gbc_chckbxMouseTurning.gridx = 1;

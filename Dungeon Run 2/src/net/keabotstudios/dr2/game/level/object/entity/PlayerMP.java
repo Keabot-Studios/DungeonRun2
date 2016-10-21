@@ -14,28 +14,28 @@ import net.keabotstudios.dr2.math.Vector3;
 import net.keabotstudios.superin.Input;
 
 public class PlayerMP extends Entity {
-	
+
 	private AnimatedBitmap[] textures;
-	
+
 	private static final int STANDING_DELAY = GameInfo.MAX_UPS;
 	private static final int WALKING_DELAY = GameInfo.MAX_UPS / 4;
 	private static final int STANDING = 0;
 	private static final int WALKING = 1;
-	
+
 	private int animation = WALKING;
 	private int currentTexture = 0;
 
 	private String playerName;
 	private long playerID;
 	private int health = Player.MAX_HEALTH;
-	
+
 	public PlayerMP(Vector3 pos, double rot, long playerID, String playerName) {
 		super(pos, new CollisionBox(0.8, 1.5, 0.8), rot, ColorUtil.toARGBColor(Color.CYAN));
 		int numTextures = 4 * 2;
 		textures = new AnimatedBitmap[numTextures];
-		for(int i = 0; i < numTextures; i++) {
+		for (int i = 0; i < numTextures; i++) {
 			Bitmap[] texture = new Bitmap[4];
-			for(int j = 0; j < 4; j++) {
+			for (int j = 0; j < 4; j++) {
 				texture[j] = Texture.player[j + i * 4];
 			}
 			int delay = (i % 2 == 0 ? STANDING_DELAY : WALKING_DELAY);
@@ -45,23 +45,26 @@ public class PlayerMP extends Entity {
 		this.playerName = playerName;
 		dx = 0.02;
 	}
+
 	final int WAIT_TIME = 60;
 	int waitTimer = 0;
 	int lastWaitTimer = 0;
 	boolean hasWaited = false;
+
 	public void update(Input input, Level level) {
 		currentTexture = (int) Direction.getCardinalFromRad(rot + level.getPlayer().rot).getId() * 2 + animation;
 		((AnimatedBitmap) getTexture()).update();
-		
+
 		if (isFree(pos.getX() + dx, pos.getZ(), level)) {
 			pos.setX(pos.getX() + dx);
 			animation = WALKING;
 		} else {
 			animation = STANDING;
-			if(waitTimer == 0 && lastWaitTimer == 0 && !hasWaited) {
+			if (waitTimer == 0 && lastWaitTimer == 0 && !hasWaited) {
 				waitTimer = WAIT_TIME;
 				hasWaited = true;
-			} if(waitTimer == 0 && lastWaitTimer == 0 && hasWaited) {
+			}
+			if (waitTimer == 0 && lastWaitTimer == 0 && hasWaited) {
 				hasWaited = false;
 				dx = -dx;
 			} else {
@@ -69,10 +72,10 @@ public class PlayerMP extends Entity {
 			}
 			lastWaitTimer = waitTimer;
 		}
-		
+
 		super.update(input, level);
 	}
-	
+
 	public int getHealth() {
 		return health;
 	}
@@ -92,7 +95,7 @@ public class PlayerMP extends Entity {
 	public Bitmap getTexture() {
 		return textures[currentTexture];
 	}
-	
+
 	private boolean isFree(double x, double z, Level level) {
 		int x0 = (int) Math.floor(x + 0.5);
 		int x1 = (int) Math.floor(x + 0.5 - collisionBox.getX());
@@ -109,7 +112,7 @@ public class PlayerMP extends Entity {
 			return false;
 		return true;
 	}
-	
+
 	public long getPlayerID() {
 		return playerID;
 	}

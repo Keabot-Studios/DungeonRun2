@@ -33,7 +33,7 @@ public class GameSettings extends Saveable {
 		windowWidth = GameInfo.WINDOW_WIDTHS[windowSizeIndex];
 		windowHeight = (int) (windowWidth * GameInfo.ASPECT_RATIO);
 	}
-	
+
 	public boolean write() {
 		SSDatabase settings = new SSDatabase(getFileName());
 
@@ -77,7 +77,7 @@ public class GameSettings extends Saveable {
 			System.out.println("Loaded " + getFileName() + " successfully from: " + getFilePath());
 			return true;
 		} catch (Exception e) {
-			System.err.println("Can't read " + getFileName() +".ssd file from: " + getFilePath() + ", rewriting file.");
+			System.err.println("Can't read " + getFileName() + ".ssd file from: " + getFilePath() + ", rewriting file.");
 			write();
 			read();
 			return false;

@@ -13,9 +13,9 @@ public abstract class Block {
 	protected double colOffsetX, colOffsetZ;
 
 	protected CollisionBox collisionBox;
-	
+
 	public static Block[] blocks = new Block[4];
-	
+
 	public static final Block emptyBlock = new EmptyBlock(0, false);
 	public static final Block barrierBlock = new EmptyBlock(1, false);
 	public static final Block wallBlock = new SolidBlock(2, Texture.brick1);
@@ -33,8 +33,8 @@ public abstract class Block {
 		this.colOffsetX = colOffsetX;
 		this.colOffsetZ = colOffsetZ;
 		this.collisionBox = colBox;
-		if(id < blocks.length || id >= 0) {
-			if(blocks[id] == null) {
+		if (id < blocks.length || id >= 0) {
+			if (blocks[id] == null) {
 				blocks[id] = this;
 			} else {
 				System.err.println("Block already exists: " + id);

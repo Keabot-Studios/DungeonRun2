@@ -22,11 +22,12 @@ public enum Direction {
 		byte dirId = (byte) ((int) Math.round((double) (rotDeg / 45.0)) % (Direction.values().length - 1.0));
 		return Direction.values()[dirId];
 	}
-	
+
 	public static Direction getCardinalFromRad(double rotRad) {
 		double rotDeg = Math.toDegrees(rotRad) % 360.0;
 		byte dirId = (byte) ((int) Math.round((double) (rotDeg / 90.0)) % ((Direction.values().length - 1.0) / 2.0) * 2);
-		if(dirId == -1) return Direction.NORTH;
+		if (dirId == -1)
+			return Direction.NORTH;
 		return Direction.values()[dirId];
 	}
 }
