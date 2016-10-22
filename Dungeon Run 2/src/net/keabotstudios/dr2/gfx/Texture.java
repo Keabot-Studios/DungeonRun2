@@ -11,8 +11,10 @@ public class Texture {
 	public static Bitmap font_main;
 	public static Bitmap font_small;
 
-	public static Bitmap brick1;
-	public static Bitmap brick1Floor;
+	public static Bitmap brick;
+	public static Bitmap brickFloor;
+	public static Bitmap brickHi;
+	public static Bitmap brickFloorHi;
 	public static Bitmap test;
 	public static AnimatedBitmap spawnPoint;
 	public static AnimatedBitmap animTest;
@@ -25,8 +27,10 @@ public class Texture {
 		font_main = loadBitmap("/font/main.png", game.getLogger());
 		font_small = loadBitmap("/font/small.png", game.getLogger());
 
-		brick1 = loadBitmap("/texture/brick1.png", game.getLogger());
-		brick1Floor = loadBitmap("/texture/brick1Floor.png", game.getLogger());
+		brick = loadBitmap("/texture/brick1.png", game.getLogger());
+		brickFloor = loadBitmap("/texture/brick1Floor.png", game.getLogger());
+		brickHi = loadBitmap("/texture/512brickWall.png", game.getLogger());
+		brickFloorHi = loadBitmap("/texture/512brickFloor.png", game.getLogger());
 		test = loadBitmap("/texture/test.png", game.getLogger());
 		animTest = new AnimatedBitmap(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 10);
 		spawnPoint = new AnimatedBitmap(loadBitmapSheet("/texture/spawnTexture.png", 16, 16, game.getLogger()), 10);

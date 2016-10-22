@@ -10,7 +10,7 @@ public abstract class GamePacket {
 	};
 
 	public enum PacketType {
-		NULL((byte) 0x00), CONNECT((byte) 0x01), DISCONNECT((byte) 0x02);
+		NULL((byte) 0x00), CONNECT((byte) 0x01), DISCONNECT((byte) 0x02), LEVEL_INFO((byte) 0x03);
 
 		private byte id;
 

@@ -14,6 +14,7 @@ import net.keabotstudios.dr2.net.packet.ConnectPacket;
 import net.keabotstudios.dr2.net.packet.DisconnectPacket;
 import net.keabotstudios.dr2.net.packet.GamePacket;
 import net.keabotstudios.dr2.net.packet.GamePacket.PacketType;
+import net.keabotstudios.dr2.net.packet.LevelInfoPacket;
 import net.keabotstudios.superserial.SSSerialization;
 import net.keabotstudios.superserial.SSType.SSDataType;
 
@@ -25,8 +26,9 @@ public class GameServer {
 	private Thread listenThread, gameThread;
 	private boolean listening = false, running = false;;
 	private DatagramSocket socket;
-	private final int MAX_PACKET_SIZE = 1024;
-	private byte[] receiveDataBuffer = new byte[MAX_PACKET_SIZE * 16];
+	private final int MAX_PACKET_SIZE = 1024, PACKET_BUFFER_SIZE = 16;
+	private int receiveDataBufferIndex = 0;
+	private byte[] receiveDataBuffer = new byte[MAX_PACKET_SIZE * PACKET_BUFFER_SIZE];
 
 	private Set<ServerClient> clients = new HashSet<ServerClient>();
 
@@ -34,7 +36,7 @@ public class GameServer {
 
 	public GameServer(int port) {
 		this.port = port;
-		level = new Level(100, 100, null);
+		level = new Level(100, 100);
 	}
 
 	public void start() {
@@ -69,9 +71,11 @@ public class GameServer {
 
 	private void listen() {
 		while (listening) {
-			DatagramPacket packet = new DatagramPacket(receiveDataBuffer, MAX_PACKET_SIZE);
+			DatagramPacket packet = new DatagramPacket(receiveDataBuffer, receiveDataBufferIndex * MAX_PACKET_SIZE, MAX_PACKET_SIZE);
 			try {
 				socket.receive(packet);
+				receiveDataBufferIndex++;
+				if(receiveDataBufferIndex > PACKET_BUFFER_SIZE) receiveDataBufferIndex = 0;
 				process(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -80,7 +84,7 @@ public class GameServer {
 	}
 
 	private void update() {
-
+		
 	}
 
 	private void process(DatagramPacket rawPacket) {
@@ -96,7 +100,8 @@ public class GameServer {
 		PacketType type = PacketType.getFromId(id);
 		switch (type) {
 		case CONNECT:
-			process(new ConnectPacket(data, rawPacket.getAddress(), rawPacket.getPort()));
+			ConnectPacket packet = new ConnectPacket(data, rawPacket.getAddress(), rawPacket.getPort());
+			process(packet);
 			break;
 		case DISCONNECT:
 			process(new DisconnectPacket(data, rawPacket.getAddress(), rawPacket.getPort()));
@@ -114,6 +119,7 @@ public class GameServer {
 			ConnectPacket connectPacket = (ConnectPacket) packet;
 			System.out.println("Client connected with playerID: " + connectPacket.getPlayerID());
 			clients.add(new ServerClient(connectPacket.getAddress(), connectPacket.getPort(), connectPacket.getPlayerID()));
+			send(new LevelInfoPacket(packet.getAddress(), packet.getPort(), level));
 		} else if (packet instanceof DisconnectPacket) {
 			DisconnectPacket disconnectPacket = (DisconnectPacket) packet;
 			System.out.println("Client with playerID: " + disconnectPacket.getPlayerID() + " has disconnected.");

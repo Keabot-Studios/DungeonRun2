@@ -16,10 +16,17 @@ public abstract class Block {
 
 	public static Block[] blocks = new Block[4];
 
-	public static final Block emptyBlock = new EmptyBlock(0, false);
-	public static final Block barrierBlock = new EmptyBlock(1, false);
-	public static final Block wallBlock = new SolidBlock(2, Texture.brick1);
-	public static final Block animBlock = new SolidBlock(3, Texture.animTest);
+	public static Block emptyBlock;
+	public static Block barrierBlock;
+	public static Block wallBlock;
+	public static Block animBlock;
+	
+	public static void load() {
+		emptyBlock = new EmptyBlock(0, false);
+		barrierBlock = new EmptyBlock(1, false);
+		wallBlock = new SolidBlock(2, Texture.brickHi);
+		animBlock = new SolidBlock(3, Texture.animTest);
+	}
 
 	protected Block(int id, boolean solid, boolean opaque, int minimapColor) {
 		this(id, solid, opaque, minimapColor, new CollisionBox(1, 1, Double.MAX_VALUE), 0.0, 0.0);

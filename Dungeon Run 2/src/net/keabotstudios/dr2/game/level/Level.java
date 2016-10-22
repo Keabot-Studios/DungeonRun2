@@ -12,7 +12,6 @@ import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.dr2.game.level.object.entity.PlayerMP;
 import net.keabotstudios.dr2.game.level.object.entity.SpawnPointEntity;
 import net.keabotstudios.dr2.game.level.randomgen.MapGenerator;
-import net.keabotstudios.dr2.game.save.PlayerInfo;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.dr2.math.Vector3;
@@ -29,13 +28,10 @@ public class Level {
 
 	private HashMap<String, Entity> entities = new HashMap<String, Entity>();
 
-	private Game game;
-
-	public Level(int width, int height, Game game) {
+	public Level(int width, int height) {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[width * height];
-		this.game = game;
 		Arrays.fill(blocks, Block.emptyBlock);
 
 		MapGenerator gen = new MapGenerator(width, height, 8, 8, 15);
@@ -43,35 +39,34 @@ public class Level {
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? Block.animBlock : Block.emptyBlock);
+				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? Block.wallBlock : Block.emptyBlock);
 			}
 		}
 
 		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX() + .5, 0.9, gen.getSpawnPoint().getY() + .5));
 		entities.put("spawn", spawnEntity);
 
-		entities.put(String.valueOf(game.getPlayerInfo().getPlayerID()), new Player(spawnEntity.getPos().clone(), 0, game));
-		long mpPID = PlayerInfo.getRandomPlayerID();
-		entities.put("player" + String.valueOf(mpPID), new PlayerMP(spawnEntity.getPos().clone(), 0, mpPID, "Dat Boi"));
-
-		floorTex = Texture.brick1Floor;
-		ceilTex = Texture.brick1;
+		floorTex = Texture.brickFloorHi;
+		ceilTex = Texture.brickHi;
 		ceilPos = 8;
 	}
 
-	public Level(int width, int height, Block[] blocks, HashMap<String, Entity> entities) {
+	public Level(int width, int height, Block[] blocks) {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[width * height];
-		this.entities = entities;
 
-		floorTex = Texture.brick1Floor;
-		ceilTex = Texture.brick1;
+		floorTex = Texture.brickFloor;
+		ceilTex = Texture.brick;
 		ceilPos = 8;
+	}
+	
+	public void setPlayer(Game game) {
+		entities.put("player", new Player(entities.get("spawn").getPos().subtract(new Vector3(0, entities.get("spawn").getPos().getY(), 0)), 0.0, game));
 	}
 
 	public Player getPlayer() {
-		return (Player) getEntity(String.valueOf(game.getPlayerInfo().getPlayerID()));
+		return (Player) getEntity("player");
 	}
 
 	public void update(Input input) {
@@ -120,6 +115,18 @@ public class Level {
 
 	public int getRenderDistance() {
 		return renderDistance;
+	}
+	
+	public void addEntitiy(String name, Entity entity) {
+		
+	}
+	
+	public boolean entityExists(String name) {
+		return entities.containsKey(name) && entities.get(name) == null;
+	}
+	
+	public void removeEntitiy(String name) {
+		if(entityExists(name)) entities.remove(name);
 	}
 
 	public List<Entity> getEntites() {

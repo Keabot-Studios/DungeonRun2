@@ -1,11 +1,9 @@
 package net.keabotstudios.dr2.net.packet;
 
 import java.net.InetAddress;
-import java.util.HashMap;
 
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.block.Block;
-import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.superserial.BinaryWriter;
 import net.keabotstudios.superserial.SSSerialization;
 import net.keabotstudios.superserial.SSType.SSDataType;
@@ -14,8 +12,8 @@ public class LevelInfoPacket extends GamePacket {
 
 	private Level level;
 
-	public LevelInfoPacket(PacketType type, InetAddress address, int port, Level level) {
-		super(type, address, port);
+	public LevelInfoPacket(InetAddress address, int port, Level level) {
+		super(PacketType.LEVEL_INFO, address, port);
 		this.level = level;
 	}
 
@@ -34,7 +32,7 @@ public class LevelInfoPacket extends GamePacket {
 		Block[] blocks = new Block[blockIds.length];
 		for (int i = 0; i < blocks.length; i++)
 			blocks[i] = Block.blocks[blockIds[i]];
-		level = new Level(width, height, blocks, new HashMap<String, Entity>());
+		level = new Level(width, height, blocks);
 	}
 
 	public byte[] getData() {
