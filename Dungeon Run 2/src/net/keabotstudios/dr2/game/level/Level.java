@@ -32,7 +32,7 @@ public class Level {
 		this.blocks = new Block[width * height];
 		this.tiles = new Tile[width * height];
 
-		MapGenerator gen = new MapGenerator(width, height, 8, 8, 15);
+		MapGenerator gen = new MapGenerator(width, height, 6, 5, 10, false);
 		gen.generateMap("oh boi!".hashCode());
 
 		for (int y = 0; y < height; y++) {

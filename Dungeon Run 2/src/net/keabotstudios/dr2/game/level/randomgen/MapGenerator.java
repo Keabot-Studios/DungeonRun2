@@ -1,5 +1,6 @@
 package net.keabotstudios.dr2.game.level.randomgen;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,8 @@ public class MapGenerator {
 	public int maxRoomSize;
 	int[][] tileMap;
 	DungeonTile[][] dungeonTileMap;
+	
+	private boolean allowTouchingRooms;
 
 	private int conCount;
 
@@ -24,12 +27,13 @@ public class MapGenerator {
 
 	Random mapGenRandom;
 
-	public MapGenerator(int height, int width, int maxRoomCount, int minRoomSize, int maxRoomSize) {
+	public MapGenerator(int height, int width, int maxRoomCount, int minRoomSize, int maxRoomSize, boolean touchingRooms) {
 		mapWidth = width;
 		mapHeight = height;
 		roomCount = maxRoomCount;
 		this.minRoomSize = minRoomSize;
 		this.maxRoomSize = maxRoomSize;
+		allowTouchingRooms = touchingRooms;
 	}
 
 	public void generateMap(int seed) {
@@ -88,16 +92,19 @@ public class MapGenerator {
 
 		DungeonRoom newRoom = new DungeonRoom();
 		boolean validRoom = false;
-		while (!validRoom && tries < 16) {
+		while (!validRoom && tries < 256) {
 			validRoom = true;
 			newRoom.roomBounds.width = mapGenRandom.nextInt(maxRoomSize) + minRoomSize;
 			newRoom.roomBounds.height = mapGenRandom.nextInt(maxRoomSize) + minRoomSize;
 			newRoom.roomBounds.x = mapGenRandom.nextInt(mapWidth - newRoom.roomBounds.width);
 			newRoom.roomBounds.y = mapGenRandom.nextInt(mapHeight - newRoom.roomBounds.height);
 
+			Rectangle checkBounds = allowTouchingRooms ? newRoom.roomBounds : new Rectangle(newRoom.roomBounds.x - 1, newRoom.roomBounds.y - 1,
+					newRoom.roomBounds.width + 2, newRoom.roomBounds.height + 2);
+
 			if (dungeonRooms.size() > 0) {
 				for (DungeonRoom room : dungeonRooms) {
-					if (room.roomBounds.intersects(newRoom.roomBounds))
+					if (room.roomBounds.intersects(checkBounds))
 						validRoom = false;
 				}
 			}
