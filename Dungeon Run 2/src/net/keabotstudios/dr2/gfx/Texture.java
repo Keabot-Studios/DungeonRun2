@@ -16,12 +16,16 @@ public class Texture {
 	public static Bitmap brickHi;
 	public static Bitmap brickFloorHi;
 	public static Bitmap test;
-	public static AnimatedBitmap spawnPoint;
 	public static AnimatedBitmap animTest;
+	
+	public static Bitmap night;
+	
+	public static AnimatedBitmap spawnPoint;
+	public static Bitmap[] player;
+	
 	public static Bitmap guiBar;
 	public static BoxBitmap[] guiBox;
 	public static Bitmap[] playerArrow;
-	public static Bitmap[] player;
 
 	public static void load(Game game) {
 		font_main = loadBitmap("/font/main.png", game.getLogger());
@@ -33,11 +37,17 @@ public class Texture {
 		brickFloorHi = loadBitmap("/texture/512brickFloor.png", game.getLogger());
 		test = loadBitmap("/texture/test.png", game.getLogger());
 		animTest = new AnimatedBitmap(loadBitmapSheet("/texture/animTest.png", 16, 16, game.getLogger()), 10);
+		
+		night = loadBitmap("/texture/night.png", game.getLogger());
+		
 		spawnPoint = new AnimatedBitmap(loadBitmapSheet("/texture/spawnTexture.png", 16, 16, game.getLogger()), 10);
+		player = loadBitmapSheet("/texture/player.png", 32, 32, game.getLogger());
+		
 		guiBar = loadBitmap("/texture/guiBar.png", game.getLogger());
 		guiBox = loadBoxBitmapSheet("/texture/guiBox.png", 24, 24, 8, 8, 8, 8, game.getLogger());
 		playerArrow = loadBitmapSheet("/texture/playerArrow.png", 8, 8, game.getLogger());
-		player = loadBitmapSheet("/texture/player.png", 32, 32, game.getLogger());
+		
+		
 	}
 
 	public static void update() {

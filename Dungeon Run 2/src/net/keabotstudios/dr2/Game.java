@@ -23,6 +23,7 @@ import net.keabotstudios.dr2.game.gui.GuiRenderer;
 import net.keabotstudios.dr2.game.gui.font.Font;
 import net.keabotstudios.dr2.game.level.Level;
 import net.keabotstudios.dr2.game.level.object.block.Block;
+import net.keabotstudios.dr2.game.level.object.tile.Tile;
 import net.keabotstudios.dr2.game.save.GameSettings;
 import net.keabotstudios.dr2.game.save.PlayerInfo;
 import net.keabotstudios.dr2.gfx.Bitmap;
@@ -71,6 +72,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 		Font.load();
 		GuiRenderer.init(this);
 		Block.load();
+		Tile.load();
 
 		screen = new Bitmap(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);

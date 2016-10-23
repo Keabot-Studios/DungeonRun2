@@ -10,7 +10,7 @@ public abstract class Block {
 
 	protected final int id, minimapColor;
 	protected final boolean solid, opaque;
-	protected double colOffsetX, colOffsetZ;
+	protected final double colOffsetX, colOffsetZ;
 
 	protected CollisionBox collisionBox;
 
@@ -24,7 +24,7 @@ public abstract class Block {
 	public static void load() {
 		emptyBlock = new EmptyBlock(0, false);
 		barrierBlock = new EmptyBlock(1, false);
-		wallBlock = new SolidBlock(2, Texture.brickHi);
+		wallBlock = new SolidBlock(2, Texture.brick);
 		animBlock = new SolidBlock(3, Texture.animTest);
 	}
 

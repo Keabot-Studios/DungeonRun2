@@ -11,20 +11,18 @@ import net.keabotstudios.dr2.game.level.object.entity.Entity;
 import net.keabotstudios.dr2.game.level.object.entity.Player;
 import net.keabotstudios.dr2.game.level.object.entity.PlayerMP;
 import net.keabotstudios.dr2.game.level.object.entity.SpawnPointEntity;
+import net.keabotstudios.dr2.game.level.object.tile.Tile;
 import net.keabotstudios.dr2.game.level.randomgen.MapGenerator;
-import net.keabotstudios.dr2.gfx.Bitmap;
-import net.keabotstudios.dr2.gfx.Texture;
 import net.keabotstudios.dr2.math.Vector3;
 import net.keabotstudios.superin.Input;
 
 public class Level {
 
-	private double ceilPos;
-	private Bitmap floorTex, ceilTex;
 	private int renderDistance = 6000;
 
 	private final int width, height;
 	private Block[] blocks;
+	private Tile[] tiles;
 
 	private HashMap<String, Entity> entities = new HashMap<String, Entity>();
 
@@ -32,7 +30,13 @@ public class Level {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[width * height];
+		this.tiles = new Tile[width * height];
 		Arrays.fill(blocks, Block.emptyBlock);
+		for(int x = 0; x < width; x++) {
+			for(int y = 0; y < height; y++) {
+				this.tiles[x + y * width] = Tile.outside1;
+			}
+		}
 
 		MapGenerator gen = new MapGenerator(width, height, 8, 8, 15);
 		gen.generateMap("oh boi!".hashCode());
@@ -45,20 +49,12 @@ public class Level {
 
 		SpawnPointEntity spawnEntity = new SpawnPointEntity(new Vector3(gen.getSpawnPoint().getX() + .5, 0.9, gen.getSpawnPoint().getY() + .5));
 		entities.put("spawn", spawnEntity);
-
-		floorTex = Texture.brickFloorHi;
-		ceilTex = Texture.brickHi;
-		ceilPos = 8;
 	}
 
 	public Level(int width, int height, Block[] blocks) {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[width * height];
-
-		floorTex = Texture.brickFloor;
-		ceilTex = Texture.brick;
-		ceilPos = 8;
 	}
 	
 	public void setPlayer(Game game) {
@@ -97,22 +93,6 @@ public class Level {
 		return blocks[x + y * width];
 	}
 
-	public double getFloorPos() {
-		return 8;
-	}
-
-	public double getCeilPos() {
-		return ceilPos;
-	}
-
-	public Bitmap getFloorTexture() {
-		return floorTex;
-	}
-
-	public Bitmap getCeilTexture() {
-		return ceilTex;
-	}
-
 	public int getRenderDistance() {
 		return renderDistance;
 	}
@@ -145,5 +125,11 @@ public class Level {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public Tile getTile(int x, int y) {
+		if (x < 0 || y < 0 || x >= width || y >= height)
+			return Tile.inside1;
+		return tiles[x + y * width];
 	}
 }
