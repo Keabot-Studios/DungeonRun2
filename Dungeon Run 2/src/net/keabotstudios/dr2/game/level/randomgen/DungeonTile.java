@@ -10,7 +10,7 @@ public class DungeonTile {
 	public int roomType;
 
 	int wallValue = 14;
-	int floorValue = 35;
+	int floorValue = 4;
 
 	public DungeonTile(boolean connectUp, boolean connectDown, boolean connectLeft, boolean connectRight, int type) {
 		connectedDown = connectDown;
