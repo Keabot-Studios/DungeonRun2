@@ -24,7 +24,11 @@ public class Tile {
 	protected Tile(int id, Bitmap floorTex, Bitmap ceilTex, boolean skybox, int minimapColor) {
 		this.id = id;
 		this.floorTex = floorTex;
-		this.ceilTex = ceilTex;
+		if(skybox) {
+			this.ceilTex = ceilTex.stich(ceilTex, ceilTex.getWidth() - 1, 0);
+		} else {
+			this.ceilTex = ceilTex;
+		}
 		this.skybox = skybox;
 		this.minimapColor = minimapColor;
 		if (id < tiles.length || id >= 0) {

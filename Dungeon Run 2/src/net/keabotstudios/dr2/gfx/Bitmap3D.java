@@ -70,7 +70,7 @@ public class Bitmap3D extends Bitmap {
 					pixels[x + y * width] = t.getFloorTexture().getPixel(xPix & (t.getFloorTexture().width - 1), yPix & (t.getFloorTexture().height - 1));
 				} else {
 					if (t.hasSkybox()) {
-						pixels[x + y * width] = t.getCeilingTexture().getPixel(x + (int) ((double) t.getCeilingTexture().width * (rotOff / (Math.PI * 2.0))) % t.getCeilingTexture().width, y);
+						pixels[x + y * width] = t.getCeilingTexture().getPixel(x + (int) (((double) t.getCeilingTexture().getWidth() / 2.0) * (rotOff / (Math.PI * 2.0))), y);
 						zBuffer[x + y * width] = -1;
 					} else {
 						double texScaleX = t.getCeilingTexture().width / 8.0;
