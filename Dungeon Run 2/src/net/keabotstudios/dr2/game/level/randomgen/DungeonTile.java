@@ -6,21 +6,24 @@ public class DungeonTile {
 	public boolean connectedDown;
 	public boolean connectedLeft;
 	public boolean connectedRight;
+	
+	public int roomType;
 
 	int wallValue = 14;
 	int floorValue = 35;
 
-	public DungeonTile(boolean connectUp, boolean connectDown, boolean connectLeft, boolean connectRight) {
+	public DungeonTile(boolean connectUp, boolean connectDown, boolean connectLeft, boolean connectRight, int type) {
 		connectedDown = connectDown;
 		connectedLeft = connectLeft;
 		connectedRight = connectRight;
 		connectedUp = connectUp;
+		roomType = type;
 	}
 
 	public int getTileID() {
 		if (!connectedUp && !connectedDown && !connectedLeft && !connectedRight)
-			return 0;
-		return -1;
+			return -1;
+		return roomType;
 	}
 
 	public int getUpValue() {

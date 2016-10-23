@@ -31,19 +31,14 @@ public class Level {
 		this.height = height;
 		this.blocks = new Block[width * height];
 		this.tiles = new Tile[width * height];
-		Arrays.fill(blocks, Block.emptyBlock);
-		for(int x = 0; x < width; x++) {
-			for(int y = 0; y < height; y++) {
-				this.tiles[x + y * width] = Tile.outside1;
-			}
-		}
 
 		MapGenerator gen = new MapGenerator(width, height, 8, 8, 15);
 		gen.generateMap("oh boi!".hashCode());
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				blocks[height * y + x] = (gen.getTileArray()[x][y] == 0 ? Block.wallBlock : Block.emptyBlock);
+				blocks[height * y + x] = (gen.getTileArray()[x][y] == -1 ? Block.wallBlock : Block.emptyBlock);
+				this.tiles[x + y * width] = (gen.getTileArray()[x][y] == 1 ? Tile.outside1 : Tile.inside1);
 			}
 		}
 

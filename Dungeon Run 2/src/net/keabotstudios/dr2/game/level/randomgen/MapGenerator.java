@@ -70,7 +70,7 @@ public class MapGenerator {
 		for (int x = 0; x < mapWidth; x++) {
 			for (int y = 0; y < mapHeight; y++) {
 				if (dungeonTileMap[x][y] == null) {
-					dungeonTileMap[x][y] = new DungeonTile(false, false, false, false);
+					dungeonTileMap[x][y] = new DungeonTile(false, false, false, false, 0);
 					tileMap[x][y] = 0;
 				}
 			}
@@ -108,26 +108,27 @@ public class MapGenerator {
 		int startY = (int) newRoom.roomBounds.y;
 		int width = (int) newRoom.roomBounds.width;
 		int height = (int) newRoom.roomBounds.height;
+		int type = (this.mapGenRandom.nextFloat() <= .5F) ? 0 : 1;
 		for (int y = startY; y < startY + height; y++) {
 			for (int x = startX; x < startX + width; x++) {
 				if (x == startX && y == startY) {
-					dungeonTileMap[x][y] = new DungeonTile(true, false, false, true);
+					dungeonTileMap[x][y] = new DungeonTile(true, false, false, true, type);
 				} else if (x == startX && y == startY + height - 1) {
-					dungeonTileMap[x][y] = new DungeonTile(false, true, false, true);
+					dungeonTileMap[x][y] = new DungeonTile(false, true, false, true, type);
 				} else if (x == startX + width - 1 && y == startY + height - 1) {
-					dungeonTileMap[x][y] = new DungeonTile(false, true, true, false);
+					dungeonTileMap[x][y] = new DungeonTile(false, true, true, false, type);
 				} else if (x == startX + width - 1 && y == startY) {
-					dungeonTileMap[x][y] = new DungeonTile(true, false, true, false);
+					dungeonTileMap[x][y] = new DungeonTile(true, false, true, false, type);
 				} else if (x == startX + width - 1) {
-					dungeonTileMap[x][y] = new DungeonTile(true, true, true, false);
+					dungeonTileMap[x][y] = new DungeonTile(true, true, true, false, type);
 				} else if (x == startX) {
-					dungeonTileMap[x][y] = new DungeonTile(true, true, false, true);
+					dungeonTileMap[x][y] = new DungeonTile(true, true, false, true, type);
 				} else if (y == startY + height - 1) {
-					dungeonTileMap[x][y] = new DungeonTile(false, true, true, true);
+					dungeonTileMap[x][y] = new DungeonTile(false, true, true, true, type);
 				} else if (y == startY) {
-					dungeonTileMap[x][y] = new DungeonTile(true, false, true, true);
+					dungeonTileMap[x][y] = new DungeonTile(true, false, true, true, type);
 				} else {
-					dungeonTileMap[x][y] = new DungeonTile(true, true, true, true);
+					dungeonTileMap[x][y] = new DungeonTile(true, true, true, true, type);
 				}
 			}
 		}
@@ -242,7 +243,7 @@ public class MapGenerator {
 		List<Vector2> validPoints = new ArrayList<Vector2>();
 		for (int x = 0; x < mapWidth; x++) {
 			for (int y = 0; y < mapHeight; y++) {
-				if (tileMap[x][y] == -1)
+				if (tileMap[x][y] != -1)
 					validPoints.add(new Vector2(x, y));
 			}
 		}
