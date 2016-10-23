@@ -56,7 +56,7 @@ public class LevelState extends GameState {
 		bitmap.render(bitmap3d, 0, 0);
 		health.render(bitmap);
 		ammo.render(bitmap);
-		button.render(bitmap);
+		//button.render(bitmap);
 		if (gsm.game.getSettings().debugMode) {
 			fps.render(bitmap);
 			pos.render(bitmap);

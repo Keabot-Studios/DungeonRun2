@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import net.keabotstudios.dr2.Util.ColorUtil;
+import net.keabotstudios.dr2.Util.ImageUtil;
 import net.keabotstudios.dr2.game.GameInfo;
 import net.keabotstudios.dr2.game.gamestate.GameStateManager;
 import net.keabotstudios.dr2.game.gamestate.LevelState;
@@ -76,7 +77,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 
 		screen = new Bitmap(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT);
 		img = new BufferedImage(GameInfo.GAME_WIDTH, GameInfo.GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-		pixels = Util.convertToPixels(img);
+		pixels = ImageUtil.convertToPixels(img);
 
 		input = new Input(this, settings.useXInput);
 		input.setInputs(settings.controls);

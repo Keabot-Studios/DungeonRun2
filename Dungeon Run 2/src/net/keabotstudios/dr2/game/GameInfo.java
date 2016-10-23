@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 
-import net.keabotstudios.dr2.Util;
+import net.keabotstudios.dr2.Util.ImageUtil;
 import net.keabotstudios.superlog.Logger;
 
 public class GameInfo {
@@ -38,9 +38,9 @@ public class GameInfo {
 	}
 
 	public static void init(Logger l) {
-		WINDOW_ICONS.add(Util.loadImage("/icon/dr2x64.png", l));
-		WINDOW_ICONS.add(Util.loadImage("/icon/dr2x32.png", l));
-		WINDOW_ICONS.add(Util.loadImage("/icon/dr2x16.png", l));
+		WINDOW_ICONS.add(ImageUtil.loadImage("/icon/dr2x64.png", l));
+		WINDOW_ICONS.add(ImageUtil.loadImage("/icon/dr2x32.png", l));
+		WINDOW_ICONS.add(ImageUtil.loadImage("/icon/dr2x16.png", l));
 		TIME = 0;
 	}
 

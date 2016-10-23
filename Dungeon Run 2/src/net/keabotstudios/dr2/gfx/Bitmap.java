@@ -23,7 +23,7 @@ public class Bitmap {
 	 */
 	public void clear(Color col) {
 		for (int i = 0; i < pixels.length; i++) {
-			pixels[i] = ColorUtil.toARGBColor(col.getRGB());
+			pixels[i] = ColorUtil.toARGBColor(col);
 		}
 	}
 
@@ -388,5 +388,16 @@ public class Bitmap {
 		if (x >= width || x < 0 || y >= height || y < 0)
 			return 0;
 		return pixels[x + y * width];
+	}
+
+	public Bitmap stich(Bitmap bitmap, int x, int y) {
+		int outWidth = Math.max(width, x + bitmap.width);
+		int outHeight = Math.max(height, y + bitmap.height);
+		int origXOffs = Math.abs(Math.min(0, x));
+		int origYOffs = Math.abs(Math.min(0, y));
+		Bitmap out = new Bitmap(outWidth, outHeight);
+		out.render(this, origXOffs, origYOffs);
+		out.render(bitmap, x, y);
+		return out;
 	}
 }

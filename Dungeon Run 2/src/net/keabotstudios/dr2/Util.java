@@ -6,46 +6,16 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
+import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.superlog.Logger;
 
 public class Util {
-
-	public static BufferedImage loadImage(String string, Logger logger) {
-		try {
-			if (logger != null)
-				logger.infoLn("Loading image '" + string + "'... ");
-			BufferedImage out = ImageIO.read(Util.class.getResourceAsStream(string));
-			if (logger != null)
-				logger.infoLn("success!");
-			return out;
-		} catch (IOException e) {
-			e.printStackTrace();
-			if (logger != null)
-				logger.errorLn("failure. Could not load image.");
-			System.exit(-1);
-			return null;
-		}
-	}
-
-	public static int[] convertToPixels(BufferedImage image) {
-		return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-	}
-
-	public static Image getScaledImage(Image srcImg, int w, int h) {
-		BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2 = resizedImg.createGraphics();
-		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-		g2.drawImage(srcImg, 0, 0, w, h, null);
-		g2.dispose();
-
-		return resizedImg;
-	}
-
 	public static float getScaleOfRectangeInArea(int areaWidth, int areaHeight, int rectWidth, int rectHeight) {
 		float screenAspect = (float) areaWidth / (float) areaHeight;
 		float rectAspect = (float) rectWidth / (float) rectHeight;
@@ -57,6 +27,51 @@ public class Util {
 			scaleFactor = (float) areaWidth / (float) rectWidth;
 
 		return scaleFactor;
+	}
+
+	public static class ImageUtil {
+		
+		public static BufferedImage loadImage(String string, Logger logger) {
+			try {
+				if (logger != null)
+					logger.infoLn("Loading image '" + string + "'... ");
+				BufferedImage out = ImageIO.read(Util.class.getResourceAsStream(string));
+				if (logger != null)
+					logger.infoLn("success!");
+				return out;
+			} catch (IOException e) {
+				e.printStackTrace();
+				if (logger != null)
+					logger.errorLn("failure. Could not load image.");
+				System.exit(-1);
+				return null;
+			}
+		}
+	
+		public static int[] convertToPixels(BufferedImage image) {
+			return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+		}
+	
+		public static Image getScaledImage(Image srcImg, int w, int h) {
+			BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = resizedImg.createGraphics();
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+			g2.drawImage(srcImg, 0, 0, w, h, null);
+			g2.dispose();
+	
+			return resizedImg;
+		}
+
+		public static void writeToFile(Bitmap image, String path) {
+			File outputfile = new File(path + ".png");
+			BufferedImage out = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			out.setRGB(0, 0, image.getWidth(), image.getHeight(), image.getPixels(), 0, image.getWidth());
+			try {
+				ImageIO.write(out, "png", outputfile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static class ColorUtil {

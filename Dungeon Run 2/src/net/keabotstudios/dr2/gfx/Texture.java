@@ -3,7 +3,7 @@ package net.keabotstudios.dr2.gfx;
 import java.awt.image.BufferedImage;
 
 import net.keabotstudios.dr2.Game;
-import net.keabotstudios.dr2.Util;
+import net.keabotstudios.dr2.Util.ImageUtil;
 import net.keabotstudios.superlog.Logger;
 
 public class Texture {
@@ -56,7 +56,7 @@ public class Texture {
 	}
 
 	public static Bitmap loadBitmap(String file, Logger logger) {
-		BufferedImage image = Util.loadImage(file, logger);
+		BufferedImage image = ImageUtil.loadImage(file, logger);
 		int width = image.getWidth();
 		int height = image.getHeight();
 		Bitmap result = new Bitmap(width, height);
@@ -65,7 +65,7 @@ public class Texture {
 	}
 
 	public static Bitmap[] loadBitmapSheet(String file, int width, int height, Logger logger) {
-		BufferedImage image = Util.loadImage(file, logger);
+		BufferedImage image = ImageUtil.loadImage(file, logger);
 		int numX = image.getWidth() / width;
 		int numY = image.getHeight() / height;
 		Bitmap[] result = new Bitmap[numX * numY];
@@ -79,7 +79,7 @@ public class Texture {
 	}
 
 	public static BoxBitmap[] loadBoxBitmapSheet(String file, int width, int height, int offLeft, int offRight, int offTop, int offBottom, Logger logger) {
-		BufferedImage image = Util.loadImage(file, logger);
+		BufferedImage image = ImageUtil.loadImage(file, logger);
 		int numX = image.getWidth() / width;
 		int numY = image.getHeight() / height;
 		BoxBitmap[] result = new BoxBitmap[numX * numY];
