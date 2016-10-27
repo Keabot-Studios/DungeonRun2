@@ -26,7 +26,7 @@ public class GameServer {
 	private Thread listenThread, gameThread;
 	private boolean listening = false, running = false;;
 	private DatagramSocket socket;
-	private final int MAX_PACKET_SIZE = 1024, PACKET_BUFFER_SIZE = 16;
+	private final int MAX_PACKET_SIZE = 4096, PACKET_BUFFER_SIZE = 8;
 	private int receiveDataBufferIndex = 0;
 	private byte[] receiveDataBuffer = new byte[MAX_PACKET_SIZE * PACKET_BUFFER_SIZE];
 

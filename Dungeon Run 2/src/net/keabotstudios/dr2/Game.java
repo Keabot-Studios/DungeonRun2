@@ -29,7 +29,6 @@ import net.keabotstudios.dr2.game.save.GameSettings;
 import net.keabotstudios.dr2.game.save.PlayerInfo;
 import net.keabotstudios.dr2.gfx.Bitmap;
 import net.keabotstudios.dr2.gfx.Texture;
-import net.keabotstudios.dr2.net.GameClient;
 import net.keabotstudios.superin.Controllable;
 import net.keabotstudios.superin.Input;
 import net.keabotstudios.superlog.Logger;
@@ -42,7 +41,7 @@ public class Game extends Canvas implements Runnable, Controllable {
 
 	private Thread thread;
 	private boolean running = false;
-	private int fps;
+	private int fps, ups;
 
 	private GameSettings settings;
 	private Input input;
@@ -143,23 +142,17 @@ public class Game extends Canvas implements Runnable, Controllable {
 			System.exit(-1);
 		}
 	}
-
+	
 	public void init() {
-		GameClient client = new GameClient("localhost:8192", playerInfo.getPlayerID());
-		logger.infoLn("Trying to connect to server...");
-		if (client.connect()) {
-			logger.infoLn("Connected to server: " + client.getServerAddress().getHostName() + ":" + client.getPort());
-		} else {
-			logger.infoLn("Could not connect to server: " + client.getServerAddress().getHostName() + ":" + client.getPort());
-		}
+		
 	}
 
 	public void run() {
 		int frames = 0;
+		int updates = 0;
 		double skippedSecs = 0;
 		long prevTime = System.nanoTime();
 		double secsPerTick = 1.0 / (double) GameInfo.MAX_UPS;
-		int tickCount = 0;
 
 		init();
 
@@ -172,10 +165,11 @@ public class Game extends Canvas implements Runnable, Controllable {
 				update();
 
 				skippedSecs -= secsPerTick;
-				tickCount++;
-				if (tickCount % 60 == 0) {
+				updates++;
+				if (updates % GameInfo.MAX_UPS == 0) {
 					fps = frames;
-					tickCount = 0;
+					ups = updates;
+					updates = 0;
 					frames = 0;
 				}
 			}
@@ -185,8 +179,8 @@ public class Game extends Canvas implements Runnable, Controllable {
 	}
 
 	private void update() {
+		GameInfo.update(fps, ups);
 		input.updateControllerInput();
-		GameInfo.update(fps);
 		Texture.update();
 		gsm.update();
 		if (input.getInputTapped("ESCAPE")) {
